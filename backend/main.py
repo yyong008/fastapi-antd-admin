@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
 # config
-from app.config.config import settings as config
+from app.config.config import get_settings
 
 # db
 from app.db.client import init_db
@@ -22,6 +22,7 @@ from app.router.health import router as health_check_router
 from app.router.home import router as home_router
 
 init_db()
+config = get_settings()
 
 app = FastAPI(title="Remix Antd Admin FastAPI", summary="Remix Antd admin",  description="一个管理系统 With Remix", debug=config.DEBUG)
 

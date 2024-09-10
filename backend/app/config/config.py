@@ -1,5 +1,5 @@
-from pydantic_settings import BaseSettings
-
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from functools import lru_cache
 
 class Settings(BaseSettings):
     SERVER_HOST: str
@@ -15,8 +15,12 @@ class Settings(BaseSettings):
     PORT: int
     OLLAMA_URL: str
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env")
 
 
-settings = Settings()
+# settings = Settings()
+
+@lru_cache()
+def get_settings():
+    settings = Settings()
+    return settings

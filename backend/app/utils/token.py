@@ -3,8 +3,9 @@ import hashlib
 
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Request, status
-from app.config.config import settings as config
+from app.config.config import get_settings
 
+config = get_settings()
 
 def jwt_encode(to_encode: dict):
     payload = jwt.encode(to_encode, config.SECRET_KEY, algorithm=config.ALGORITHM)

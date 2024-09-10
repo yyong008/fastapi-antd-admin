@@ -1,10 +1,28 @@
+import { ConfigProvider, message, } from "antd";
 import { LoginForm, ProConfigProvider } from "@ant-design/pro-components";
+import { setLocalStorageRefreshToken, setLocalStorageToken } from "@/utils/localstorage";
 
-import { ConfigProvider, } from "antd";
+import { genHashedPassword } from "@/utils/crypto-js";
+import { login } from "@/apis/login";
+import { useNavigate } from "@tanstack/react-router";
 
 export function LoginFormWrap({ children }: any) {
+  const navigate = useNavigate()
   const handleSubmit = async (values: any) => {
-    
+   const data = {
+      ...values,
+      password: genHashedPassword(values.password),
+    };
+    const result: any = await login(data);
+    if (result.data.code === 0 && result.data.data.token?.length > 0) {
+      setLocalStorageToken(result.data.data.token);
+      setLocalStorageRefreshToken(result.data.data.refresh_token);
+      message.success(result.data.message);
+      navigate({ to: `/admin/dashboard`});
+    } else {
+      message.error(result.data.message);
+    }
+    return true;
   };
 
   return (

@@ -11,23 +11,25 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AdminImport } from './routes/admin'
 import { Route as ClientImport } from './routes/_client'
-import { Route as AdminImport } from './routes/_admin'
 import { Route as ClientIndexImport } from './routes/_client/index'
 import { Route as ClientNewsImport } from './routes/_client/news'
 import { Route as ClientBlogImport } from './routes/_client/blog'
 import { Route as ClientAboutImport } from './routes/_client/about'
+import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard/route'
+import { Route as AdminSystemUserImport } from './routes/admin/system/user'
 import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 
 // Create/Update Routes
 
-const ClientRoute = ClientImport.update({
-  id: '/_client',
+const AdminRoute = AdminImport.update({
+  path: '/admin',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminRoute = AdminImport.update({
-  id: '/_admin',
+const ClientRoute = ClientImport.update({
+  id: '/_client',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,6 +53,16 @@ const ClientAboutRoute = ClientAboutImport.update({
   getParentRoute: () => ClientRoute,
 } as any)
 
+const AdminDashboardRouteRoute = AdminDashboardRouteImport.update({
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminSystemUserRoute = AdminSystemUserImport.update({
+  path: '/system/user',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 const authAdminLoginRoute = authAdminLoginImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRoute,
@@ -60,19 +72,26 @@ const authAdminLoginRoute = authAdminLoginImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_admin': {
-      id: '/_admin'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AdminImport
-      parentRoute: typeof rootRoute
-    }
     '/_client': {
       id: '/_client'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof ClientImport
       parentRoute: typeof rootRoute
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminImport
     }
     '/_client/about': {
       id: '/_client/about'
@@ -109,6 +128,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAdminLoginImport
       parentRoute: typeof rootRoute
     }
+    '/admin/system/user': {
+      id: '/admin/system/user'
+      path: '/system/user'
+      fullPath: '/admin/system/user'
+      preLoaderRoute: typeof AdminSystemUserImport
+      parentRoute: typeof AdminImport
+    }
   }
 }
 
@@ -131,61 +157,99 @@ const ClientRouteChildren: ClientRouteChildren = {
 const ClientRouteWithChildren =
   ClientRoute._addFileChildren(ClientRouteChildren)
 
+interface AdminRouteChildren {
+  AdminDashboardRouteRoute: typeof AdminDashboardRouteRoute
+  AdminSystemUserRoute: typeof AdminSystemUserRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardRouteRoute: AdminDashboardRouteRoute,
+  AdminSystemUserRoute: AdminSystemUserRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 export interface FileRoutesByFullPath {
   '': typeof ClientRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRouteRoute
   '/about': typeof ClientAboutRoute
   '/blog': typeof ClientBlogRoute
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/admin/system/user': typeof AdminSystemUserRoute
 }
 
 export interface FileRoutesByTo {
-  '': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRouteRoute
   '/about': typeof ClientAboutRoute
   '/blog': typeof ClientBlogRoute
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/admin/system/user': typeof AdminSystemUserRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/_admin': typeof AdminRoute
   '/_client': typeof ClientRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRouteRoute
   '/_client/about': typeof ClientAboutRoute
   '/_client/blog': typeof ClientBlogRoute
   '/_client/news': typeof ClientNewsRoute
   '/_client/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/admin/system/user': typeof AdminSystemUserRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/about' | '/blog' | '/news' | '/' | '/admin/login'
+  fullPaths:
+    | ''
+    | '/admin'
+    | '/admin/dashboard'
+    | '/about'
+    | '/blog'
+    | '/news'
+    | '/'
+    | '/admin/login'
+    | '/admin/system/user'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/about' | '/blog' | '/news' | '/' | '/admin/login'
+  to:
+    | '/admin'
+    | '/admin/dashboard'
+    | '/about'
+    | '/blog'
+    | '/news'
+    | '/'
+    | '/admin/login'
+    | '/admin/system/user'
   id:
     | '__root__'
-    | '/_admin'
     | '/_client'
+    | '/admin'
+    | '/admin/dashboard'
     | '/_client/about'
     | '/_client/blog'
     | '/_client/news'
     | '/_client/'
     | '/admin/login'
+    | '/admin/system/user'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  AdminRoute: typeof AdminRoute
   ClientRoute: typeof ClientRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   authAdminLoginRoute: typeof authAdminLoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  AdminRoute: AdminRoute,
   ClientRoute: ClientRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   authAdminLoginRoute: authAdminLoginRoute,
 }
 
@@ -201,13 +265,10 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/_admin",
         "/_client",
+        "/admin",
         "/admin/login"
       ]
-    },
-    "/_admin": {
-      "filePath": "_admin.tsx"
     },
     "/_client": {
       "filePath": "_client.tsx",
@@ -217,6 +278,17 @@ export const routeTree = rootRoute
         "/_client/news",
         "/_client/"
       ]
+    },
+    "/admin": {
+      "filePath": "admin.tsx",
+      "children": [
+        "/admin/dashboard",
+        "/admin/system/user"
+      ]
+    },
+    "/admin/dashboard": {
+      "filePath": "admin/dashboard/route.tsx",
+      "parent": "/admin"
     },
     "/_client/about": {
       "filePath": "_client/about.tsx",
@@ -236,6 +308,10 @@ export const routeTree = rootRoute
     },
     "/admin/login": {
       "filePath": "(auth)/admin.login.tsx"
+    },
+    "/admin/system/user": {
+      "filePath": "admin/system/user.tsx",
+      "parent": "/admin"
     }
   }
 }

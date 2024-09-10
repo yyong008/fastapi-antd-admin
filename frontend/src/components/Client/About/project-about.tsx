@@ -11,14 +11,14 @@ export const ProjectAbout = () => {
 
   type DepType = keyof typeof allDeps;
 
-  // const description = `
-  //   ${pkg.name}是基于 @remix-run/react${getMajorVersion("@remix-run/react")}.x、
-  //   Vite${getMajorVersion("vite")}.x、
-  //   Antd${getMajorVersion("antd")}.x 、
-  //   TailwindCSS${getMajorVersion("tailwindcss")}.x 、
-  //   TypeScript${getMajorVersion("typescript")}.x 开发，
-  //   内置了动态路由、权限验证、菜单、数据库全栈管理工具
-  // `;
+  const description = `
+    ${pkg.name}是基于 @tanstack/react-router ${getMajorVersion("@tanstack/react-router")}.x、
+    Vite${getMajorVersion("vite")}.x、
+    Antd${getMajorVersion("antd")}.x 、
+    TailwindCSS${getMajorVersion("tailwindcss")}.x 、
+    TypeScript${getMajorVersion("typescript")}.x 开发，
+    内置了动态路由、权限验证、菜单、数据库全栈管理工具
+  `;
   return (
     <ProCard
       style={{
@@ -27,7 +27,7 @@ export const ProjectAbout = () => {
       }}
     >
       <Descriptions title="关于">
-        <Descriptions.Item>{'description'}</Descriptions.Item>
+        <Descriptions.Item>{description}</Descriptions.Item>
       </Descriptions>
     </ProCard>
   );

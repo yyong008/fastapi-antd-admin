@@ -6,19 +6,20 @@ from app.db.client import get_db
 from app.utils.token import create_access_token, verify_refresh_token
 
 import app.services.auth.login as login_service
+from app.schemas.response import ResponseModel, ResponseSuccessModel
 
 router = APIRouter(prefix="/auth", tags=["AUTH"])
 
 
-@router.post("/login")
+@router.post("/login", response_model=ResponseModel)
 def login(
     request: Request,
     background_tasks: BackgroundTasks,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
-    res = login_service.login(request, form_data, db, background_tasks)
-    return res
+    data = login_service.login(request, form_data, db, background_tasks)
+    return ResponseSuccessModel(data=data)
 
 
 @router.post("/refresh")

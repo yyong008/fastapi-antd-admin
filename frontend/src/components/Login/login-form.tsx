@@ -10,17 +10,17 @@ export function LoginFormWrap({ children }: any) {
   const navigate = useNavigate()
   const handleSubmit = async (values: any) => {
    const data = {
-      ...values,
+      username: values.username,
       password: genHashedPassword(values.password),
     };
     const result: any = await login(data);
-    if (result.data.code === 0 && result.data.data.token?.length > 0) {
-      setLocalStorageToken(result.data.data.token);
-      setLocalStorageRefreshToken(result.data.data.refresh_token);
-      message.success(result.data.message);
+    if (result && result.code === 0 && result.data.access_token?.length > 0) {
+      setLocalStorageToken(result.data.access_token);
+      setLocalStorageRefreshToken(result.data.refresh_token);
+      message.success(result.message);
       navigate({ to: `/admin/dashboard`});
     } else {
-      message.error(result.data.message);
+      message.error(result.message);
     }
     return true;
   };

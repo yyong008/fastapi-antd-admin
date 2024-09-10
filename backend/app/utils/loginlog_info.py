@@ -4,7 +4,7 @@ from app.utils.ip_address import get_ip_address
 import user_agents  # type: ignore # https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportMissingImports
 
 
-def get_user_agent_info(request, user_agent):
+def get_user_agent_info(request):
     user_agent_str = request.headers.get("user-agent")
     if not user_agent_str:
         return None

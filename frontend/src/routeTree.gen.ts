@@ -17,7 +17,7 @@ import { Route as ClientIndexImport } from './routes/_client/index'
 import { Route as ClientNewsImport } from './routes/_client/news'
 import { Route as ClientBlogImport } from './routes/_client/blog'
 import { Route as ClientAboutImport } from './routes/_client/about'
-import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard/route'
+import { Route as AdminDashboardIndexImport } from './routes/admin/dashboard/index'
 import { Route as AdminSystemUserImport } from './routes/admin/system/user'
 import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 
@@ -53,8 +53,8 @@ const ClientAboutRoute = ClientAboutImport.update({
   getParentRoute: () => ClientRoute,
 } as any)
 
-const AdminDashboardRouteRoute = AdminDashboardRouteImport.update({
-  path: '/dashboard',
+const AdminDashboardIndexRoute = AdminDashboardIndexImport.update({
+  path: '/dashboard/',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -85,13 +85,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
-    }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof AdminImport
     }
     '/_client/about': {
       id: '/_client/about'
@@ -135,6 +128,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSystemUserImport
       parentRoute: typeof AdminImport
     }
+    '/admin/dashboard/': {
+      id: '/admin/dashboard/'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardIndexImport
+      parentRoute: typeof AdminImport
+    }
   }
 }
 
@@ -158,13 +158,13 @@ const ClientRouteWithChildren =
   ClientRoute._addFileChildren(ClientRouteChildren)
 
 interface AdminRouteChildren {
-  AdminDashboardRouteRoute: typeof AdminDashboardRouteRoute
   AdminSystemUserRoute: typeof AdminSystemUserRoute
+  AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminDashboardRouteRoute: AdminDashboardRouteRoute,
   AdminSystemUserRoute: AdminSystemUserRoute,
+  AdminDashboardIndexRoute: AdminDashboardIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -172,37 +172,37 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof ClientRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
-  '/admin/dashboard': typeof AdminDashboardRouteRoute
   '/about': typeof ClientAboutRoute
   '/blog': typeof ClientBlogRoute
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
   '/admin/system/user': typeof AdminSystemUserRoute
+  '/admin/dashboard': typeof AdminDashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/admin': typeof AdminRouteWithChildren
-  '/admin/dashboard': typeof AdminDashboardRouteRoute
   '/about': typeof ClientAboutRoute
   '/blog': typeof ClientBlogRoute
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
   '/admin/system/user': typeof AdminSystemUserRoute
+  '/admin/dashboard': typeof AdminDashboardIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_client': typeof ClientRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
-  '/admin/dashboard': typeof AdminDashboardRouteRoute
   '/_client/about': typeof ClientAboutRoute
   '/_client/blog': typeof ClientBlogRoute
   '/_client/news': typeof ClientNewsRoute
   '/_client/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
   '/admin/system/user': typeof AdminSystemUserRoute
+  '/admin/dashboard/': typeof AdminDashboardIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -210,34 +210,34 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/admin'
-    | '/admin/dashboard'
     | '/about'
     | '/blog'
     | '/news'
     | '/'
     | '/admin/login'
     | '/admin/system/user'
+    | '/admin/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
-    | '/admin/dashboard'
     | '/about'
     | '/blog'
     | '/news'
     | '/'
     | '/admin/login'
     | '/admin/system/user'
+    | '/admin/dashboard'
   id:
     | '__root__'
     | '/_client'
     | '/admin'
-    | '/admin/dashboard'
     | '/_client/about'
     | '/_client/blog'
     | '/_client/news'
     | '/_client/'
     | '/admin/login'
     | '/admin/system/user'
+    | '/admin/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
@@ -282,13 +282,9 @@ export const routeTree = rootRoute
     "/admin": {
       "filePath": "admin.tsx",
       "children": [
-        "/admin/dashboard",
-        "/admin/system/user"
+        "/admin/system/user",
+        "/admin/dashboard/"
       ]
-    },
-    "/admin/dashboard": {
-      "filePath": "admin/dashboard/route.tsx",
-      "parent": "/admin"
     },
     "/_client/about": {
       "filePath": "_client/about.tsx",
@@ -311,6 +307,10 @@ export const routeTree = rootRoute
     },
     "/admin/system/user": {
       "filePath": "admin/system/user.tsx",
+      "parent": "/admin"
+    },
+    "/admin/dashboard/": {
+      "filePath": "admin/dashboard/index.tsx",
       "parent": "/admin"
     }
   }

@@ -5,7 +5,7 @@ const SettingContext = createContext({
     colorPrimary: "",
     // layout: "mix"
   },
-  setTheme: (theme: any) => {},
+  setTheme: () => {},
 });
 
 export default SettingContext;

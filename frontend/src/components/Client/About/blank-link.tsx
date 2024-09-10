@@ -1,6 +1,6 @@
 import { Tag } from "antd";
 
-export const BlankLink = ({ url = "", text = "" }) => {
+export const BlankLink = ({ url = "", text = "" }: any) => {
   const target = /^http(s)?:/.test(url)
     ? url
     : `https://www.npmjs.com/package/${url}`;

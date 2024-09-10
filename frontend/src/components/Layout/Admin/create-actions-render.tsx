@@ -17,7 +17,7 @@ const ActionRenderImpl = ({ value }: any) => {
   const navigate = useNavigate();
 
   const choiceLang = (lang: string) => {
-    let p = location.pathname.split("/");
+    const p = location.pathname.split("/");
     p[1] = lang || "en-US";
 
     navigate({to: p.join("/").trim()});

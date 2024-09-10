@@ -19,4 +19,13 @@ export default defineConfig({
       lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
     }),
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8003",
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, "/api")
+      }
+    }
+  }
 })

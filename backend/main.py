@@ -17,10 +17,10 @@ from app.middlewares.demo_mode import DemoModeMiddleware
 from app.exception import http_exception_handler
 
 # router
-from app.router import router
-from app.router.metrics import router as metries_router
-from app.router.health import router as health_check_router
-from app.router.home import router as home_router
+from app.api import router
+from app.api.metrics import router as metries_router
+from app.api.health import router as health_check_router
+from app.api.home import router as home_router
 
 init_db()
 config = get_settings()

@@ -9,10 +9,10 @@ def get_user_info(user_id, db):
     "id": userInfo.id,
     "name": userInfo.name,
   }
-  menu = get_menu_by_menu_raw(menu_list)
+  menu = get_sidebar_menu_by_menu_raw_no_type_three(menu_list)
   return {"userInfo": user_info, "menu": menu}
 
-def get_menu_by_menu_raw(menu_raw):
+def get_sidebar_menu_by_menu_raw_no_type_three(menu_raw):
   menu = []
   for m in menu_raw:
     menu.append({
@@ -32,4 +32,4 @@ def get_menu_by_menu_raw(menu_raw):
       "order_no": m.order_no,
       "parent_menu_id": m.parent_menu_id,
     })
-  return menu
+  return [item for item in menu if item["type"] <= 2]

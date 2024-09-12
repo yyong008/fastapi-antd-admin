@@ -6,6 +6,7 @@ from .docs import router as docs_router
 from .profile import router as profile_router
 from .tools import router as tools_router
 from .system import router as system_router
+from .userinfo.userinfo import router as userinfo_router
 
 router = APIRouter(prefix="/admin")
 
@@ -15,3 +16,4 @@ router.include_router(docs_router)
 router.include_router(profile_router)
 router.include_router(tools_router)
 router.include_router(system_router)
+router.include_router(userinfo_router)

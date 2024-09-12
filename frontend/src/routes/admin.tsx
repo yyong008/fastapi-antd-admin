@@ -1,23 +1,27 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { ProLayout, WaterMark } from "@ant-design/pro-components";
 import { memo, useContext, useMemo, useState } from "react";
 
 import { AvatarDropDown } from "@/components/Layout/Admin/avatar-dropdown";
-import { Footer } from '@/components/common/footer';
+import { Footer } from "@/components/common/footer";
 import { MenuFooterRender } from "@/components/Layout/Admin/menu-footer-render";
-import { MenuItemLink } from '@/components/common/menu-item-link';
-import { MenuItemOutLink } from '@/components/common/menu-item-outer-link';
+import { MenuItemLink } from "@/components/common/menu-item-link";
+import { MenuItemOutLink } from "@/components/common/menu-item-outer-link";
 import { SettingContext } from "@/context";
 import { SettingDrawerWrap } from "@/components/Layout/Admin/setting-drawer-wrap";
 import { createActionRenderWrap } from "@/components/Layout/Admin/create-actions-render";
 import { createProLayoutRoute } from "@/utils/create-prolayout-route";
 import { createTokens } from "@/components/Layout/Admin/create-token";
+import { getUserInfo } from "@/apis/userinfo";
 import { prolayoutConfig } from "@/config/prolayout";
 
-export const Route = createFileRoute('/admin')({
-  component: memo(AdminComponent)
-})
-
+export const Route = createFileRoute("/admin")({
+  async loader() {
+    const userInfo: any = await getUserInfo();
+    return userInfo.data;
+  },
+  component: memo(AdminComponent),
+});
 
 const resetStyles = {
   padding: "0px",
@@ -27,14 +31,12 @@ const resetStyles = {
 
 function AdminComponent() {
   const value = useContext(SettingContext);
-  const { menu = [], userInfo = {} } = {};
+  const data = Route.useLoaderData();
+  const {userInfo, menu} = data
   const [pathname, setPathname] = useState(location.pathname);
   const token = useMemo(() => createTokens(value), [value]);
 
-  const route = useMemo(
-    () => createProLayoutRoute(menu),
-    [menu],
-  );
+  const route = useMemo(() => createProLayoutRoute([menu]), [menu]);
 
   return (
     <WaterMark content="FastAPI Antd Admin">

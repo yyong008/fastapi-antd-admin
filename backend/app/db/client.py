@@ -15,7 +15,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-
 def get_db():
     db = SessionLocal()
     try:
@@ -26,6 +25,7 @@ def get_db():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"{e}",
         )
+    finally:
         db.close()
 
 

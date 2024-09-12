@@ -18,7 +18,7 @@ function createProLayoutRouteImpl(
       icon: item.icon ? <AntdIcon name={item.icon} /> : item.icon,
       children: createProLayoutRouteImpl(items, item.id), // 递归构建子树
     }))
-    .sort((a, b) => a.orderNo - b.orderNo);
+    .sort((a, b) => a.order_no - b.order_no);
 }
 
 /**

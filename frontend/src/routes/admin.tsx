@@ -1,4 +1,4 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { ProLayout, WaterMark } from "@ant-design/pro-components";
 import { memo, useContext, useMemo, useState } from "react";
 
@@ -12,13 +12,19 @@ import { SettingDrawerWrap } from "@/components/Layout/Admin/setting-drawer-wrap
 import { createActionRenderWrap } from "@/components/Layout/Admin/create-actions-render";
 import { createProLayoutRoute } from "@/utils/create-prolayout-route";
 import { createTokens } from "@/components/Layout/Admin/create-token";
+import { getLocalStorageToken } from "@/utils/localstorage";
 import { getUserInfo } from "@/apis/userinfo";
 import { prolayoutConfig } from "@/config/prolayout";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad(){
+    if(!getLocalStorageToken()) {
+      throw redirect({ to: "/admin/login"});
+    }
+  },
   async loader() {
     const userInfo: any = await getUserInfo();
-    return userInfo.data;
+    return userInfo?.data;
   },
   component: memo(AdminComponent),
 });
@@ -32,11 +38,11 @@ const resetStyles = {
 function AdminComponent() {
   const value = useContext(SettingContext);
   const data = Route.useLoaderData();
-  const {userInfo, menu} = data
+  const {userInfo = {}, menu = []} = data || {}
   const [pathname, setPathname] = useState(location.pathname);
   const token = useMemo(() => createTokens(value), [value]);
 
-  const route = useMemo(() => createProLayoutRoute([menu]), [menu]);
+  const route = useMemo(() => createProLayoutRoute(menu), [menu]);
 
   return (
     <WaterMark content="FastAPI Antd Admin">

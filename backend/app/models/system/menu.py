@@ -41,15 +41,15 @@ class Menu(Base):
     path = Column(String, nullable=True)  # 路径
     path_file = Column(String, nullable=True)  # 文件路径
     status = Column(Integer, nullable=True)  # 状态
-    is_show = Column(Integer, nullable=True)  # 是否显示
-    is_cache = Column(Integer, nullable=True)  # 是否缓存
+    isShow = Column(Integer, nullable=True)  # 是否显示
+    isCache = Column(Integer, nullable=True)  # 是否缓存
     permission = Column(String, nullable=True)  # 权限标识
-    is_link = Column(Integer, nullable=True)  # 是否外链
+    isLink = Column(Integer, nullable=True)  # 是否外链
     order_no = Column(Integer, nullable=True)  # 排序号
-    created_at = Column(
+    createdAt = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )  # 创建时间
-    updated_at = Column(
+    updatedAt = Column(
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )  # 更新时间
 

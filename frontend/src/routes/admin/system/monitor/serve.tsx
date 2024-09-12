@@ -48,6 +48,7 @@ function SystemMonitorServe() {
     cupInfo,
     currentLoadInfo,
   } = data;
+
   return (
     <PageContainer loading={loading}>
       <Row gutter={[16, 16]}>

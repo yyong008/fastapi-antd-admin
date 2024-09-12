@@ -19,6 +19,7 @@ pydantic-settings = "^2.4.0"
 user-agents = "^2.2.0"
 requests = "^2.32.3"
 chardet = "^5.2.0"
+psutil = "^6.0.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,28 +1,11 @@
 from fastapi import APIRouter
+from app.schemas.response import ResponseSuccessModel
+from app.utils.system_info import get_system_info
 
 router = APIRouter(prefix="/serve")
 
 
 @router.get("/")
 def get_serve():
-    return {"success": "ok"}
-
-
-@router.get("/{id}")
-def get_serve_by_id():
-    return {"success": "ok"}
-
-
-@router.post("/")
-def create_serve():
-    return {"success": "ok"}
-
-
-@router.put("/{id}")
-def update_serve_by_id():
-    return {"success": "ok"}
-
-
-@router.delete("/")
-def delete_serve():
-    return {"success": "ok"}
+    system_info = get_system_info()
+    return ResponseSuccessModel(data=system_info)

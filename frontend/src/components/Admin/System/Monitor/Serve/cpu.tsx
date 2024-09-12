@@ -1,6 +1,6 @@
-import { Card, Descriptions } from "antd";
+import { Card, Descriptions, Progress } from "antd";
 
-import { getPercent } from "@/utils/utils";
+import { getPercentValue } from "@/utils/utils";
 
 export function Cpu({ data }: any) {
   const { cupInfo = {}, currentLoadInfo = {} } = data;
@@ -21,10 +21,13 @@ export function Cpu({ data }: any) {
             span={24}
             labelStyle={{ width: "50%" }}
           >
-            {getPercent(
-              currentLoadInfo.rawCurrentLoad /
-                currentLoadInfo.rawCurrentLoadIdle,
-            )}
+            <Progress
+              percent={getPercentValue(
+                currentLoadInfo.rawCurrentLoad /
+                  currentLoadInfo.rawCurrentLoadIdle
+              )}
+              status="active"
+            />
           </Descriptions.Item>
           {currentLoadInfo.coresLoad?.map((item: any, index: number) => {
             return (
@@ -34,7 +37,10 @@ export function Cpu({ data }: any) {
                 span={24}
                 labelStyle={{ width: "50%" }}
               >
-                {getPercent(item.rawLoad / item.rawLoadIdle)}
+                <Progress
+                  percent={getPercentValue(item.rawLoad / item.rawLoadIdle)}
+                  status="active"
+                />
               </Descriptions.Item>
             );
           })}

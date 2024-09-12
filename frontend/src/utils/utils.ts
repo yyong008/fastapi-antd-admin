@@ -89,3 +89,7 @@ export const getGB = (val: number = 0) => {
 export const getPercent = (val: number = 0) => {
   return val ? (val * 100).toFixed(2) + "%" : "0%";
 };
+
+export const getPercentValue = (val: number = 0) => {
+  return val ? Number((val * 100).toFixed(2)) : 0;
+};

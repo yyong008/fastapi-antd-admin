@@ -1,20 +1,20 @@
-import { Col, Row } from 'antd';
-import { useEffect, useState } from 'react'
+import { Col, Row } from "antd";
+import { useEffect, useState } from "react";
 
-import { Cpu } from '@/components/Admin/System/Monitor/Serve/cpu';
-import { Disk } from '@/components/Admin/System/Monitor/Serve/disk';
-import { Mem } from '@/components/Admin/System/Monitor/Serve/mem';
-import { OsRuntime } from '@/components/Admin/System/Monitor/Serve/os-runtime';
-import { PageContainer } from '@ant-design/pro-components';
-import { createFileRoute } from '@tanstack/react-router'
-import { getMonitorServe } from '@/apis/admin/system/minitor.serve'
+import { Cpu } from "@/components/Admin/System/Monitor/Serve/cpu";
+import { Disk } from "@/components/Admin/System/Monitor/Serve/disk";
+import { Mem } from "@/components/Admin/System/Monitor/Serve/mem";
+import { OsRuntime } from "@/components/Admin/System/Monitor/Serve/os-runtime";
+import { PageContainer } from "@ant-design/pro-components";
+import { createFileRoute } from "@tanstack/react-router";
+import { getMonitorServe } from "@/apis/admin/system/minitor.serve";
 
-export const Route = createFileRoute('/admin/system/monitor/serve')({
-  component: SystemMonitorServe
-})
+export const Route = createFileRoute("/admin/system/monitor/serve")({
+  component: SystemMonitorServe,
+});
 
 function SystemMonitorServe() {
-  const [ loading, setLoading ] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     nodeRuntime: {},
     osRuntime: {},
@@ -25,20 +25,19 @@ function SystemMonitorServe() {
     currentLoadInfo: {},
   });
 
-
   const getData = async () => {
-    const res: any = await getMonitorServe()
+    const res: any = await getMonitorServe();
 
-    if(res && res?.code === 0 ) {
-      setData(res.data)
-      setLoading(false)
+    if (res && res?.code === 0) {
+      setData(res.data);
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
-  }, [])
+  }, []);
 
   const {
     nodeRuntime,
@@ -49,7 +48,8 @@ function SystemMonitorServe() {
     cupInfo,
     currentLoadInfo,
   } = data;
-  return <PageContainer loading={loading}>
+  return (
+    <PageContainer loading={loading}>
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <OsRuntime data={{ nodeRuntime, osRuntime, pythonRuntime }} />
@@ -65,4 +65,5 @@ function SystemMonitorServe() {
         </Col>
       </Row>
     </PageContainer>
+  );
 }

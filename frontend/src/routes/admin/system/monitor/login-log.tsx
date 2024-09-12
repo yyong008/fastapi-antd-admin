@@ -10,6 +10,7 @@ export const Route = createFileRoute("/admin/system/monitor/login-log")({
 });
 
 function LoginLogComponent() {
+  const [ loading, setLoading ] = useState(false)
   const [page, setPage] = useState({
     page: 1,
     pageSize: 10,
@@ -26,11 +27,13 @@ function LoginLogComponent() {
 
     if(res && res?.code === 0 ) {
       setData(res.data)
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     getData();
+    setLoading(true)
   }, [page])
 
   return (
@@ -43,7 +46,7 @@ function LoginLogComponent() {
         showSorterTooltip
         dataSource={data?.list || []}
         columns={createColumns()}
-        // loading={isLoading}
+        loading={loading}
         options={{
           // reload: refetch,
         }}

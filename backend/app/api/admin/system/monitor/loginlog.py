@@ -6,7 +6,7 @@ from app.schemas.response import ResponseSuccessModel
 from app.schemas.sys.loginlog import LoginlogCreateUpdateSchema
 import app.services.sys.loginlog as loginlog_services
 
-router = APIRouter(prefix="/loginlog")
+router = APIRouter(prefix="/login-log")
 
 
 @router.get("/")

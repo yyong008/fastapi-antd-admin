@@ -10,14 +10,14 @@ from .user import router as user_router
 from .monitor import router as monitor_router
 
 
-router = APIRouter()
+router = APIRouter(prefix="/system")
 
-router.include_router(config_router, prefix="/system")
-router.include_router(dept_router, prefix="/system")
-router.include_router(dict_item_router, prefix="/system")
+router.include_router(config_router)
+router.include_router(dept_router)
+router.include_router(dict_item_router)
 
-router.include_router(dict_router, prefix="/system")
-router.include_router(menu_router, prefix="/system")
-router.include_router(role_router, prefix="/system")
-router.include_router(user_router, prefix="/system")
-router.include_router(monitor_router, prefix="/system")
+router.include_router(dict_router)
+router.include_router(menu_router)
+router.include_router(role_router)
+router.include_router(user_router)
+router.include_router(monitor_router)

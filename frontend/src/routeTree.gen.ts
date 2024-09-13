@@ -20,6 +20,7 @@ import { Route as ClientAboutImport } from './routes/_client/about'
 import { Route as AdminDashboardIndexImport } from './routes/admin/dashboard/index'
 import { Route as AdminSystemUserImport } from './routes/admin/system/user'
 import { Route as AdminSystemRoleImport } from './routes/admin/system/role'
+import { Route as AdminSystemMenuImport } from './routes/admin/system/menu'
 import { Route as AdminSystemDeptImport } from './routes/admin/system/dept'
 import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 import { Route as AdminSystemMonitorServeImport } from './routes/admin/system/monitor/serve'
@@ -69,6 +70,11 @@ const AdminSystemUserRoute = AdminSystemUserImport.update({
 
 const AdminSystemRoleRoute = AdminSystemRoleImport.update({
   path: '/system/role',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminSystemMenuRoute = AdminSystemMenuImport.update({
+  path: '/system/menu',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -154,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSystemDeptImport
       parentRoute: typeof AdminImport
     }
+    '/admin/system/menu': {
+      id: '/admin/system/menu'
+      path: '/system/menu'
+      fullPath: '/admin/system/menu'
+      preLoaderRoute: typeof AdminSystemMenuImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/system/role': {
       id: '/admin/system/role'
       path: '/system/role'
@@ -213,6 +226,7 @@ const ClientRouteWithChildren =
 
 interface AdminRouteChildren {
   AdminSystemDeptRoute: typeof AdminSystemDeptRoute
+  AdminSystemMenuRoute: typeof AdminSystemMenuRoute
   AdminSystemRoleRoute: typeof AdminSystemRoleRoute
   AdminSystemUserRoute: typeof AdminSystemUserRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
@@ -222,6 +236,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminSystemDeptRoute: AdminSystemDeptRoute,
+  AdminSystemMenuRoute: AdminSystemMenuRoute,
   AdminSystemRoleRoute: AdminSystemRoleRoute,
   AdminSystemUserRoute: AdminSystemUserRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
@@ -240,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
   '/admin/system/dept': typeof AdminSystemDeptRoute
+  '/admin/system/menu': typeof AdminSystemMenuRoute
   '/admin/system/role': typeof AdminSystemRoleRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
@@ -255,6 +271,7 @@ export interface FileRoutesByTo {
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
   '/admin/system/dept': typeof AdminSystemDeptRoute
+  '/admin/system/menu': typeof AdminSystemMenuRoute
   '/admin/system/role': typeof AdminSystemRoleRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
@@ -272,6 +289,7 @@ export interface FileRoutesById {
   '/_client/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
   '/admin/system/dept': typeof AdminSystemDeptRoute
+  '/admin/system/menu': typeof AdminSystemMenuRoute
   '/admin/system/role': typeof AdminSystemRoleRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard/': typeof AdminDashboardIndexRoute
@@ -290,6 +308,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/login'
     | '/admin/system/dept'
+    | '/admin/system/menu'
     | '/admin/system/role'
     | '/admin/system/user'
     | '/admin/dashboard'
@@ -304,6 +323,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/login'
     | '/admin/system/dept'
+    | '/admin/system/menu'
     | '/admin/system/role'
     | '/admin/system/user'
     | '/admin/dashboard'
@@ -319,6 +339,7 @@ export interface FileRouteTypes {
     | '/_client/'
     | '/admin/login'
     | '/admin/system/dept'
+    | '/admin/system/menu'
     | '/admin/system/role'
     | '/admin/system/user'
     | '/admin/dashboard/'
@@ -369,6 +390,7 @@ export const routeTree = rootRoute
       "filePath": "admin.tsx",
       "children": [
         "/admin/system/dept",
+        "/admin/system/menu",
         "/admin/system/role",
         "/admin/system/user",
         "/admin/dashboard/",
@@ -397,6 +419,10 @@ export const routeTree = rootRoute
     },
     "/admin/system/dept": {
       "filePath": "admin/system/dept.tsx",
+      "parent": "/admin"
+    },
+    "/admin/system/menu": {
+      "filePath": "admin/system/menu.tsx",
       "parent": "/admin"
     },
     "/admin/system/role": {

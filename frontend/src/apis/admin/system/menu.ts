@@ -8,3 +8,12 @@ export const getAllMenuList = async () => {
     console.error(error);
   }
 };
+
+export const getAllMenuTree = async () => {
+  try {
+    const res = await request.get("/api/admin/system/menu/tree");
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

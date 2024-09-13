@@ -10,8 +10,6 @@ export const Route = createFileRoute('/admin/system/dept')({
   component: DeptRoute
 })
 
-
-
 export function DeptRoute() {
   const [page] = useState({
     page: 1,

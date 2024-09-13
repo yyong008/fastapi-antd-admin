@@ -9,7 +9,7 @@ def get_count(db: Session):
 
 
 def get_menu_all(db: Session):
-    sort_column = Menu.createdAt.desc()
+    sort_column = Menu.order_no.asc()
     return db.query(Menu).order_by(sort_column).all()
 
 

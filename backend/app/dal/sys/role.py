@@ -8,7 +8,7 @@ def get_count(db: Session):
     return count
 
 
-def get_role_all(db: Session):
+def get_roles_all(db: Session):
     sort_column = Role.createdAt.desc()
     return db.query(Role).order_by(sort_column).all()
 

@@ -10,17 +10,22 @@ from app.models.system.role import Role
 from app.models.system.user import User
 from app.schemas.sys.user import UserCreate
 
-
 def format_user(user):
     item = {
         "id": user.id,
         "name": user.name,
         "avatar": user.avatar,
         "email": user.email,
+        "role": [role.name for role in user.roles],
         "department": {
             "id": None if not user.department else user.department.id,
             "name": None if not user.department else user.department.name,
         },
+        "lang": user.lang,
+        "phone": user.phone,
+        "theme": user.theme,
+        "status": user.status,
+        "remark": user.remark,
         "nickname": user.nickname,
         "createdAt": user.createdAt,
         "updatedAt": user.updatedAt,

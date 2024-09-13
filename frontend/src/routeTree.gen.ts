@@ -19,6 +19,7 @@ import { Route as ClientBlogImport } from './routes/_client/blog'
 import { Route as ClientAboutImport } from './routes/_client/about'
 import { Route as AdminDashboardIndexImport } from './routes/admin/dashboard/index'
 import { Route as AdminSystemUserImport } from './routes/admin/system/user'
+import { Route as AdminSystemDeptImport } from './routes/admin/system/dept'
 import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 import { Route as AdminSystemMonitorServeImport } from './routes/admin/system/monitor/serve'
 import { Route as AdminSystemMonitorLoginLogImport } from './routes/admin/system/monitor/login-log'
@@ -62,6 +63,11 @@ const AdminDashboardIndexRoute = AdminDashboardIndexImport.update({
 
 const AdminSystemUserRoute = AdminSystemUserImport.update({
   path: '/system/user',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminSystemDeptRoute = AdminSystemDeptImport.update({
+  path: '/system/dept',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -135,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAdminLoginImport
       parentRoute: typeof rootRoute
     }
+    '/admin/system/dept': {
+      id: '/admin/system/dept'
+      path: '/system/dept'
+      fullPath: '/admin/system/dept'
+      preLoaderRoute: typeof AdminSystemDeptImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/system/user': {
       id: '/admin/system/user'
       path: '/system/user'
@@ -186,6 +199,7 @@ const ClientRouteWithChildren =
   ClientRoute._addFileChildren(ClientRouteChildren)
 
 interface AdminRouteChildren {
+  AdminSystemDeptRoute: typeof AdminSystemDeptRoute
   AdminSystemUserRoute: typeof AdminSystemUserRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
   AdminSystemMonitorLoginLogRoute: typeof AdminSystemMonitorLoginLogRoute
@@ -193,6 +207,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminSystemDeptRoute: AdminSystemDeptRoute,
   AdminSystemUserRoute: AdminSystemUserRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
   AdminSystemMonitorLoginLogRoute: AdminSystemMonitorLoginLogRoute,
@@ -209,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/admin/system/dept': typeof AdminSystemDeptRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
@@ -222,6 +238,7 @@ export interface FileRoutesByTo {
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/admin/system/dept': typeof AdminSystemDeptRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
@@ -237,6 +254,7 @@ export interface FileRoutesById {
   '/_client/news': typeof ClientNewsRoute
   '/_client/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/admin/system/dept': typeof AdminSystemDeptRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard/': typeof AdminDashboardIndexRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
@@ -253,6 +271,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/'
     | '/admin/login'
+    | '/admin/system/dept'
     | '/admin/system/user'
     | '/admin/dashboard'
     | '/admin/system/monitor/login-log'
@@ -265,6 +284,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/'
     | '/admin/login'
+    | '/admin/system/dept'
     | '/admin/system/user'
     | '/admin/dashboard'
     | '/admin/system/monitor/login-log'
@@ -278,6 +298,7 @@ export interface FileRouteTypes {
     | '/_client/news'
     | '/_client/'
     | '/admin/login'
+    | '/admin/system/dept'
     | '/admin/system/user'
     | '/admin/dashboard/'
     | '/admin/system/monitor/login-log'
@@ -326,6 +347,7 @@ export const routeTree = rootRoute
     "/admin": {
       "filePath": "admin.tsx",
       "children": [
+        "/admin/system/dept",
         "/admin/system/user",
         "/admin/dashboard/",
         "/admin/system/monitor/login-log",
@@ -350,6 +372,10 @@ export const routeTree = rootRoute
     },
     "/admin/login": {
       "filePath": "(auth)/admin.login.tsx"
+    },
+    "/admin/system/dept": {
+      "filePath": "admin/system/dept.tsx",
+      "parent": "/admin"
     },
     "/admin/system/user": {
       "filePath": "admin/system/user.tsx",

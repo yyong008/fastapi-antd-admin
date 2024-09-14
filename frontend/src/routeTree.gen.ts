@@ -26,6 +26,7 @@ import { Route as AdminSystemDeptImport } from './routes/admin/system/dept'
 import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 import { Route as AdminSystemMonitorServeImport } from './routes/admin/system/monitor/serve'
 import { Route as AdminSystemMonitorLoginLogImport } from './routes/admin/system/monitor/login-log'
+import { Route as AdminSystemDictItemIdImport } from './routes/admin/system/dict-item.$id'
 
 // Create/Update Routes
 
@@ -105,6 +106,11 @@ const AdminSystemMonitorLoginLogRoute = AdminSystemMonitorLoginLogImport.update(
     getParentRoute: () => AdminRoute,
   } as any,
 )
+
+const AdminSystemDictItemIdRoute = AdminSystemDictItemIdImport.update({
+  path: '/system/dict-item/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -201,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardIndexImport
       parentRoute: typeof AdminImport
     }
+    '/admin/system/dict-item/$id': {
+      id: '/admin/system/dict-item/$id'
+      path: '/system/dict-item/$id'
+      fullPath: '/admin/system/dict-item/$id'
+      preLoaderRoute: typeof AdminSystemDictItemIdImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/system/monitor/login-log': {
       id: '/admin/system/monitor/login-log'
       path: '/system/monitor/login-log'
@@ -244,6 +257,7 @@ interface AdminRouteChildren {
   AdminSystemRoleRoute: typeof AdminSystemRoleRoute
   AdminSystemUserRoute: typeof AdminSystemUserRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
+  AdminSystemDictItemIdRoute: typeof AdminSystemDictItemIdRoute
   AdminSystemMonitorLoginLogRoute: typeof AdminSystemMonitorLoginLogRoute
   AdminSystemMonitorServeRoute: typeof AdminSystemMonitorServeRoute
 }
@@ -255,6 +269,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSystemRoleRoute: AdminSystemRoleRoute,
   AdminSystemUserRoute: AdminSystemUserRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
+  AdminSystemDictItemIdRoute: AdminSystemDictItemIdRoute,
   AdminSystemMonitorLoginLogRoute: AdminSystemMonitorLoginLogRoute,
   AdminSystemMonitorServeRoute: AdminSystemMonitorServeRoute,
 }
@@ -275,6 +290,7 @@ export interface FileRoutesByFullPath {
   '/admin/system/role': typeof AdminSystemRoleRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
+  '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
 }
@@ -292,6 +308,7 @@ export interface FileRoutesByTo {
   '/admin/system/role': typeof AdminSystemRoleRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
+  '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
 }
@@ -311,6 +328,7 @@ export interface FileRoutesById {
   '/admin/system/role': typeof AdminSystemRoleRoute
   '/admin/system/user': typeof AdminSystemUserRoute
   '/admin/dashboard/': typeof AdminDashboardIndexRoute
+  '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
 }
@@ -331,6 +349,7 @@ export interface FileRouteTypes {
     | '/admin/system/role'
     | '/admin/system/user'
     | '/admin/dashboard'
+    | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
   fileRoutesByTo: FileRoutesByTo
@@ -347,6 +366,7 @@ export interface FileRouteTypes {
     | '/admin/system/role'
     | '/admin/system/user'
     | '/admin/dashboard'
+    | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
   id:
@@ -364,6 +384,7 @@ export interface FileRouteTypes {
     | '/admin/system/role'
     | '/admin/system/user'
     | '/admin/dashboard/'
+    | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
   fileRoutesById: FileRoutesById
@@ -416,6 +437,7 @@ export const routeTree = rootRoute
         "/admin/system/role",
         "/admin/system/user",
         "/admin/dashboard/",
+        "/admin/system/dict-item/$id",
         "/admin/system/monitor/login-log",
         "/admin/system/monitor/serve"
       ]
@@ -461,6 +483,10 @@ export const routeTree = rootRoute
     },
     "/admin/dashboard/": {
       "filePath": "admin/dashboard/index.tsx",
+      "parent": "/admin"
+    },
+    "/admin/system/dict-item/$id": {
+      "filePath": "admin/system/dict-item.$id.tsx",
       "parent": "/admin"
     },
     "/admin/system/monitor/login-log": {

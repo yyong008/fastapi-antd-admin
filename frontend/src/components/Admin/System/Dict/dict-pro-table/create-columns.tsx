@@ -10,7 +10,7 @@ import { StatusType } from "@/components/common/status-type";
 
 const { EyeOutlined } = _icons;
 
-export const createColumns = ({ lang }: any) => [
+export const createColumns = () => [
   {
     dataIndex: "name",
     title: "字典名",
@@ -19,7 +19,7 @@ export const createColumns = ({ lang }: any) => [
     dataIndex: "code",
     title: "字典值(编码)",
     render(_: any, record: any) {
-      return <TagLink lang={lang} record={record} />;
+      return <TagLink record={record} />;
     },
   },
   {
@@ -58,7 +58,7 @@ export const createColumns = ({ lang }: any) => [
       return (
         <Space size="small">
           <Tooltip title="预览字典">
-            <Link to={`/${lang}/admin/system/dict-item/${record.id}`}>
+            <Link to={`/admin/system/dict-item/${record.id}`}>
               <Button type="link" icon={<EyeOutlined />}></Button>
             </Link>
           </Tooltip>
@@ -74,9 +74,9 @@ export const createColumns = ({ lang }: any) => [
   },
 ];
 
-function TagLink({ lang, record }: any) {
+function TagLink({ record }: any) {
   return (
-    <Link to={`/${lang}/admin/system/dict-item/${record.id}`}>
+    <Link to={`/admin/system/dict-item/${record.id}`}>
       <Tag color="yellow">{record.code}</Tag>
     </Link>
   );

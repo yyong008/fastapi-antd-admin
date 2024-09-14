@@ -47,7 +47,7 @@ export function DictRoute() {
           <DictModal record={{}} key="create-dict-modal" />,
         ]}
         dataSource={ data.list ?? []}
-        columns={createColumns({ lang: 'en-US' })}
+        columns={createColumns()}
         options={{
           // reload: refetch,
         }}

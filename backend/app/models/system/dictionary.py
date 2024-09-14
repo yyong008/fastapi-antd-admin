@@ -15,8 +15,8 @@ class Dictionary(Base):
     description = Column(String, nullable=True)
     remark = Column(String, nullable=True)
     status = Column(Integer, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    createdAt = Column(DateTime(timezone=True), server_default=func.now())
+    updatedAt = Column(DateTime(timezone=True), onupdate=func.now())
 
     entries = relationship(
         "DictionaryEntry", back_populates="dictionary", cascade="all, delete-orphan"

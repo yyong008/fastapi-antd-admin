@@ -3,7 +3,7 @@ from app.models.system.dictionary import Dictionary
 
 
 # =====================================GET===================================================
-def get_count(db: Session):
+def get_dictionary_count(db: Session):
     count = db.query(Dictionary).count()
     return count
 

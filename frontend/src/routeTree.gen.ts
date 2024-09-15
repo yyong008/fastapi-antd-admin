@@ -26,6 +26,7 @@ import { Route as AdminSystemMenuImport } from './routes/admin/system/menu'
 import { Route as AdminSystemDictImport } from './routes/admin/system/dict'
 import { Route as AdminSystemDeptImport } from './routes/admin/system/dept'
 import { Route as AdminSystemConfigImport } from './routes/admin/system/config'
+import { Route as AdminProfileAccountImport } from './routes/admin/profile/account'
 import { Route as AdminNewsResultImport } from './routes/admin/news/result'
 import { Route as AdminNewsEditImport } from './routes/admin/news/edit'
 import { Route as AdminNewsCategoryImport } from './routes/admin/news/category'
@@ -37,6 +38,8 @@ import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 import { Route as AdminSystemMonitorServeImport } from './routes/admin/system/monitor/serve'
 import { Route as AdminSystemMonitorLoginLogImport } from './routes/admin/system/monitor/login-log'
 import { Route as AdminSystemDictItemIdImport } from './routes/admin/system/dict-item.$id'
+import { Route as AdminProfileLinkCategoryDetailImport } from './routes/admin/profile/link/category-detail'
+import { Route as AdminProfileLinkCategoryImport } from './routes/admin/profile/link/category'
 import { Route as AdminNewsEditIdImport } from './routes/admin/news/edit_.$id'
 import { Route as AdminBlogEditIdImport } from './routes/admin/blog/edit_.$id'
 
@@ -117,6 +120,11 @@ const AdminSystemConfigRoute = AdminSystemConfigImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const AdminProfileAccountRoute = AdminProfileAccountImport.update({
+  path: '/profile/account',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 const AdminNewsResultRoute = AdminNewsResultImport.update({
   path: '/news/result',
   getParentRoute: () => AdminRoute,
@@ -171,6 +179,17 @@ const AdminSystemMonitorLoginLogRoute = AdminSystemMonitorLoginLogImport.update(
 
 const AdminSystemDictItemIdRoute = AdminSystemDictItemIdImport.update({
   path: '/system/dict-item/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminProfileLinkCategoryDetailRoute =
+  AdminProfileLinkCategoryDetailImport.update({
+    path: '/profile/link/category-detail',
+    getParentRoute: () => AdminRoute,
+  } as any)
+
+const AdminProfileLinkCategoryRoute = AdminProfileLinkCategoryImport.update({
+  path: '/profile/link/category',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -286,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNewsResultImport
       parentRoute: typeof AdminImport
     }
+    '/admin/profile/account': {
+      id: '/admin/profile/account'
+      path: '/profile/account'
+      fullPath: '/admin/profile/account'
+      preLoaderRoute: typeof AdminProfileAccountImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/system/config': {
       id: '/admin/system/config'
       path: '/system/config'
@@ -363,6 +389,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNewsEditIdImport
       parentRoute: typeof AdminImport
     }
+    '/admin/profile/link/category': {
+      id: '/admin/profile/link/category'
+      path: '/profile/link/category'
+      fullPath: '/admin/profile/link/category'
+      preLoaderRoute: typeof AdminProfileLinkCategoryImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/profile/link/category-detail': {
+      id: '/admin/profile/link/category-detail'
+      path: '/profile/link/category-detail'
+      fullPath: '/admin/profile/link/category-detail'
+      preLoaderRoute: typeof AdminProfileLinkCategoryDetailImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/system/dict-item/$id': {
       id: '/admin/system/dict-item/$id'
       path: '/system/dict-item/$id'
@@ -414,6 +454,7 @@ interface AdminRouteChildren {
   AdminNewsCategoryRoute: typeof AdminNewsCategoryRoute
   AdminNewsEditRoute: typeof AdminNewsEditRoute
   AdminNewsResultRoute: typeof AdminNewsResultRoute
+  AdminProfileAccountRoute: typeof AdminProfileAccountRoute
   AdminSystemConfigRoute: typeof AdminSystemConfigRoute
   AdminSystemDeptRoute: typeof AdminSystemDeptRoute
   AdminSystemDictRoute: typeof AdminSystemDictRoute
@@ -425,6 +466,8 @@ interface AdminRouteChildren {
   AdminNewsIndexRoute: typeof AdminNewsIndexRoute
   AdminBlogEditIdRoute: typeof AdminBlogEditIdRoute
   AdminNewsEditIdRoute: typeof AdminNewsEditIdRoute
+  AdminProfileLinkCategoryRoute: typeof AdminProfileLinkCategoryRoute
+  AdminProfileLinkCategoryDetailRoute: typeof AdminProfileLinkCategoryDetailRoute
   AdminSystemDictItemIdRoute: typeof AdminSystemDictItemIdRoute
   AdminSystemMonitorLoginLogRoute: typeof AdminSystemMonitorLoginLogRoute
   AdminSystemMonitorServeRoute: typeof AdminSystemMonitorServeRoute
@@ -438,6 +481,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNewsCategoryRoute: AdminNewsCategoryRoute,
   AdminNewsEditRoute: AdminNewsEditRoute,
   AdminNewsResultRoute: AdminNewsResultRoute,
+  AdminProfileAccountRoute: AdminProfileAccountRoute,
   AdminSystemConfigRoute: AdminSystemConfigRoute,
   AdminSystemDeptRoute: AdminSystemDeptRoute,
   AdminSystemDictRoute: AdminSystemDictRoute,
@@ -449,6 +493,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNewsIndexRoute: AdminNewsIndexRoute,
   AdminBlogEditIdRoute: AdminBlogEditIdRoute,
   AdminNewsEditIdRoute: AdminNewsEditIdRoute,
+  AdminProfileLinkCategoryRoute: AdminProfileLinkCategoryRoute,
+  AdminProfileLinkCategoryDetailRoute: AdminProfileLinkCategoryDetailRoute,
   AdminSystemDictItemIdRoute: AdminSystemDictItemIdRoute,
   AdminSystemMonitorLoginLogRoute: AdminSystemMonitorLoginLogRoute,
   AdminSystemMonitorServeRoute: AdminSystemMonitorServeRoute,
@@ -471,6 +517,7 @@ export interface FileRoutesByFullPath {
   '/admin/news/category': typeof AdminNewsCategoryRoute
   '/admin/news/edit': typeof AdminNewsEditRoute
   '/admin/news/result': typeof AdminNewsResultRoute
+  '/admin/profile/account': typeof AdminProfileAccountRoute
   '/admin/system/config': typeof AdminSystemConfigRoute
   '/admin/system/dept': typeof AdminSystemDeptRoute
   '/admin/system/dict': typeof AdminSystemDictRoute
@@ -482,6 +529,8 @@ export interface FileRoutesByFullPath {
   '/admin/news': typeof AdminNewsIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
+  '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
+  '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
   '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
@@ -501,6 +550,7 @@ export interface FileRoutesByTo {
   '/admin/news/category': typeof AdminNewsCategoryRoute
   '/admin/news/edit': typeof AdminNewsEditRoute
   '/admin/news/result': typeof AdminNewsResultRoute
+  '/admin/profile/account': typeof AdminProfileAccountRoute
   '/admin/system/config': typeof AdminSystemConfigRoute
   '/admin/system/dept': typeof AdminSystemDeptRoute
   '/admin/system/dict': typeof AdminSystemDictRoute
@@ -512,6 +562,8 @@ export interface FileRoutesByTo {
   '/admin/news': typeof AdminNewsIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
+  '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
+  '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
   '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
@@ -533,6 +585,7 @@ export interface FileRoutesById {
   '/admin/news/category': typeof AdminNewsCategoryRoute
   '/admin/news/edit': typeof AdminNewsEditRoute
   '/admin/news/result': typeof AdminNewsResultRoute
+  '/admin/profile/account': typeof AdminProfileAccountRoute
   '/admin/system/config': typeof AdminSystemConfigRoute
   '/admin/system/dept': typeof AdminSystemDeptRoute
   '/admin/system/dict': typeof AdminSystemDictRoute
@@ -544,6 +597,8 @@ export interface FileRoutesById {
   '/admin/news/': typeof AdminNewsIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
+  '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
+  '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
   '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
@@ -566,6 +621,7 @@ export interface FileRouteTypes {
     | '/admin/news/category'
     | '/admin/news/edit'
     | '/admin/news/result'
+    | '/admin/profile/account'
     | '/admin/system/config'
     | '/admin/system/dept'
     | '/admin/system/dict'
@@ -577,6 +633,8 @@ export interface FileRouteTypes {
     | '/admin/news'
     | '/admin/blog/edit/$id'
     | '/admin/news/edit/$id'
+    | '/admin/profile/link/category'
+    | '/admin/profile/link/category-detail'
     | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
@@ -595,6 +653,7 @@ export interface FileRouteTypes {
     | '/admin/news/category'
     | '/admin/news/edit'
     | '/admin/news/result'
+    | '/admin/profile/account'
     | '/admin/system/config'
     | '/admin/system/dept'
     | '/admin/system/dict'
@@ -606,6 +665,8 @@ export interface FileRouteTypes {
     | '/admin/news'
     | '/admin/blog/edit/$id'
     | '/admin/news/edit/$id'
+    | '/admin/profile/link/category'
+    | '/admin/profile/link/category-detail'
     | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
@@ -625,6 +686,7 @@ export interface FileRouteTypes {
     | '/admin/news/category'
     | '/admin/news/edit'
     | '/admin/news/result'
+    | '/admin/profile/account'
     | '/admin/system/config'
     | '/admin/system/dept'
     | '/admin/system/dict'
@@ -636,6 +698,8 @@ export interface FileRouteTypes {
     | '/admin/news/'
     | '/admin/blog/edit/$id'
     | '/admin/news/edit/$id'
+    | '/admin/profile/link/category'
+    | '/admin/profile/link/category-detail'
     | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
@@ -690,6 +754,7 @@ export const routeTree = rootRoute
         "/admin/news/category",
         "/admin/news/edit",
         "/admin/news/result",
+        "/admin/profile/account",
         "/admin/system/config",
         "/admin/system/dept",
         "/admin/system/dict",
@@ -701,6 +766,8 @@ export const routeTree = rootRoute
         "/admin/news/",
         "/admin/blog/edit/$id",
         "/admin/news/edit/$id",
+        "/admin/profile/link/category",
+        "/admin/profile/link/category-detail",
         "/admin/system/dict-item/$id",
         "/admin/system/monitor/login-log",
         "/admin/system/monitor/serve"
@@ -753,6 +820,10 @@ export const routeTree = rootRoute
       "filePath": "admin/news/result.tsx",
       "parent": "/admin"
     },
+    "/admin/profile/account": {
+      "filePath": "admin/profile/account.tsx",
+      "parent": "/admin"
+    },
     "/admin/system/config": {
       "filePath": "admin/system/config.tsx",
       "parent": "/admin"
@@ -795,6 +866,14 @@ export const routeTree = rootRoute
     },
     "/admin/news/edit/$id": {
       "filePath": "admin/news/edit_.$id.tsx",
+      "parent": "/admin"
+    },
+    "/admin/profile/link/category": {
+      "filePath": "admin/profile/link/category.tsx",
+      "parent": "/admin"
+    },
+    "/admin/profile/link/category-detail": {
+      "filePath": "admin/profile/link/category-detail.tsx",
       "parent": "/admin"
     },
     "/admin/system/dict-item/$id": {

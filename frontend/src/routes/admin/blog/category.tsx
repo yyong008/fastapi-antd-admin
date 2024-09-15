@@ -23,7 +23,6 @@ export function BlogCategoryRoute() {
 
   const getData = async () => {
     const res: any = await getBlogCategory({ ...page });
-    debugger
     if (res && res.code === 0) {
       setData(res.data);
 

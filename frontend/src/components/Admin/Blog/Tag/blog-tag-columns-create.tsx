@@ -1,19 +1,19 @@
 import * as ic from "@ant-design/icons";
 
-import { BlogCategoryDeleteIt } from "./blog-category-delete-it";
-import BlogCategoryModalUpdate from "./blog-category-modal-update";
+import { BlogTagDeleteIt } from "./blog-tag-delete-it";
+import { BlogTagModalUpdate } from "./blog-tag-modal-update";
 import { Link } from "@tanstack/react-router";
 import { Space } from "antd";
 
 const { SwitcherOutlined } = ic;
 
-export const blogCategoryColumnsCreate = (lang: string, refetch: any) => [
+export const blogTagColumnsCreate = (lang: string, refetch: any) => [
   {
     dataIndex: "name",
-    title: "分类名字",
+    title: "标签名字",
     renderText(_: any, record: any) {
       return (
-        <Link to={`/admin/blog?category=${record.id}`}>
+        <Link to={`/admin/blog?tag=${record.id}`}>
           <Space>
             <SwitcherOutlined />
             <span>{record.name}</span>
@@ -24,7 +24,7 @@ export const blogCategoryColumnsCreate = (lang: string, refetch: any) => [
   },
   {
     dataIndex: "description",
-    title: "标签内容",
+    title: "描述",
   },
   {
     dataIndex: "op",
@@ -32,8 +32,8 @@ export const blogCategoryColumnsCreate = (lang: string, refetch: any) => [
     render(_: any, record: any) {
       return (
         <Space>
-          <BlogCategoryModalUpdate record={record} refetch={refetch} />
-          <BlogCategoryDeleteIt record={record} refetch={refetch} />
+          <BlogTagModalUpdate record={record} refetch={refetch} />
+          <BlogTagDeleteIt refetch={refetch} record={record} title={""} />
         </Space>
       );
     },

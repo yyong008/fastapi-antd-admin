@@ -1,6 +1,7 @@
 import jwt
 import hashlib
 
+from jwt import ExpiredSignatureError, InvalidTokenError
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Request, status
 from app.config.config import get_settings
@@ -13,8 +14,28 @@ def jwt_encode(to_encode: dict):
 
 
 def jwt_decode(token: str):
-    payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
-    return payload
+    try:
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
+        return payload
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except Exception as e:
+        print(f"decode token error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="An error occurred while decoding the token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 def create_access_token(data: dict):

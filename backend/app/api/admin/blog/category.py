@@ -1,11 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from app.db.client import get_db
+from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.services.blog.blog_category import get_blog_category_list_service
 
 router = APIRouter(prefix="/category", tags=["Admin Blog Category"])
 
 
-@router.get("/")
-def get_blog_category():
-    return {"success": "ok"}
+@router.get("/", response_model=ResponseModel)
+def get_blog_category(page: int, pageSize: int, db = Depends(get_db)):
+    data = get_blog_category_list_service(page, pageSize, db)
+    return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}")

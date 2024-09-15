@@ -9,36 +9,29 @@ from app.constant import NORMAL_USER
 from app.models.system.role import Role
 from app.models.system.user import User
 from app.schemas.sys.user import UserCreate
+from app.dal.blog.blog_category import get_blog_category_count, get_blog_category_list
 
 
-def format_user(user):
+def format_blog_category(blog_category):
     item = {
-        "id": user.id,
-        "name": user.name,
-        "avatar": user.avatar,
-        "email": user.email,
-        "department": {
-            "id": None if not user.department else user.department.id,
-            "name": None if not user.department else user.department.name,
-        },
-        "nickname": user.nickname,
-        "createdAt": user.createdAt,
-        "updatedAt": user.updatedAt,
+        "id": blog_category.id,
+        "name": blog_category.name,
+        "description": blog_category.description,
     }
     return item
 
 
-def get_user_list(db: Session):
+def get_blog_category_list_service(page, pageSize, db: Session):
     try:
-        count = user_dal.get_count(db)
-        users = user_dal.get_user_all(db)
+        count = get_blog_category_count(db)
+        blog_category = get_blog_category_list(db, page, pageSize)
 
-        user_list = []
-        for user in users:
-            item = format_user(user)
-            user_list.append(item)
+        category_list = []
+        for c in blog_category:
+            item = format_blog_category(c)
+            category_list.append(item)
 
-        data = {"total": count, "list": user_list}
+        data = {"total": count, "list": category_list}
         return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
@@ -48,7 +41,7 @@ def get_user_list(db: Session):
 def get_user_by_id(user_id: int, db):
     try:
         user = user_dal.get_user_by_id(user_id, db)
-        item = format_user(user)
+        item = format_blog_category(user)
         return item
     except Exception as e:
         print(f"Oops, we encountered an error: {e}")
@@ -70,7 +63,7 @@ def create_user(user: UserCreate, db: Session):
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        refresh_new_user = format_user(new_user)
+        refresh_new_user = format_blog_category(new_user)
 
         return refresh_new_user
     except Exception as e:

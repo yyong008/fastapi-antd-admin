@@ -33,6 +33,8 @@ import { Route as AdminProfileAccountImport } from './routes/admin/profile/accou
 import { Route as AdminNewsResultImport } from './routes/admin/news/result'
 import { Route as AdminNewsEditImport } from './routes/admin/news/edit'
 import { Route as AdminNewsCategoryImport } from './routes/admin/news/category'
+import { Route as AdminDocsFeedbackImport } from './routes/admin/docs/feedback'
+import { Route as AdminDocsChangeLogImport } from './routes/admin/docs/change-log'
 import { Route as AdminBlogTagImport } from './routes/admin/blog/tag'
 import { Route as AdminBlogResultImport } from './routes/admin/blog/result'
 import { Route as AdminBlogEditImport } from './routes/admin/blog/edit'
@@ -156,6 +158,16 @@ const AdminNewsEditRoute = AdminNewsEditImport.update({
 
 const AdminNewsCategoryRoute = AdminNewsCategoryImport.update({
   path: '/news/category',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminDocsFeedbackRoute = AdminDocsFeedbackImport.update({
+  path: '/docs/feedback',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminDocsChangeLogRoute = AdminDocsChangeLogImport.update({
+  path: '/docs/change-log',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -306,6 +318,20 @@ declare module '@tanstack/react-router' {
       path: '/blog/tag'
       fullPath: '/admin/blog/tag'
       preLoaderRoute: typeof AdminBlogTagImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/docs/change-log': {
+      id: '/admin/docs/change-log'
+      path: '/docs/change-log'
+      fullPath: '/admin/docs/change-log'
+      preLoaderRoute: typeof AdminDocsChangeLogImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/docs/feedback': {
+      id: '/admin/docs/feedback'
+      path: '/docs/feedback'
+      fullPath: '/admin/docs/feedback'
+      preLoaderRoute: typeof AdminDocsFeedbackImport
       parentRoute: typeof AdminImport
     }
     '/admin/news/category': {
@@ -515,6 +541,8 @@ interface AdminRouteChildren {
   AdminBlogEditRoute: typeof AdminBlogEditRoute
   AdminBlogResultRoute: typeof AdminBlogResultRoute
   AdminBlogTagRoute: typeof AdminBlogTagRoute
+  AdminDocsChangeLogRoute: typeof AdminDocsChangeLogRoute
+  AdminDocsFeedbackRoute: typeof AdminDocsFeedbackRoute
   AdminNewsCategoryRoute: typeof AdminNewsCategoryRoute
   AdminNewsEditRoute: typeof AdminNewsEditRoute
   AdminNewsResultRoute: typeof AdminNewsResultRoute
@@ -545,6 +573,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminBlogEditRoute: AdminBlogEditRoute,
   AdminBlogResultRoute: AdminBlogResultRoute,
   AdminBlogTagRoute: AdminBlogTagRoute,
+  AdminDocsChangeLogRoute: AdminDocsChangeLogRoute,
+  AdminDocsFeedbackRoute: AdminDocsFeedbackRoute,
   AdminNewsCategoryRoute: AdminNewsCategoryRoute,
   AdminNewsEditRoute: AdminNewsEditRoute,
   AdminNewsResultRoute: AdminNewsResultRoute,
@@ -584,6 +614,8 @@ export interface FileRoutesByFullPath {
   '/admin/blog/edit': typeof AdminBlogEditRoute
   '/admin/blog/result': typeof AdminBlogResultRoute
   '/admin/blog/tag': typeof AdminBlogTagRoute
+  '/admin/docs/change-log': typeof AdminDocsChangeLogRoute
+  '/admin/docs/feedback': typeof AdminDocsFeedbackRoute
   '/admin/news/category': typeof AdminNewsCategoryRoute
   '/admin/news/edit': typeof AdminNewsEditRoute
   '/admin/news/result': typeof AdminNewsResultRoute
@@ -621,6 +653,8 @@ export interface FileRoutesByTo {
   '/admin/blog/edit': typeof AdminBlogEditRoute
   '/admin/blog/result': typeof AdminBlogResultRoute
   '/admin/blog/tag': typeof AdminBlogTagRoute
+  '/admin/docs/change-log': typeof AdminDocsChangeLogRoute
+  '/admin/docs/feedback': typeof AdminDocsFeedbackRoute
   '/admin/news/category': typeof AdminNewsCategoryRoute
   '/admin/news/edit': typeof AdminNewsEditRoute
   '/admin/news/result': typeof AdminNewsResultRoute
@@ -660,6 +694,8 @@ export interface FileRoutesById {
   '/admin/blog/edit': typeof AdminBlogEditRoute
   '/admin/blog/result': typeof AdminBlogResultRoute
   '/admin/blog/tag': typeof AdminBlogTagRoute
+  '/admin/docs/change-log': typeof AdminDocsChangeLogRoute
+  '/admin/docs/feedback': typeof AdminDocsFeedbackRoute
   '/admin/news/category': typeof AdminNewsCategoryRoute
   '/admin/news/edit': typeof AdminNewsEditRoute
   '/admin/news/result': typeof AdminNewsResultRoute
@@ -700,6 +736,8 @@ export interface FileRouteTypes {
     | '/admin/blog/edit'
     | '/admin/blog/result'
     | '/admin/blog/tag'
+    | '/admin/docs/change-log'
+    | '/admin/docs/feedback'
     | '/admin/news/category'
     | '/admin/news/edit'
     | '/admin/news/result'
@@ -736,6 +774,8 @@ export interface FileRouteTypes {
     | '/admin/blog/edit'
     | '/admin/blog/result'
     | '/admin/blog/tag'
+    | '/admin/docs/change-log'
+    | '/admin/docs/feedback'
     | '/admin/news/category'
     | '/admin/news/edit'
     | '/admin/news/result'
@@ -773,6 +813,8 @@ export interface FileRouteTypes {
     | '/admin/blog/edit'
     | '/admin/blog/result'
     | '/admin/blog/tag'
+    | '/admin/docs/change-log'
+    | '/admin/docs/feedback'
     | '/admin/news/category'
     | '/admin/news/edit'
     | '/admin/news/result'
@@ -845,6 +887,8 @@ export const routeTree = rootRoute
         "/admin/blog/edit",
         "/admin/blog/result",
         "/admin/blog/tag",
+        "/admin/docs/change-log",
+        "/admin/docs/feedback",
         "/admin/news/category",
         "/admin/news/edit",
         "/admin/news/result",
@@ -903,6 +947,14 @@ export const routeTree = rootRoute
     },
     "/admin/blog/tag": {
       "filePath": "admin/blog/tag.tsx",
+      "parent": "/admin"
+    },
+    "/admin/docs/change-log": {
+      "filePath": "admin/docs/change-log.tsx",
+      "parent": "/admin"
+    },
+    "/admin/docs/feedback": {
+      "filePath": "admin/docs/feedback.tsx",
       "parent": "/admin"
     },
     "/admin/news/category": {

@@ -11,9 +11,6 @@ export const Route = createFileRoute('/admin/news/')({
   component: () => <div>Hello /admin/news/list!</div>
 })
 
-
-
-
 export function NewsRoute() {
   const [page] = useState({
     page: 1,

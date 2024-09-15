@@ -18,8 +18,10 @@
     "axios": "^1.7.7",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
+    "quill": "^2.0.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

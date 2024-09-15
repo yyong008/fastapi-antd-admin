@@ -1,8 +1,11 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
+import { createFileRoute, useSearch } from '@tanstack/react-router'
+import { useEffect, useState } from "react";
 
-// import { blogColumnsCreate } from "@/components/Admin/Blog/Index/blog-columns-create";
-// import { createBlogCategoryToolBarRender } from "@/components/Admin/Blog/Index/blog-tool-bar-render";
-import { createFileRoute } from '@tanstack/react-router'
+import { blogColumnsCreate } from "@/components/Admin/Blog/Index/blog-columns-create";
+import { createBlogCategoryToolBarRender } from "@/components/Admin/Blog/Index/blog-tool-bar-render";
+import { getBlog } from "@/apis/admin/blog/blog";
+
 // import { useEffect, useMemo } from "react";
 // import { useParams, useSearch } from "@tanstack/react-router";
 
@@ -13,6 +16,39 @@ export const Route = createFileRoute('/admin/blog/')({
 })
 
 export function BlogIndexRoute() {
+  const search = useSearch({ strict: false });
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState({
+    page: 1,
+    pageSize: 10,
+  });
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+    const ids: any = {}
+    if(search.category) {
+      ids.categoryId = search.category
+    }
+
+    if(search.tag) {
+      ids.tagId = search.tag
+    }
+    const res: any = await getBlog({ ...page, ...ids });
+    if (res && res.code === 0) {
+      setData(res.data);
+
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getData();
+  }, [page]);
   // const [searchParams] = useSearch({ strict: false });
   // const { data, isLoading } = useReadBlogListQuery({
   //   page: 1,
@@ -43,14 +79,14 @@ export function BlogIndexRoute() {
   return (
     <PageContainer>
       <ProTable
-        loading={false}
+        loading={loading}
         rowKey="id"
         size="small"
         search={false}
-        dataSource={[]}
+        dataSource={data.list || []}
         // headerTitle={info.name}
-        // toolBarRender={() => createBlogCategoryToolBarRender(lang!)}
-        // columns={blogColumnsCreate(lang!, fetcher, info) as any}
+        toolBarRender={() => createBlogCategoryToolBarRender()}
+        columns={blogColumnsCreate({}) as any}
       />
     </PageContainer>
   );

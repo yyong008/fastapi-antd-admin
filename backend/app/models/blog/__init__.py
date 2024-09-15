@@ -12,8 +12,8 @@ class Blog(Base):
     content = Column(String, nullable=False)
     author = Column(String, nullable=True)
     source = Column(String, nullable=True)
-    view_count = Column(Integer, default=0, nullable=False)
-    published_at = Column(DateTime(timezone=True), nullable=False)
+    viewCount = Column(Integer, default=0, nullable=False)
+    publishedAt = Column(DateTime(timezone=True), nullable=False)
     category_id = Column(Integer, ForeignKey("blog_category.id"), nullable=False)
     tag_id = Column(Integer, ForeignKey("blog_tag.id"), nullable=False)
     user_id = Column(Integer, nullable=False)  # 可能需要 ForeignKey 具体看你的需求

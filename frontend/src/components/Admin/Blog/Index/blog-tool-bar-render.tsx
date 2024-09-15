@@ -1,10 +1,10 @@
-import { ButtonLink } from "~/components/common";
+import { ButtonLink } from "@/components/common/button-link";
 
-export const createBlogCategoryToolBarRender = (lang: string) => {
+export const createBlogCategoryToolBarRender = () => {
   return [
     <ButtonLink
       key="tag-modal"
-      to={`/${lang}/admin/blog/edit`}
+      to={`/admin/blog/edit`}
       type={"new"}
       content="新建"
     />,

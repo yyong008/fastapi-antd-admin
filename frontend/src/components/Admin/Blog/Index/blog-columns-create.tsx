@@ -1,23 +1,24 @@
-import * as clientUtils from "~/utils/client";
-
-import { ButtonLink, DeleteIt, FormatTime } from "~/components/common";
 import { Space, Tag } from "antd";
 
-import { Link } from "@remix-run/react";
+import { ButtonLink } from "@/components/common/button-link";
+import { DeleteIt } from "@/components/common/delete-it";
+import { FormatTime } from "@/components/common/format-time";
+import { Link } from "@tanstack/react-router";
+import { removeHtmlTag } from "@/utils/utils";
 
-export const blogColumnsCreate = (lang: string, fetcher: any, info: any) => [
+export const blogColumnsCreate = (info: any) => [
   {
     dataIndex: "title",
     title: "文章名字",
     renderText(text: string, record: any) {
-      return <Link to={`/${lang}/blog/${record.id}`}>{text}</Link>;
+      return <Link to={`/blog/${record.id}`}>{text}</Link>;
     },
   },
   {
     dataIndex: "content",
     title: "文章",
     renderText(text: string) {
-      return <div>{clientUtils.removeHtmlTag(text).slice(0, 50)}</div>;
+      return <div>{removeHtmlTag(text ?? "").slice(0, 50)}</div>;
     },
   },
   {
@@ -39,13 +40,13 @@ export const blogColumnsCreate = (lang: string, fetcher: any, info: any) => [
       return <FormatTime timeStr={text} />;
     },
   },
-  {
-    dataIndex: "categories",
-    title: "分类",
-    renderText(_: string, record: any) {
-      return <Tag>{info.categoryName}</Tag>;
-    },
-  },
+  // {
+  //   dataIndex: "categories",
+  //   title: "分类",
+  //   renderText() {
+  //     return <Tag>{info.categoryName}</Tag>;
+  //   },
+  // },
   {
     dataIndex: "tags",
     title: "标签",
@@ -60,10 +61,10 @@ export const blogColumnsCreate = (lang: string, fetcher: any, info: any) => [
       return (
         <Space>
           <ButtonLink
-            to={`/${lang}/admin/blog/edit/${record.id}`}
+            to={`/admin/blog/edit/${record.id}`}
             type={"edit"}
           />
-          <DeleteIt fetcher={fetcher} record={record} title={""} />
+          <DeleteIt fetcher={() => {}} record={record} title={""} />
         </Space>
       );
     },

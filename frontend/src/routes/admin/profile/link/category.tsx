@@ -1,25 +1,43 @@
-import { Link, useParams } from "@tanstack/react-router";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Space, Tag } from "antd";
+import { useEffect, useState } from "react";
 
 import { DeleteIt } from "@/components/Admin/Profile/Link/delete-it";
+import { Link } from "@tanstack/react-router";
 import { LinkCategoryModalCreate } from "@/components/Admin/Profile/Link/link-category-modal-create";
 import { LinkCategoryModalUpdate } from "@/components/Admin/Profile/Link/link-category-modal-update";
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react";
+import { getProfileLinkCategory } from "@/apis/admin/profile/link/category";
 
 export const Route = createFileRoute('/admin/profile/link/category')({
   component: LinkCategoryRoute
 })
 
 export function LinkCategoryRoute() {
-  const { id } = useParams({ strict: false });
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
     pageSize: 10,
-    category: id,
   });
-  const { data, isLoading, refetch } = { data: { list: [], total: 0 }, isLoading: false, refetch: () => { } };
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+
+    const res: any = await getProfileLinkCategory({ ...page });
+
+    if (res && res.code === 0) {
+      setData(res.data);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true)
+    getData();
+  }, [page]);
   return (
     <PageContainer>
       <ProTable
@@ -27,9 +45,9 @@ export function LinkCategoryRoute() {
         size="small"
         headerTitle="链接分类管理"
         search={false}
-        loading={isLoading}
+        loading={loading}
         options={{
-          reload: refetch,
+          reload: getData,
         }}
         toolBarRender={() => [
           <LinkCategoryModalCreate key="link-category-modal-create" />,
@@ -56,9 +74,9 @@ export function LinkCategoryRoute() {
                   <LinkCategoryModalUpdate
                     key="link-category-modal-modify"
                     record={record}
-                    refetch={refetch}
+                    refetch={getData}
                   />
-                  <DeleteIt record={record} refetch={refetch} title="删除" />
+                  <DeleteIt record={record} refetch={getData} title="删除" />
                 </Space>
               );
             },

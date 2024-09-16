@@ -44,11 +44,11 @@ import { Route as AdminToolsMailIdImport } from './routes/admin/tools/mail.$id'
 import { Route as AdminSystemMonitorServeImport } from './routes/admin/system/monitor/serve'
 import { Route as AdminSystemMonitorLoginLogImport } from './routes/admin/system/monitor/login-log'
 import { Route as AdminSystemDictItemIdImport } from './routes/admin/system/dict-item.$id'
-import { Route as AdminProfileLinkCategoryDetailImport } from './routes/admin/profile/link/category-detail'
 import { Route as AdminProfileLinkCategoryImport } from './routes/admin/profile/link/category'
 import { Route as AdminNewsEditIdImport } from './routes/admin/news/edit_.$id'
 import { Route as AdminNewsCategoryIdImport } from './routes/admin/news/category_.$id'
 import { Route as AdminBlogEditIdImport } from './routes/admin/blog/edit_.$id'
+import { Route as AdminProfileLinkCategoryIdImport } from './routes/admin/profile/link/category_.$id'
 
 // Create/Update Routes
 
@@ -219,12 +219,6 @@ const AdminSystemDictItemIdRoute = AdminSystemDictItemIdImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
-const AdminProfileLinkCategoryDetailRoute =
-  AdminProfileLinkCategoryDetailImport.update({
-    path: '/profile/link/category-detail',
-    getParentRoute: () => AdminRoute,
-  } as any)
-
 const AdminProfileLinkCategoryRoute = AdminProfileLinkCategoryImport.update({
   path: '/profile/link/category',
   getParentRoute: () => AdminRoute,
@@ -244,6 +238,13 @@ const AdminBlogEditIdRoute = AdminBlogEditIdImport.update({
   path: '/blog/edit/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+
+const AdminProfileLinkCategoryIdRoute = AdminProfileLinkCategoryIdImport.update(
+  {
+    path: '/profile/link/category/$id',
+    getParentRoute: () => AdminRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -480,13 +481,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProfileLinkCategoryImport
       parentRoute: typeof AdminImport
     }
-    '/admin/profile/link/category-detail': {
-      id: '/admin/profile/link/category-detail'
-      path: '/profile/link/category-detail'
-      fullPath: '/admin/profile/link/category-detail'
-      preLoaderRoute: typeof AdminProfileLinkCategoryDetailImport
-      parentRoute: typeof AdminImport
-    }
     '/admin/system/dict-item/$id': {
       id: '/admin/system/dict-item/$id'
       path: '/system/dict-item/$id'
@@ -514,6 +508,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/tools/mail/$id'
       preLoaderRoute: typeof AdminToolsMailIdImport
       parentRoute: typeof AdminToolsMailImport
+    }
+    '/admin/profile/link/category/$id': {
+      id: '/admin/profile/link/category/$id'
+      path: '/profile/link/category/$id'
+      fullPath: '/admin/profile/link/category/$id'
+      preLoaderRoute: typeof AdminProfileLinkCategoryIdImport
+      parentRoute: typeof AdminImport
     }
   }
 }
@@ -576,10 +577,10 @@ interface AdminRouteChildren {
   AdminNewsCategoryIdRoute: typeof AdminNewsCategoryIdRoute
   AdminNewsEditIdRoute: typeof AdminNewsEditIdRoute
   AdminProfileLinkCategoryRoute: typeof AdminProfileLinkCategoryRoute
-  AdminProfileLinkCategoryDetailRoute: typeof AdminProfileLinkCategoryDetailRoute
   AdminSystemDictItemIdRoute: typeof AdminSystemDictItemIdRoute
   AdminSystemMonitorLoginLogRoute: typeof AdminSystemMonitorLoginLogRoute
   AdminSystemMonitorServeRoute: typeof AdminSystemMonitorServeRoute
+  AdminProfileLinkCategoryIdRoute: typeof AdminProfileLinkCategoryIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -609,10 +610,10 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNewsCategoryIdRoute: AdminNewsCategoryIdRoute,
   AdminNewsEditIdRoute: AdminNewsEditIdRoute,
   AdminProfileLinkCategoryRoute: AdminProfileLinkCategoryRoute,
-  AdminProfileLinkCategoryDetailRoute: AdminProfileLinkCategoryDetailRoute,
   AdminSystemDictItemIdRoute: AdminSystemDictItemIdRoute,
   AdminSystemMonitorLoginLogRoute: AdminSystemMonitorLoginLogRoute,
   AdminSystemMonitorServeRoute: AdminSystemMonitorServeRoute,
+  AdminProfileLinkCategoryIdRoute: AdminProfileLinkCategoryIdRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -651,11 +652,11 @@ export interface FileRoutesByFullPath {
   '/admin/news/category/$id': typeof AdminNewsCategoryIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
   '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
-  '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
   '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
   '/admin/tools/mail/$id': typeof AdminToolsMailIdRoute
+  '/admin/profile/link/category/$id': typeof AdminProfileLinkCategoryIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -691,11 +692,11 @@ export interface FileRoutesByTo {
   '/admin/news/category/$id': typeof AdminNewsCategoryIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
   '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
-  '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
   '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
   '/admin/tools/mail/$id': typeof AdminToolsMailIdRoute
+  '/admin/profile/link/category/$id': typeof AdminProfileLinkCategoryIdRoute
 }
 
 export interface FileRoutesById {
@@ -733,11 +734,11 @@ export interface FileRoutesById {
   '/admin/news/category/$id': typeof AdminNewsCategoryIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
   '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
-  '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
   '/admin/system/dict-item/$id': typeof AdminSystemDictItemIdRoute
   '/admin/system/monitor/login-log': typeof AdminSystemMonitorLoginLogRoute
   '/admin/system/monitor/serve': typeof AdminSystemMonitorServeRoute
   '/admin/tools/mail/$id': typeof AdminToolsMailIdRoute
+  '/admin/profile/link/category/$id': typeof AdminProfileLinkCategoryIdRoute
 }
 
 export interface FileRouteTypes {
@@ -776,11 +777,11 @@ export interface FileRouteTypes {
     | '/admin/news/category/$id'
     | '/admin/news/edit/$id'
     | '/admin/profile/link/category'
-    | '/admin/profile/link/category-detail'
     | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
     | '/admin/tools/mail/$id'
+    | '/admin/profile/link/category/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -815,11 +816,11 @@ export interface FileRouteTypes {
     | '/admin/news/category/$id'
     | '/admin/news/edit/$id'
     | '/admin/profile/link/category'
-    | '/admin/profile/link/category-detail'
     | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
     | '/admin/tools/mail/$id'
+    | '/admin/profile/link/category/$id'
   id:
     | '__root__'
     | '/_client'
@@ -855,11 +856,11 @@ export interface FileRouteTypes {
     | '/admin/news/category/$id'
     | '/admin/news/edit/$id'
     | '/admin/profile/link/category'
-    | '/admin/profile/link/category-detail'
     | '/admin/system/dict-item/$id'
     | '/admin/system/monitor/login-log'
     | '/admin/system/monitor/serve'
     | '/admin/tools/mail/$id'
+    | '/admin/profile/link/category/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -930,10 +931,10 @@ export const routeTree = rootRoute
         "/admin/news/category/$id",
         "/admin/news/edit/$id",
         "/admin/profile/link/category",
-        "/admin/profile/link/category-detail",
         "/admin/system/dict-item/$id",
         "/admin/system/monitor/login-log",
-        "/admin/system/monitor/serve"
+        "/admin/system/monitor/serve",
+        "/admin/profile/link/category/$id"
       ]
     },
     "/_client/about": {
@@ -1062,10 +1063,6 @@ export const routeTree = rootRoute
       "filePath": "admin/profile/link/category.tsx",
       "parent": "/admin"
     },
-    "/admin/profile/link/category-detail": {
-      "filePath": "admin/profile/link/category-detail.tsx",
-      "parent": "/admin"
-    },
     "/admin/system/dict-item/$id": {
       "filePath": "admin/system/dict-item.$id.tsx",
       "parent": "/admin"
@@ -1081,6 +1078,10 @@ export const routeTree = rootRoute
     "/admin/tools/mail/$id": {
       "filePath": "admin/tools/mail.$id.tsx",
       "parent": "/admin/tools/mail"
+    },
+    "/admin/profile/link/category/$id": {
+      "filePath": "admin/profile/link/category_.$id.tsx",
+      "parent": "/admin"
     }
   }
 }

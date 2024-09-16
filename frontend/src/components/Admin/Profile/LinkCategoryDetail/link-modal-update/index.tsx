@@ -7,15 +7,14 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
-import { useParams } from "@remix-run/react";
-import { useUpdateProfileLinkByIdMutation } from "~/apis-client/admin/profile/link";
+import { useParams } from "@tanstack/react-router";
 
 const { EditOutlined } = ic;
 
 export function LinkModalUpdate({ record, refetch }: any) {
   const [form] = Form.useForm();
-  const { id } = useParams();
-  const [updateProfileLinkById, other] = useUpdateProfileLinkByIdMutation();
+  const { id } = useParams({ strict: false });
+  const [updateProfileLinkById, other] = [args => args, { isLoading: false }]
   return (
     <ModalForm
       key={Date.now()}

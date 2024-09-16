@@ -11,7 +11,7 @@ def get_link_category_list(db: Session, skip: int = 0, limit: int = 10):
     return db.query(LinkCategory).offset(skip).limit(limit).all()
 
 
-def get_count(db: Session):
+def get_link_category_count(db: Session):
     count = db.query(LinkCategory).count()
     return count
 

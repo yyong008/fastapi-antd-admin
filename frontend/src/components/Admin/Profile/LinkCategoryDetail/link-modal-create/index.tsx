@@ -1,5 +1,3 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, message } from "antd";
 import {
   ModalForm,
@@ -7,22 +5,20 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
-import { useCreateProfileLinkMutation } from "@/apis-client/admin/profile/link";
-import { useParams } from "@remix-run/react";
-
-const { EditOutlined } = ic;
+import { EditOutlined } from "@ant-design/icons";
+import { useParams } from "@tanstack/react-router";
 
 export function LinkModalCreate({ refetch }: any) {
   const [form] = Form.useForm();
-  const { id } = useParams();
-  const [createProfileLinkById, other] = useCreateProfileLinkMutation();
+  const { id } = useParams({ strict: false });
+  const [createProfileLinkById, other] = [(args) => args, { isLoading: false }]; // todo
 
   return (
     <ModalForm
       key={Date.now()}
       preserve={false}
       title={"创建链接"}
-      onOpenChange={(c) => {}}
+      onOpenChange={() => {}}
       loading={other.isLoading}
       trigger={
         <Button type={"primary"} icon={<EditOutlined />}>

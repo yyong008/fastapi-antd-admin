@@ -15,3 +15,13 @@ export const getBlogCategory = async (searchParams : TBlogCategory) => {
     console.error(error);
   }
 };
+
+
+export const getBlogById = async (id: number) => {
+  try {
+    const res = await request.get("/api/admin/blog/"+ id)
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

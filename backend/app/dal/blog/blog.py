@@ -32,3 +32,6 @@ def get_blog_list(db: Session, categoryId, tagId, page: int = 1, pageSize: int =
         .limit(limit)
         .all()
     )
+
+def get_blog_by_id(blog_id: int, db: Session):
+    return db.query(Blog).filter(Blog.id == blog_id).first()

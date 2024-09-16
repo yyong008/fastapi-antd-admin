@@ -3,15 +3,16 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 from app.db.client import get_db
-from app.services.blog.blog import get_blog_list_service
+from app.services.blog.blog import get_blog_by_id_service, get_blog_list_service
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 
 router = APIRouter(tags=["Admin Blog Main"])
 
 
 @router.get("/{id}")
-def get_blog_by_id():
-    return {"success": "ok"}
+def get_blog_by_id(id: int,  db: Session = Depends(get_db),):
+    data = get_blog_by_id_service(id, db)
+    return ResponseSuccessModel(data=data)
 
 
 @router.get("/", response_model=ResponseModel)

@@ -17,7 +17,6 @@ import { Route as ClientIndexImport } from './routes/_client/index'
 import { Route as ClientNewsImport } from './routes/_client/news'
 import { Route as ClientBlogImport } from './routes/_client/blog'
 import { Route as ClientAboutImport } from './routes/_client/about'
-import { Route as AdminNewsIndexImport } from './routes/admin/news/index'
 import { Route as AdminDashboardIndexImport } from './routes/admin/dashboard/index'
 import { Route as AdminBlogIndexImport } from './routes/admin/blog/index'
 import { Route as AdminAboutIndexImport } from './routes/admin/about/index'
@@ -48,6 +47,7 @@ import { Route as AdminSystemDictItemIdImport } from './routes/admin/system/dict
 import { Route as AdminProfileLinkCategoryDetailImport } from './routes/admin/profile/link/category-detail'
 import { Route as AdminProfileLinkCategoryImport } from './routes/admin/profile/link/category'
 import { Route as AdminNewsEditIdImport } from './routes/admin/news/edit_.$id'
+import { Route as AdminNewsCategoryIdImport } from './routes/admin/news/category_.$id'
 import { Route as AdminBlogEditIdImport } from './routes/admin/blog/edit_.$id'
 
 // Create/Update Routes
@@ -80,11 +80,6 @@ const ClientBlogRoute = ClientBlogImport.update({
 const ClientAboutRoute = ClientAboutImport.update({
   path: '/about',
   getParentRoute: () => ClientRoute,
-} as any)
-
-const AdminNewsIndexRoute = AdminNewsIndexImport.update({
-  path: '/news/',
-  getParentRoute: () => AdminRoute,
 } as any)
 
 const AdminDashboardIndexRoute = AdminDashboardIndexImport.update({
@@ -237,6 +232,11 @@ const AdminProfileLinkCategoryRoute = AdminProfileLinkCategoryImport.update({
 
 const AdminNewsEditIdRoute = AdminNewsEditIdImport.update({
   path: '/news/edit/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminNewsCategoryIdRoute = AdminNewsCategoryIdImport.update({
+  path: '/news/category/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -452,18 +452,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardIndexImport
       parentRoute: typeof AdminImport
     }
-    '/admin/news/': {
-      id: '/admin/news/'
-      path: '/news'
-      fullPath: '/admin/news'
-      preLoaderRoute: typeof AdminNewsIndexImport
-      parentRoute: typeof AdminImport
-    }
     '/admin/blog/edit/$id': {
       id: '/admin/blog/edit/$id'
       path: '/blog/edit/$id'
       fullPath: '/admin/blog/edit/$id'
       preLoaderRoute: typeof AdminBlogEditIdImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/news/category/$id': {
+      id: '/admin/news/category/$id'
+      path: '/news/category/$id'
+      fullPath: '/admin/news/category/$id'
+      preLoaderRoute: typeof AdminNewsCategoryIdImport
       parentRoute: typeof AdminImport
     }
     '/admin/news/edit/$id': {
@@ -572,8 +572,8 @@ interface AdminRouteChildren {
   AdminAboutIndexRoute: typeof AdminAboutIndexRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
-  AdminNewsIndexRoute: typeof AdminNewsIndexRoute
   AdminBlogEditIdRoute: typeof AdminBlogEditIdRoute
+  AdminNewsCategoryIdRoute: typeof AdminNewsCategoryIdRoute
   AdminNewsEditIdRoute: typeof AdminNewsEditIdRoute
   AdminProfileLinkCategoryRoute: typeof AdminProfileLinkCategoryRoute
   AdminProfileLinkCategoryDetailRoute: typeof AdminProfileLinkCategoryDetailRoute
@@ -605,8 +605,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAboutIndexRoute: AdminAboutIndexRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
-  AdminNewsIndexRoute: AdminNewsIndexRoute,
   AdminBlogEditIdRoute: AdminBlogEditIdRoute,
+  AdminNewsCategoryIdRoute: AdminNewsCategoryIdRoute,
   AdminNewsEditIdRoute: AdminNewsEditIdRoute,
   AdminProfileLinkCategoryRoute: AdminProfileLinkCategoryRoute,
   AdminProfileLinkCategoryDetailRoute: AdminProfileLinkCategoryDetailRoute,
@@ -647,8 +647,8 @@ export interface FileRoutesByFullPath {
   '/admin/about': typeof AdminAboutIndexRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
-  '/admin/news': typeof AdminNewsIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
+  '/admin/news/category/$id': typeof AdminNewsCategoryIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
   '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
   '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
@@ -687,8 +687,8 @@ export interface FileRoutesByTo {
   '/admin/about': typeof AdminAboutIndexRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
-  '/admin/news': typeof AdminNewsIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
+  '/admin/news/category/$id': typeof AdminNewsCategoryIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
   '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
   '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
@@ -729,8 +729,8 @@ export interface FileRoutesById {
   '/admin/about/': typeof AdminAboutIndexRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/dashboard/': typeof AdminDashboardIndexRoute
-  '/admin/news/': typeof AdminNewsIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
+  '/admin/news/category/$id': typeof AdminNewsCategoryIdRoute
   '/admin/news/edit/$id': typeof AdminNewsEditIdRoute
   '/admin/profile/link/category': typeof AdminProfileLinkCategoryRoute
   '/admin/profile/link/category-detail': typeof AdminProfileLinkCategoryDetailRoute
@@ -772,8 +772,8 @@ export interface FileRouteTypes {
     | '/admin/about'
     | '/admin/blog'
     | '/admin/dashboard'
-    | '/admin/news'
     | '/admin/blog/edit/$id'
+    | '/admin/news/category/$id'
     | '/admin/news/edit/$id'
     | '/admin/profile/link/category'
     | '/admin/profile/link/category-detail'
@@ -811,8 +811,8 @@ export interface FileRouteTypes {
     | '/admin/about'
     | '/admin/blog'
     | '/admin/dashboard'
-    | '/admin/news'
     | '/admin/blog/edit/$id'
+    | '/admin/news/category/$id'
     | '/admin/news/edit/$id'
     | '/admin/profile/link/category'
     | '/admin/profile/link/category-detail'
@@ -851,8 +851,8 @@ export interface FileRouteTypes {
     | '/admin/about/'
     | '/admin/blog/'
     | '/admin/dashboard/'
-    | '/admin/news/'
     | '/admin/blog/edit/$id'
+    | '/admin/news/category/$id'
     | '/admin/news/edit/$id'
     | '/admin/profile/link/category'
     | '/admin/profile/link/category-detail'
@@ -926,8 +926,8 @@ export const routeTree = rootRoute
         "/admin/about/",
         "/admin/blog/",
         "/admin/dashboard/",
-        "/admin/news/",
         "/admin/blog/edit/$id",
+        "/admin/news/category/$id",
         "/admin/news/edit/$id",
         "/admin/profile/link/category",
         "/admin/profile/link/category-detail",
@@ -1046,12 +1046,12 @@ export const routeTree = rootRoute
       "filePath": "admin/dashboard/index.tsx",
       "parent": "/admin"
     },
-    "/admin/news/": {
-      "filePath": "admin/news/index.tsx",
-      "parent": "/admin"
-    },
     "/admin/blog/edit/$id": {
       "filePath": "admin/blog/edit_.$id.tsx",
+      "parent": "/admin"
+    },
+    "/admin/news/category/$id": {
+      "filePath": "admin/news/category_.$id.tsx",
       "parent": "/admin"
     },
     "/admin/news/edit/$id": {

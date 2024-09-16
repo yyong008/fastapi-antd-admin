@@ -1,29 +1,42 @@
+import { Link, useParams } from "@tanstack/react-router";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
+import { useEffect, useState } from "react";
 
-import { ButtonLink } from '@/components/common/button-link';
-import { DeleteIt } from '@/components/common/delete-it';
-import { Link } from "@tanstack/react-router";
+import { ButtonLink } from "@/components/common/button-link";
+import { DeleteIt } from "@/components/common/delete-it";
 import { Space } from "antd";
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { getNewsListByCategoryId } from "@/apis/admin/news/news";
 
-export const Route = createFileRoute('/admin/news/')({
-  component: () => <div>Hello /admin/news/list!</div>
-})
+export const Route = createFileRoute("/admin/news/category/$id")({
+  component: NewsRoute,
+});
 
 export function NewsRoute() {
+  const { id: category_id } = useParams({ strict: false });
+  const [loading, setLoading] = useState(false);
   const [page] = useState({
     page: 1,
     pageSize: 10,
   });
-  const { data, isLoading, refetch } = {
-    data: {
-      list: [],
-      total: 0,
-    },
-    isLoading: true,
-    refetch: (...args: any[]) => {},
-  }
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+    const res: any = await getNewsListByCategoryId({ ...page, category_id });
+
+    if (res && res.code === 0) {
+      setData(res.data);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getData();
+  }, [page]);
   return (
     <PageContainer>
       <ProTable
@@ -31,9 +44,9 @@ export function NewsRoute() {
         headerTitle="新闻"
         size="small"
         search={false}
-        loading={isLoading}
+        loading={loading}
         options={{
-          reload: refetch,
+          reload: getData,
         }}
         dataSource={data?.list}
         toolBarRender={() => [
@@ -49,9 +62,7 @@ export function NewsRoute() {
             dataIndex: "title",
             title: "新闻标题",
             renderText(_, record: any) {
-              return (
-                <Link to={`/news/${record.id}`}>{record.title}</Link>
-              );
+              return <Link to={`/news/${record.id}`}>{record.title}</Link>;
             },
           },
           {
@@ -87,7 +98,11 @@ export function NewsRoute() {
                     type="edit"
                     to={`/admin/news/edit/${record.id}`}
                   />
-                  <DeleteIt refetch={refetch as any} record={record} title={""} />
+                  <DeleteIt
+                    refetch={getData as any}
+                    record={record}
+                    title={""}
+                  />
                 </Space>
               );
             },
@@ -97,3 +112,4 @@ export function NewsRoute() {
     </PageContainer>
   );
 }
+

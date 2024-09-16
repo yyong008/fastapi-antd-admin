@@ -20,6 +20,7 @@ import { Route as ClientAboutImport } from './routes/_client/about'
 import { Route as AdminNewsIndexImport } from './routes/admin/news/index'
 import { Route as AdminDashboardIndexImport } from './routes/admin/dashboard/index'
 import { Route as AdminBlogIndexImport } from './routes/admin/blog/index'
+import { Route as AdminAboutIndexImport } from './routes/admin/about/index'
 import { Route as AdminToolsStorageImport } from './routes/admin/tools/storage'
 import { Route as AdminToolsMailListImport } from './routes/admin/tools/mail-list'
 import { Route as AdminToolsMailImport } from './routes/admin/tools/mail'
@@ -93,6 +94,11 @@ const AdminDashboardIndexRoute = AdminDashboardIndexImport.update({
 
 const AdminBlogIndexRoute = AdminBlogIndexImport.update({
   path: '/blog/',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminAboutIndexRoute = AdminAboutIndexImport.update({
+  path: '/about/',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -425,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminToolsStorageImport
       parentRoute: typeof AdminImport
     }
+    '/admin/about/': {
+      id: '/admin/about/'
+      path: '/about'
+      fullPath: '/admin/about'
+      preLoaderRoute: typeof AdminAboutIndexImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/blog/': {
       id: '/admin/blog/'
       path: '/blog'
@@ -556,6 +569,7 @@ interface AdminRouteChildren {
   AdminToolsMailRoute: typeof AdminToolsMailRouteWithChildren
   AdminToolsMailListRoute: typeof AdminToolsMailListRoute
   AdminToolsStorageRoute: typeof AdminToolsStorageRoute
+  AdminAboutIndexRoute: typeof AdminAboutIndexRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
   AdminNewsIndexRoute: typeof AdminNewsIndexRoute
@@ -588,6 +602,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminToolsMailRoute: AdminToolsMailRouteWithChildren,
   AdminToolsMailListRoute: AdminToolsMailListRoute,
   AdminToolsStorageRoute: AdminToolsStorageRoute,
+  AdminAboutIndexRoute: AdminAboutIndexRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
   AdminNewsIndexRoute: AdminNewsIndexRoute,
@@ -629,6 +644,7 @@ export interface FileRoutesByFullPath {
   '/admin/tools/mail': typeof AdminToolsMailRouteWithChildren
   '/admin/tools/mail-list': typeof AdminToolsMailListRoute
   '/admin/tools/storage': typeof AdminToolsStorageRoute
+  '/admin/about': typeof AdminAboutIndexRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
   '/admin/news': typeof AdminNewsIndexRoute
@@ -668,6 +684,7 @@ export interface FileRoutesByTo {
   '/admin/tools/mail': typeof AdminToolsMailRouteWithChildren
   '/admin/tools/mail-list': typeof AdminToolsMailListRoute
   '/admin/tools/storage': typeof AdminToolsStorageRoute
+  '/admin/about': typeof AdminAboutIndexRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
   '/admin/news': typeof AdminNewsIndexRoute
@@ -709,6 +726,7 @@ export interface FileRoutesById {
   '/admin/tools/mail': typeof AdminToolsMailRouteWithChildren
   '/admin/tools/mail-list': typeof AdminToolsMailListRoute
   '/admin/tools/storage': typeof AdminToolsStorageRoute
+  '/admin/about/': typeof AdminAboutIndexRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/dashboard/': typeof AdminDashboardIndexRoute
   '/admin/news/': typeof AdminNewsIndexRoute
@@ -751,6 +769,7 @@ export interface FileRouteTypes {
     | '/admin/tools/mail'
     | '/admin/tools/mail-list'
     | '/admin/tools/storage'
+    | '/admin/about'
     | '/admin/blog'
     | '/admin/dashboard'
     | '/admin/news'
@@ -789,6 +808,7 @@ export interface FileRouteTypes {
     | '/admin/tools/mail'
     | '/admin/tools/mail-list'
     | '/admin/tools/storage'
+    | '/admin/about'
     | '/admin/blog'
     | '/admin/dashboard'
     | '/admin/news'
@@ -828,6 +848,7 @@ export interface FileRouteTypes {
     | '/admin/tools/mail'
     | '/admin/tools/mail-list'
     | '/admin/tools/storage'
+    | '/admin/about/'
     | '/admin/blog/'
     | '/admin/dashboard/'
     | '/admin/news/'
@@ -902,6 +923,7 @@ export const routeTree = rootRoute
         "/admin/tools/mail",
         "/admin/tools/mail-list",
         "/admin/tools/storage",
+        "/admin/about/",
         "/admin/blog/",
         "/admin/dashboard/",
         "/admin/news/",
@@ -1010,6 +1032,10 @@ export const routeTree = rootRoute
     },
     "/admin/tools/storage": {
       "filePath": "admin/tools/storage.tsx",
+      "parent": "/admin"
+    },
+    "/admin/about/": {
+      "filePath": "admin/about/index.tsx",
       "parent": "/admin"
     },
     "/admin/blog/": {

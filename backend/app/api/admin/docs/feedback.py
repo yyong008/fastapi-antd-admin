@@ -1,11 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from app.db.client import get_db
+from app.schemas.response import ResponseSuccessModel,ResponseModel
+from app.services.docs.feedback import get_feedback_list_service
 
-router = APIRouter(prefix="/admin/docs/feedback", tags=["Admin Docs Feedback"])
+router = APIRouter(prefix="/feedback", tags=["Admin Docs Feedback"])
 
 
-@router.get("/")
-def docs_feedback():
-    return {"success": "ok"}
+@router.get("/", response_model=ResponseModel)
+def docs_feedback(page: int, pageSize: int, db: Session = Depends(get_db)):
+    data = get_feedback_list_service(page, pageSize, db)
+    return ResponseSuccessModel(data=data)
 
 
 @router.post("/")

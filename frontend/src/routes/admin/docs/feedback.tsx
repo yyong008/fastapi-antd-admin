@@ -1,28 +1,42 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
+import { useEffect, useState } from "react";
 
 import { FeedbackModalCreate } from "@/components/Admin/Docs/Feedback/FeedbackModalCreate";
 import { FormatTime } from "@/components/common/format-time";
 import { Image } from "antd";
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react";
+import { getDocsFeedback } from "@/apis/admin/docs/feedback";
 
 export const Route = createFileRoute('/admin/docs/feedback')({
   component: FeedbackRoute
 })
 
 export function FeedbackRoute() {
+  const refetch = args => args
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
     pageSize: 10,
   });
-  const { data, isLoading, refetch } =  {
-    data: {
-      list: [],
-      total: 0
-    },
-    isLoading: false,
-    refetch: v => v
-  }
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+
+    const res: any = await getDocsFeedback({ ...page });
+
+    if (res && res.code === 0) {
+      setData(res.data);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true)
+    getData();
+  }, [page]);
 
   const columns = [
     {
@@ -59,7 +73,7 @@ export function FeedbackRoute() {
         headerTitle="反馈内容"
         size="small"
         search={false}
-        loading={isLoading}
+        loading={loading}
         dataSource={data?.list ?? []}
         columns={columns}
         options={{

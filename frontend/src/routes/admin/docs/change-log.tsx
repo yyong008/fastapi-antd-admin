@@ -1,13 +1,14 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Space, Tag } from "antd";
+import { useEffect, useState } from "react";
 
 import { ChangeLogCreateModal } from "@/components/Admin/Docs/ChangeLog/ChangeLogModalCreate";
 import ChangeLogUpdateModal from "@/components/Admin/Docs/ChangeLog/ChangeLogModalUpdate";
 import { DeleteIt } from "@/components/Admin/Docs/ChangeLog/delete-it";
 import { FormatTime } from "@/components/common/format-time";
 import { createFileRoute } from "@tanstack/react-router";
+import { getDocsChangelog } from "@/apis/admin/docs/changelog";
 import { useSearch } from "@tanstack/react-router";
-import { useState } from "react";
 
 export const Route = createFileRoute("/admin/docs/change-log")({
   component: ChangeLogRoute,
@@ -29,20 +30,32 @@ const typeMap = {
 };
 
 export function ChangeLogRoute() {
-  const [, setPage] = useState({
+  const params = useSearch({ strict: false });
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState({
     page: 1,
     pageSize: 10,
   });
-  const { data, isLoading, refetch } = {
-    data: {
-      list: [],
-      total: 0,
-    },
-    isLoading: false,
-    refetch: (v) => v,
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+
+    const res: any = await getDocsChangelog({ ...page });
+
+    if (res && res.code === 0) {
+      setData(res.data);
+      setLoading(false);
+    }
   };
-  const { total = 0, list = [] } = data || {};
-  const params = useSearch({ strict: false });
+
+  useEffect(() => {
+    setLoading(true)
+    getData();
+  }, [page]);
+
 
   const columns = [
     {
@@ -105,9 +118,9 @@ export function ChangeLogRoute() {
             <ChangeLogUpdateModal
               key="changelog-modal-modify"
               record={record}
-              refetch={refetch}
+              refetch={() => {}}
             />
-            <DeleteIt record={record} title={""} refetch={refetch} />
+            <DeleteIt record={record} title={""} refetch={() => {}} />
           </Space>
         );
       },
@@ -120,20 +133,20 @@ export function ChangeLogRoute() {
         headerTitle="更新日志"
         size="small"
         search={false}
-        dataSource={list ?? []}
-        loading={isLoading}
+        dataSource={data?.list ?? []}
+        loading={loading}
         columns={columns}
         toolBarRender={() => [
           <ChangeLogCreateModal
             key="changelog-modal-create"
-            refetch={refetch}
+            refetch={() => {}}
           />,
         ]}
         options={{
-          reload: refetch,
+          reload: () => {},
         }}
         pagination={{
-          total,
+          total: data.total,
           pageSize: Number(params.pageSize ?? 10),
           onChange(page, pageSize) {
             setPage({ page, pageSize });

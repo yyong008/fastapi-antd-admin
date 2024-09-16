@@ -1,11 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.db.client import get_db
+from app.services.news.news_category import get_news_category_list_service
+from app.schemas.response import ResponseModel, ResponseSuccessModel
 
 router = APIRouter(prefix="/category", tags=["News Category"])
 
 
-@router.get("/")
-def get_news_category():
-    return {"success": "ok"}
+@router.get("/", response_model=ResponseModel)
+def get_news_category(page: int, pageSize: int, db: Session=Depends(get_db)):
+    data = get_news_category_list_service(page, pageSize, db)
+    return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}")

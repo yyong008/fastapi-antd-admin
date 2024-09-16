@@ -1,31 +1,43 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Space, Tag } from "antd";
+import { useEffect, useState } from "react";
 
 import { DeleteIt } from "@/components/common/delete-it";
 import { NewsCategoryModalCreate } from "@/components/Admin/News/Category/news-category-modal-create";
 import { NewsCategoryModalUpdate } from "@/components/Admin/News/Category/news-category-modal-update";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { getNewsCategory } from "@/apis/admin/news/category";
 
 export const Route = createFileRoute("/admin/news/category")({
   component: NewsCategoryRoute,
 });
 
 export function NewsCategoryRoute() {
-  const [setPage] = useState({
+  const [loading, setLoading] = useState(false);
+  const [page] = useState({
     page: 1,
     pageSize: 10,
   });
-  const { data, isLoading, refetch } = {
-    data: {
-      total: 0,
-      list: [],
-    },
-    isLoading: false,
-    refetch: () => {},
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+
+    const res: any = await getNewsCategory({ ...page });
+
+    if (res && res.code === 0) {
+      setData(res.data);
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    setLoading(true)
+    getData();
+  }, [page]);
   return (
     <PageContainer>
       <ProTable
@@ -33,9 +45,9 @@ export function NewsCategoryRoute() {
         size="small"
         headerTitle="新闻分类"
         search={false}
-        loading={isLoading}
+        loading={loading}
         options={{
-          reload: refetch,
+          reload: getData,
         }}
         pagination={{
           total: data?.total,
@@ -50,7 +62,7 @@ export function NewsCategoryRoute() {
         toolBarRender={() => [
           <NewsCategoryModalCreate
             key="news-category-modal-create"
-            refetch={refetch}
+            refetch={getData}
           />,
         ]}
         dataSource={data?.list}
@@ -79,9 +91,9 @@ export function NewsCategoryRoute() {
                   <NewsCategoryModalUpdate
                     key="news-category-modal-modify"
                     record={record}
-                    refetch={refetch}
+                    refetch={getData}
                   />
-                  <DeleteIt record={record} refetch={refetch} title="删除" />
+                  <DeleteIt record={record} refetch={getData as any} title="删除" />
                 </Space>
               );
             },

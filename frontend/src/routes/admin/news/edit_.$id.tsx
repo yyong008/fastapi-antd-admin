@@ -7,8 +7,10 @@ import {
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-components";
+import { useEffect, useState } from "react";
 
 import { createFileRoute } from '@tanstack/react-router'
+import { getNewsById } from "@/apis/admin/news/news";
 import { message } from "antd";
 import { useParams } from "@tanstack/react-router";
 
@@ -18,25 +20,40 @@ export const Route = createFileRoute('/admin/news/edit/$id')({
 
 export function EditDetailRoute() {
   const { id } = useParams({ strict: false });
+  const [loading, setLoading] = useState(false);
+  const [page] = useState({
+    page: 1,
+    pageSize: 10,
+  });
+  const [data, setData] = useState({});
 
-  const { data: newsCategoryList } = { data: []}
-  const { data, isLoading } = { data: { }, isLoading: true }; // useReadNewsByIdQuery({ id: Number(id) });
-  const [updateNewsById] =[args => args]
+  const getData = async () => {
+    const res: any = await getNewsById(Number(id));
+    if (res && res.code === 0) {
+
+      setLoading(false);
+      setData(res.data);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true)
+    getData();
+  }, [page, id]);
   return (
     <PageContainer>
-      <ProCard loading={isLoading}>
+      <ProCard loading={loading}>
         <ProForm
-          // initialValues={{ ...data, date: data?.publishedAt }}
           initialValues={{ ...data }}
-          onFinish={async (v) => {
-            const data = v;
-            data.id = Number(id);
-            const result = await updateNewsById(data);
-            if (result.data?.code !== 0) {
-              message.error(result.data?.message);
-              return false;
-            }
-            message.success(result.data?.message);
+          onFinish={async () => {
+            // const data = v;
+            // data.id = Number(id);
+            // const result = await updateNewsById(data);
+            // if (result.data?.code !== 0) {
+            //   message.error(result.data?.message);
+            //   return false;
+            // }
+            // message.success(result.data?.message);
             return true;
           }}
         >
@@ -85,7 +102,7 @@ export function EditDetailRoute() {
             label="分类"
             name="newsId"
             request={async () => {
-              const ncs: any[] = newsCategoryList || [];
+              const ncs: any[] = [];
               return ncs?.map((c: any) => {
                 return {
                   label: c.name,

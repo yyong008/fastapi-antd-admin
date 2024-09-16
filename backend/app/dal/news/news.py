@@ -40,3 +40,6 @@ def get_news_list_by_category_id(category_id: int, limit, offset, db: Session):
         .limit(limit)
         .all()
     )
+
+def get_news_by_id(id, db):
+    return db.query(News).filter(News.id == id).first()

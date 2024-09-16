@@ -16,3 +16,12 @@ export const getNewsListByCategoryId = async (searchParams : TNewsCategory) => {
     console.error(error);
   }
 };
+
+export const getNewsById = async (id: number) => {
+try {
+    const res = await request.get("/api/admin/news/" + id);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}

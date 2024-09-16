@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.dal.news.news import get_news_count, get_news_list
+from app.dal.news.news import get_news_by_id, get_news_count, get_news_list
 
 
 
@@ -36,3 +36,16 @@ def get_news_list_service(category_id, page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
+def get_news_by_id_service(id, db):
+    news = get_news_by_id(id, db)
+    data = {
+        'id': news.id,
+        "title": news.title,
+        "content": news.content,
+        "author": news.author,
+        "source": news.source,
+        "viewCount": news.viewCount,
+        # "publishAt": news.publishAt,
+        "userId": news.user_id,
+    }
+    return data

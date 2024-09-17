@@ -21,7 +21,7 @@ export function ProfileAccountRoute() {
     page: 1,
     pageSize: 10,
   });
-  const [data, setData] = useState({});
+  const [,setData] = useState({});
 
   const getData = async () => {
 

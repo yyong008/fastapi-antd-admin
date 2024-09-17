@@ -7,6 +7,7 @@ const { SmileOutlined } = ic;
 
 export function LoginIn({ data, userInfo }: any) {
   const latestLoginLog = data?.latestLoginLog ?? {};
+  console.log("userInfo", userInfo)
   return (
     <div>
       <div className="flex items-center text-[20px] pb-[10px]">

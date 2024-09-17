@@ -26,7 +26,9 @@ def get_Loginlog_list(db: Session, page: int = 1, pageSize: int = 10):
     sort_column = Loginlog.login_at.desc()
     return db.query(Loginlog).order_by(sort_column).offset(offset).limit(limit).all()
 
-
+def get_loginlog_latest_by_user_id(db, user_id):
+    return db.query(Loginlog).filter(Loginlog.userId == user_id).first()
+    
 # =====================================CREATE===================================================
 def create_loginlog(
     log,

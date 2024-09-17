@@ -23,8 +23,11 @@ export const Route = createFileRoute("/admin")({
     }
   },
   async loader() {
-    const userInfo: any = await getUserInfo();
-    return userInfo?.data;
+    const res: any = await getUserInfo();
+    if(res && res.code === 0) {
+      localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+    }
+    return res?.data;
   },
   component: memo(AdminComponent),
 });

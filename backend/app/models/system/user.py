@@ -57,11 +57,11 @@ class UserSignLog(Base):
     __tablename__ = "user_sign_log"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, nullable=False)  # 外键关系需要定义 ForeignKey
+    userId = Column(Integer, nullable=False)  # 外键关系需要定义 ForeignKey
     sign_type = Column(Integer, nullable=False)
     sign_time = Column(DateTime(timezone=True), nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    createdAt = Column(DateTime(timezone=True), server_default=func.now())
+    updatedAt = Column(DateTime(timezone=True), onupdate=func.now())
 
 
 class UserSign(Base):

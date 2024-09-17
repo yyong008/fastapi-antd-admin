@@ -28,11 +28,11 @@ export function SignIn({ data: _data }: any) {
   };
   return (
     <div>
-      {!data?.isLogin ? (
+      {!data?.isSignIn ? (
         <Button
           onClick={signInHanlder}
           htmlType="submit"
-          disabled={data?.isLogin}
+          disabled={data?.isSignIn}
           loading={signInOther.isLoading}
         >
           签到

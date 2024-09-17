@@ -7,9 +7,11 @@ from .profile import router as profile_router
 from .tools import router as tools_router
 from .system import router as system_router
 from .userinfo.userinfo import router as userinfo_router
+from .dashboard.main import router as dashboard_router
 
 router = APIRouter(prefix="/admin")
 
+router.include_router(dashboard_router)
 router.include_router(blog_router)
 router.include_router(news_router)
 router.include_router(docs_router)

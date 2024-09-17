@@ -5,22 +5,54 @@ import {
   ProFormDigit,
   ProFormText,
 } from "@ant-design/pro-components";
+import { useEffect, useState } from "react";
 
 import { createFileRoute } from '@tanstack/react-router'
+import { getProfileAccount } from "@/apis/admin/profile/account";
 
 export const Route = createFileRoute('/admin/profile/account')({
   component: ProfileAccountRoute
 })
 
 export function ProfileAccountRoute() {
-  const { data, isLoading } ={ data: {}, isLoading: false }
+  const [form] = ProForm.useForm();
+  const [loading, setLoading] = useState(false);
+  const [page] = useState({
+    page: 1,
+    pageSize: 10,
+  });
+  const [data, setData] = useState({});
+
+  const getData = async () => {
+
+    const res: any = await getProfileAccount();
+
+    if (res && res.code === 0) {
+      setData(res.data);
+      form.setFieldsValue({
+        name: res.data.name,
+        nickname: res.data.nickname,
+        email: res.data.email,
+        remark: res.data.remark,
+        theme: res.data.theme,
+        lang: res.data.lang,
+        phone: res.data.phone,
+        createdAt: res.data.createdAt,
+        department: res.data?.department?.name,
+      });
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true)
+    getData();
+  }, [page]);
   return (
     <PageContainer>
-      <ProCard loading={isLoading}>
+      <ProCard loading={loading}>
         <ProForm
-          initialValues={{
-            ...data,
-          }}
+          form={form}
           readonly={true}
           layout="horizontal"
           labelCol={{ span: 1.7 }}

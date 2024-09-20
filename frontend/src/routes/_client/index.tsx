@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-
 export const Route = createFileRoute("/_client/")({
   component: Home,
 });
 
 function Home() {
   return (
-    <div className="flex justify-center items-center w-[100vw] h-[100vh] bg-[url(https://images.pexels.com/photos/17485709/pexels-photo-17485709.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)]">
+    <div className="flex justify-center items-center w-[100vw] h-[100vh] bg-[url(https://images.pexels.com/photos/2618118/pexels-photo-2618118.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)]">
       <div className="text-center text-neutral-content text-yellow-500">
         <div className="">
           <h1 className="mb-5 text-5xl font-bold">FastAPI Antd Admin</h1>

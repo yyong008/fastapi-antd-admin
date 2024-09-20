@@ -39,6 +39,7 @@ import { Route as AdminBlogTagImport } from './routes/admin/blog/tag'
 import { Route as AdminBlogResultImport } from './routes/admin/blog/result'
 import { Route as AdminBlogEditImport } from './routes/admin/blog/edit'
 import { Route as AdminBlogCategoryImport } from './routes/admin/blog/category'
+import { Route as ClientNewsIdImport } from './routes/_client/news_.$id'
 import { Route as authAdminLoginImport } from './routes/(auth)/admin.login'
 import { Route as AdminToolsMailIdImport } from './routes/admin/tools/mail.$id'
 import { Route as AdminSystemMonitorServeImport } from './routes/admin/system/monitor/serve'
@@ -192,6 +193,11 @@ const AdminBlogCategoryRoute = AdminBlogCategoryImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const ClientNewsIdRoute = ClientNewsIdImport.update({
+  path: '/news/$id',
+  getParentRoute: () => ClientRoute,
+} as any)
+
 const authAdminLoginRoute = authAdminLoginImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRoute,
@@ -298,6 +304,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/login'
       preLoaderRoute: typeof authAdminLoginImport
       parentRoute: typeof rootRoute
+    }
+    '/_client/news/$id': {
+      id: '/_client/news/$id'
+      path: '/news/$id'
+      fullPath: '/news/$id'
+      preLoaderRoute: typeof ClientNewsIdImport
+      parentRoute: typeof ClientImport
     }
     '/admin/blog/category': {
       id: '/admin/blog/category'
@@ -526,6 +539,7 @@ interface ClientRouteChildren {
   ClientBlogRoute: typeof ClientBlogRoute
   ClientNewsRoute: typeof ClientNewsRoute
   ClientIndexRoute: typeof ClientIndexRoute
+  ClientNewsIdRoute: typeof ClientNewsIdRoute
 }
 
 const ClientRouteChildren: ClientRouteChildren = {
@@ -533,6 +547,7 @@ const ClientRouteChildren: ClientRouteChildren = {
   ClientBlogRoute: ClientBlogRoute,
   ClientNewsRoute: ClientNewsRoute,
   ClientIndexRoute: ClientIndexRoute,
+  ClientNewsIdRoute: ClientNewsIdRoute,
 }
 
 const ClientRouteWithChildren =
@@ -626,6 +641,7 @@ export interface FileRoutesByFullPath {
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/news/$id': typeof ClientNewsIdRoute
   '/admin/blog/category': typeof AdminBlogCategoryRoute
   '/admin/blog/edit': typeof AdminBlogEditRoute
   '/admin/blog/result': typeof AdminBlogResultRoute
@@ -666,6 +682,7 @@ export interface FileRoutesByTo {
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/news/$id': typeof ClientNewsIdRoute
   '/admin/blog/category': typeof AdminBlogCategoryRoute
   '/admin/blog/edit': typeof AdminBlogEditRoute
   '/admin/blog/result': typeof AdminBlogResultRoute
@@ -708,6 +725,7 @@ export interface FileRoutesById {
   '/_client/news': typeof ClientNewsRoute
   '/_client/': typeof ClientIndexRoute
   '/admin/login': typeof authAdminLoginRoute
+  '/_client/news/$id': typeof ClientNewsIdRoute
   '/admin/blog/category': typeof AdminBlogCategoryRoute
   '/admin/blog/edit': typeof AdminBlogEditRoute
   '/admin/blog/result': typeof AdminBlogResultRoute
@@ -751,6 +769,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/'
     | '/admin/login'
+    | '/news/$id'
     | '/admin/blog/category'
     | '/admin/blog/edit'
     | '/admin/blog/result'
@@ -790,6 +809,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/'
     | '/admin/login'
+    | '/news/$id'
     | '/admin/blog/category'
     | '/admin/blog/edit'
     | '/admin/blog/result'
@@ -830,6 +850,7 @@ export interface FileRouteTypes {
     | '/_client/news'
     | '/_client/'
     | '/admin/login'
+    | '/_client/news/$id'
     | '/admin/blog/category'
     | '/admin/blog/edit'
     | '/admin/blog/result'
@@ -899,7 +920,8 @@ export const routeTree = rootRoute
         "/_client/about",
         "/_client/blog",
         "/_client/news",
-        "/_client/"
+        "/_client/",
+        "/_client/news/$id"
       ]
     },
     "/admin": {
@@ -955,6 +977,10 @@ export const routeTree = rootRoute
     },
     "/admin/login": {
       "filePath": "(auth)/admin.login.tsx"
+    },
+    "/_client/news/$id": {
+      "filePath": "_client/news_.$id.tsx",
+      "parent": "/_client"
     },
     "/admin/blog/category": {
       "filePath": "admin/blog/category.tsx",

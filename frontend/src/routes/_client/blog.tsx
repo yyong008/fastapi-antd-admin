@@ -23,7 +23,7 @@ export function BlogRoute() {
   const _data = Route.useLoaderData();
   const blogs = _data.list;
   return (
-    <div className="flex flex-col pt-[140px] w-[40vw] h-[80vh]">
+    <div className="flex flex-col pt-[140px] px-[20px] w-[70vw] min-h-[80vh]">
       <div>
         {blogs?.map((n: any) => {
           return <BlogItem data={n} key={n.id} />;

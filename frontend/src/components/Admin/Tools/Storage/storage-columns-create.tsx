@@ -21,7 +21,7 @@ export const storageColumnsCreate = () => {
       ellipsis: true,
     },
     {
-      dataIndex: "extName",
+      dataIndex: "ext_name",
       title: "文件后缀",
       ellipsis: true,
     },
@@ -39,8 +39,8 @@ export const storageColumnsCreate = () => {
       },
     },
     {
-      dataIndex: "userId",
-      title: "上传者",
+      dataIndex: "user_id",
+      title: "上传者 id",
       ellipsis: true,
     },
     {

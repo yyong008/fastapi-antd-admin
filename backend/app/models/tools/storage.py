@@ -8,10 +8,10 @@ class Storage(Base):
     __tablename__ = "tools_storage"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    created_at = Column(
+    createdAt = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )  # 数据创建时间
-    updated_at = Column(
+    updatedAt = Column(
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )  # 数据更新时间
     user_id = Column(Integer, nullable=False)  # 上传用户，可能需要外键根据需求

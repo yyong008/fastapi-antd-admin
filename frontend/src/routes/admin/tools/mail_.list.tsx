@@ -5,7 +5,7 @@ import { ButtonLink } from '@/components/common/button-link';
 import { createFileRoute } from '@tanstack/react-router'
 import { createMaiListColumns } from '@/components/Admin/Tools/MailList/mail-list-columns-create';
 
-export const Route = createFileRoute('/admin/tools/mail-list')({
+export const Route = createFileRoute('/admin/tools/mail/list')({
   component: MailListRoute
 })
 

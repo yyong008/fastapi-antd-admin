@@ -20,3 +20,9 @@ def get_news_category_list(db: Session, page: int = 1, pageSize: int = 10):
     return (
         db.query(NewsCategory).offset(offset).limit(limit).all()
     )
+
+def get_news_category_by_name(name: str, db: Session):
+    return db.query(NewsCategory).filter(NewsCategory.name == name).first()
+
+def get_news_category_by_id(id: int, db: Session):
+    return db.query(NewsCategory).filter(NewsCategory.id == id).first()

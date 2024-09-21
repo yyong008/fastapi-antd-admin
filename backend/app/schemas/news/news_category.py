@@ -9,8 +9,8 @@ class NewsCategoryBase(BaseModel):
     description: Optional[str] = Field(
         None, title="Description", description="A brief description of the category"
     )
-    user_id: int = Field(
-        ...,
+    user_id: Optional[str] = Field(
+        None,
         title="User ID",
         description="The ID of the user associated with the category",
     )
@@ -19,6 +19,8 @@ class NewsCategoryBase(BaseModel):
 class NewsCategoryCreate(NewsCategoryBase):
     pass
 
+class NewsCategoryDeleteByIds(BaseModel):
+    ids: list[int]
 
 class NewsCategoryUpdate(NewsCategoryBase):
     pass

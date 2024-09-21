@@ -14,7 +14,7 @@ from app.middlewares.count_requests import CountRequeset
 from app.middlewares.demo_mode import DemoModeMiddleware
 
 # exception handler
-from app.exception import http_exception_handler
+from app.exception import http_exception_handler, validation_exception_handler
 
 # router
 from app.api import router
@@ -40,6 +40,7 @@ app.add_middleware(DemoModeMiddleware)
 
 # register exception handler
 app.add_exception_handler(HTTPException, http_exception_handler)
+app.add_exception_handler(HTTPException, validation_exception_handler)
 
 if config.BACKEND_CORS_ORIGINS:
     app.add_middleware(

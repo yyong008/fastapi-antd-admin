@@ -60,7 +60,7 @@ class MenuInDBBase(MenuBase):
     updated_at: Optional[datetime]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Menu(MenuInDBBase):

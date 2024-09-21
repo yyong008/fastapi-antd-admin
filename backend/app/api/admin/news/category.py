@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.db.client import get_db
 from app.services.news.news_category import get_news_category_list_service
 from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.news.news_category import NewsCategoryCreate
 
 router = APIRouter(prefix="/category", tags=["News Category"])
 
@@ -20,7 +21,7 @@ def get_news_category_by_id():
 
 
 @router.post("/")
-def create_news_category():
+def create_news_category(category):
     return {"success": "ok"}
 
 

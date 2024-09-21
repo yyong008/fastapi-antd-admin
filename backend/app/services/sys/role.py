@@ -8,7 +8,6 @@ from app.dal.sys.role import get_roles_all,get_count
 # from app.dal.sys.role import get_count, get_role_all
 
 def format_role(role):
-    print(role)
     item = {
         "id": role.id,
         "name": role.name,

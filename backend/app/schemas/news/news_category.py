@@ -1,7 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
-
-from app.schemas.news.news import News
+from typing import Optional
 
 
 class NewsCategoryBase(BaseModel):
@@ -30,12 +28,4 @@ class NewsCategoryInDBBase(NewsCategoryBase):
     id: int
 
     class Config:
-        orm_mode = True
-
-
-class NewsCategory(NewsCategoryInDBBase):
-    news: List["News"] = []  # Forward reference to News
-
-
-class NewsCategoryInDB(NewsCategoryInDBBase):
-    pass
+        from_attributes = True

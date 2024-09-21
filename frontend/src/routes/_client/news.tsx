@@ -23,7 +23,7 @@ export function NewsRoute() {
   const data = Route.useLoaderData();
   const { list: news = [] } = data;
   return (
-    <div className="flex flex-col pt-[140px] w-[40vw] h-[80vh]">
+    <div className="flex flex-col pt-[140px] px-[20px] w-[70vw] min-h-[80vh]">
       <div>
         {news?.map((n: any) => {
           return <NewsItem data={n} key={n.id} />;

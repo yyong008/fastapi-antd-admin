@@ -14,7 +14,7 @@ def format_news(news):
         "author": news.author,
         "source": news.source,
         "viewCount": news.viewCount,
-        # "publishAt": news.publishAt,
+        "publishedAt": news.publishedAt,
     }
     return item
 

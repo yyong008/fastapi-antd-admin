@@ -3,15 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.dal.profile.link.link import get_link_count_by_category_id, get_links_by_category_id
-
-def format_link(link):
-    item = {
-        "id": link.id,
-        "name": link.name,
-        "url": link.url,
-    }
-    return item
-
+from app.services.profile.link.format import format_link
 
 def get_link_list_by_id_service(category_id,page, pageSize, db: Session):
     try:

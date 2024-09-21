@@ -10,15 +10,7 @@ from app.models.system.role import Role
 from app.models.system.user import User
 from app.schemas.sys.user import UserCreate
 from app.dal.blog.blog_tag import get_blog_tag_count, get_blog_tag_list
-
-def format_blog_tag(blog_tag):
-    item = {
-        "id": blog_tag.id,
-        "name": blog_tag.name,
-        "description": blog_tag.description,
-    }
-    return item
-
+from app.services.blog.format import format_blog_tag
 
 def get_blog_tag_list_service(page, pageSize, db: Session):
     try:

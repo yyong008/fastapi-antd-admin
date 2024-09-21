@@ -4,21 +4,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.dal.blog.blog import get_blog_by_id, get_blog_count, get_blog_list
+from app.services.blog.format import format_blog
 
-
-def format_blog(blog):
-    item = {
-        "id": blog.id,
-        "title": blog.title,
-        "content": blog.content,
-        "author": blog.author,
-        "source": blog.source,
-        "viewCount": blog.viewCount,
-        "publishedAt": blog.publishedAt,
-        "categoryId": blog.category_id,
-        "tagId":blog.tag_id
-    }
-    return item
 
 
 def get_blog_list_service(categoryId, tagId, page, pageSize, db: Session):

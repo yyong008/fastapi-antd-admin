@@ -4,20 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 import app.dal.sys.monitor.loginlog as loginlog_dal
 from app.utils.loginlog_info import get_loginlog_info
+from app.services.sys.format import format_loginlog
 
-
-def format_loginlog(log):
-    item = {
-        "id": log.id,
-        "name": log.name,
-        "ip": log.ip,
-        "address": log.address,
-        "login_at": log.login_at,
-        "system": log.system,
-        "browser": log.browser,
-        "userId": log.userId,
-    }
-    return item
 
 
 def format_login_list(loginlogs):

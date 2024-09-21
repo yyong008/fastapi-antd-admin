@@ -3,19 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.dal.docs.feedback import get_feedback_count, get_feedback_list
-
-
-def format_feedback(feedback):
-    item = {
-        "id": feedback.id,
-        "userId": feedback.userId,
-        "content": feedback.content,
-        "url": feedback.url,
-        "createdAt": feedback.createdAt,
-        "updatedAt": feedback.updatedAt,
-    }
-    return item
-
+from app.services.docs.format import format_feedback
 
 def get_feedback_list_service(page, pageSize, db: Session):
     try:

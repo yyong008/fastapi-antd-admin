@@ -10,15 +10,7 @@ from app.models.system.role import Role
 from app.models.system.user import User
 from app.schemas.sys.user import UserCreate
 from app.dal.blog.blog_category import get_blog_category_count, get_blog_category_list
-
-
-def format_blog_category(blog_category):
-    item = {
-        "id": blog_category.id,
-        "name": blog_category.name,
-        "description": blog_category.description,
-    }
-    return item
+from app.services.blog.format import format_blog_category
 
 
 def get_blog_category_list_service(page, pageSize, db: Session):

@@ -5,13 +5,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.dal.sys.user import get_user_by_id
 from app.services.sys.user import format_user
 
-def format_account(account):
-    item = {
-        "id": account.id,
-    }
-    return item
-
-
 def get_profile_account_service(current_user_id, db: Session):
     try:
         user_in_db = get_user_by_id(current_user_id, db)

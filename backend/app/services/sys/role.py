@@ -3,21 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.dal.sys.role import get_roles_all,get_count
-
-# from app.models.system.role import Role
-# from app.dal.sys.role import get_count, get_role_all
-
-def format_role(role):
-    item = {
-        "id": role.id,
-        "name": role.name,
-        "value": role.value,
-        "description": role.description,
-        "status": role.status,
-        "createdAt": role.createdAt,
-        "updatedAt": role.updatedAt,
-    }
-    return item
+from .format import format_role
 
 
 def get_all_role_service(db: Session):

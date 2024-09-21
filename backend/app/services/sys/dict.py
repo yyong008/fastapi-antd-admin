@@ -3,21 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.dal.sys.dict import get_dictionary_count, get_dictionary_list
-
-
-
-def format_dict(dict):
-    item = {
-        "id": dict.id,
-        "name": dict.name,
-        "code": dict.code,
-        "status": dict.status,
-        "remark": dict.remark,
-        "description": dict.description,
-        "createdAt": dict.createdAt,
-        "updatedAt": dict.updatedAt,
-    }
-    return item
+from app.services.sys.format import format_dict
 
 
 def get_dict_list(page, pageSize, db: Session):

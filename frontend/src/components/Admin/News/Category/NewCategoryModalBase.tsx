@@ -11,9 +11,12 @@ type NewCategoryModalBaseProps = {
   trigger: JSX.Element;
   submitTimeout?: number;
   onFinish: (values: any) => Promise<boolean>;
-}
+};
 
-export function NewsCategoryModalBase({ refetch, ...props }: NewCategoryModalBaseProps) {
+export function NewsCategoryModalBase({
+  refetch,
+  ...props
+}: NewCategoryModalBaseProps) {
   const [form] = Form.useForm();
   return (
     <ModalForm

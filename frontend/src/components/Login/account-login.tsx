@@ -35,7 +35,7 @@ export function AccountLogin(props: AccountLoginProps) {
         rules={[
           {
             required: true,
-            message: "login-register.message.password-message"
+            message: "login-register.message.password-message",
           },
         ]}
       />
@@ -50,7 +50,7 @@ export function AccountLogin(props: AccountLoginProps) {
           rules={[
             {
               required: true,
-              message: "login-register.message.password-message-re"
+              message: "login-register.message.password-message-re",
             },
           ]}
         />

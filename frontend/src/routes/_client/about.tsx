@@ -4,12 +4,11 @@ import { ProjectDevelopmentDep } from "@/components/Client/About/production-deve
 import { ProjectInfo } from "@/components/Client/About/project-info";
 import { ProjectProductionDep } from "@/components/Client/About/project-production-dep";
 import { Space } from "antd";
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_client/about')({
-  component: AboutComponent
-})
-
+export const Route = createFileRoute("/_client/about")({
+  component: AboutComponent,
+});
 
 export function AboutComponent() {
   return (
@@ -25,4 +24,3 @@ export function AboutComponent() {
     </div>
   );
 }
-

@@ -120,7 +120,7 @@ export function StorageModal(props: StorageModalProps) {
           Array.from(files)?.forEach((file: any) => {
             if (file.size > 1024 * 1024 * 2) {
               return message.error(
-                `单个文件不超过${FileSizeLimit}MB，最多只能上传10个文件`,
+                `单个文件不超过${FileSizeLimit}MB，最多只能上传10个文件`
               );
             }
             chooseFileListRef.current?.push({

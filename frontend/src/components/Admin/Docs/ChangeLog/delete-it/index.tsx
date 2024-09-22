@@ -12,7 +12,7 @@ type DeleteItProps = {
 
 export function DeleteIt({ record, title, refetch }: DeleteItProps) {
   const [form] = Form.useForm();
-  const [deleteByIds] = [v => v];
+  const [deleteByIds] = [(v) => v];
   return (
     <Form>
       <Popconfirm

@@ -13,7 +13,7 @@ export const getBlogList = async (searchParams: any) => {
 
 export const getBlogById = async (id: number) => {
   try {
-    const res = await request.get("/api/blog/" + id, );
+    const res = await request.get("/api/blog/" + id);
     return res;
   } catch (error) {
     console.error(error);

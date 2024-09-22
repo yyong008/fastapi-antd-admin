@@ -1,8 +1,8 @@
-import { BlogItem } from '@/components/Client/Blog/blog-item';
-import { createFileRoute } from '@tanstack/react-router'
-import { getBlogList } from '@/apis/client/blog';
+import { BlogItem } from "@/components/Client/Blog/blog-item";
+import { createFileRoute } from "@tanstack/react-router";
+import { getBlogList } from "@/apis/client/blog";
 
-export const Route = createFileRoute('/_client/blog')({
+export const Route = createFileRoute("/_client/blog")({
   component: BlogRoute,
   loaderDeps: ({ search }: any) => ({
     page: search.page || 1,
@@ -17,7 +17,7 @@ export const Route = createFileRoute('/_client/blog')({
       return result.data;
     }
   },
-})
+});
 
 export function BlogRoute() {
   const _data = Route.useLoaderData();

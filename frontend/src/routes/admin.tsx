@@ -17,17 +17,17 @@ import { getUserInfo } from "@/apis/userinfo";
 import { prolayoutConfig } from "@/config/prolayout";
 
 export const Route = createFileRoute("/admin")({
-  beforeLoad(){
-    if(!getLocalStorageToken()) {
-      throw redirect({ to: "/admin/login"});
+  beforeLoad() {
+    if (!getLocalStorageToken()) {
+      throw redirect({ to: "/admin/login" });
     }
   },
   async loader() {
     const res: any = await getUserInfo();
-    if(res && res.code === 0) {
-      localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+    if (res && res.code === 0) {
+      localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
     } else {
-      throw redirect({ to: "/admin/login"});
+      throw redirect({ to: "/admin/login" });
     }
     return res?.data;
   },
@@ -43,7 +43,7 @@ const resetStyles = {
 function AdminComponent() {
   const value = useContext(SettingContext);
   const data = Route.useLoaderData();
-  const {userInfo = {}, menu = []} = data || {}
+  const { userInfo = {}, menu = [] } = data || {};
   const [pathname, setPathname] = useState(location.pathname);
   const token = useMemo(() => createTokens(value), [value]);
 

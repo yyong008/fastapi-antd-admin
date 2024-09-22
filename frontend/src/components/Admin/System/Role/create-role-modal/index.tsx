@@ -1,9 +1,9 @@
 import * as ic from "@ant-design/icons";
 
 import { Button, Form } from "antd";
-import {ModalForm} from "@ant-design/pro-components";
+import { ModalForm } from "@ant-design/pro-components";
 import { useEffect, useMemo, useState } from "react";
-import {FormItems} from "./form-items.tsx";
+import { FormItems } from "./form-items.tsx";
 
 const { EditOutlined } = ic;
 
@@ -42,7 +42,6 @@ export function CreateRoleModal(props: CreateRoleModalProps) {
 
   return (
     <ModalForm
-
       title="创建角色"
       trigger={
         trigger ??
@@ -97,7 +96,7 @@ export function CreateRoleModal(props: CreateRoleModalProps) {
         return true;
       }}
     >
-      <FormItems menu={menu} checkedKeys={checkedKeys} onCheck={onCheck}/>
+      <FormItems menu={menu} checkedKeys={checkedKeys} onCheck={onCheck} />
     </ModalForm>
   );
 }

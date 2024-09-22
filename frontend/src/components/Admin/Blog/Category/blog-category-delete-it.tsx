@@ -15,7 +15,7 @@ export function BlogCategoryDeleteIt({
   title,
   refetch,
 }: DeleteItProps) {
-  const [deleteBlog] = [(...args: any) => args]
+  const [deleteBlog] = [(...args: any) => args];
   return (
     <Form>
       <Popconfirm

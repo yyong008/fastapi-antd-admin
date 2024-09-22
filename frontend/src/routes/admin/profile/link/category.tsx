@@ -6,12 +6,12 @@ import { DeleteIt } from "@/components/Admin/Profile/Link/delete-it";
 import { Link } from "@tanstack/react-router";
 import { LinkCategoryModalCreate } from "@/components/Admin/Profile/Link/link-category-modal-create";
 import { LinkCategoryModalUpdate } from "@/components/Admin/Profile/Link/link-category-modal-update";
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { getProfileLinkCategory } from "@/apis/admin/profile/link/category";
 
-export const Route = createFileRoute('/admin/profile/link/category')({
-  component: LinkCategoryRoute
-})
+export const Route = createFileRoute("/admin/profile/link/category")({
+  component: LinkCategoryRoute,
+});
 
 export function LinkCategoryRoute() {
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,6 @@ export function LinkCategoryRoute() {
   });
 
   const getData = async () => {
-
     const res: any = await getProfileLinkCategory({ ...page });
 
     if (res && res.code === 0) {
@@ -35,7 +34,7 @@ export function LinkCategoryRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
   return (

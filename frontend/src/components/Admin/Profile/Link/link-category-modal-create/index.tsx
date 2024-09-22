@@ -11,7 +11,7 @@ const { EditOutlined } = ic;
 
 export function LinkCategoryModalCreate({ refetch }: any) {
   const [form] = Form.useForm();
-  const [createLinkCategory, other] = [args => args, { isLoading: false }]; // todo
+  const [createLinkCategory, other] = [(args) => args, { isLoading: false }]; // todo
 
   return (
     <ModalForm

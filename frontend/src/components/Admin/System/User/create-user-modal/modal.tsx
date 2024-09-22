@@ -10,8 +10,8 @@ type CreateUserModalProps = {
 };
 
 export function CreateUserModal(props: CreateUserModalProps) {
-  const { loading,  depts, roles, ...rest } = props;
-  const [createUser] = [(...args) => {}]
+  const { loading, depts, roles, ...rest } = props;
+  const [createUser] = [(...args) => {}];
   return (
     <CreateUserModalUI
       {...rest}

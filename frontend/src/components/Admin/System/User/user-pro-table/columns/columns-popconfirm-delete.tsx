@@ -5,7 +5,7 @@ import { Button, Popconfirm, message } from "antd";
 const { DeleteOutlined } = icons;
 
 export function ColumnsPopConfirmDelete({ record, reload }: any) {
-  const [deleteUser] = [(...args: any[]): any => {}]
+  const [deleteUser] = [(...args: any[]): any => {}];
   return (
     <Popconfirm
       key="del"

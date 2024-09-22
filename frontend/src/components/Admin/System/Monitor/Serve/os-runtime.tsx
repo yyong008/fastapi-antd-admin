@@ -41,7 +41,6 @@ export function OsRuntime({ data }: any) {
           >
             <Tag>{nodeRuntime?.npm}</Tag>
           </Descriptions.Item>
-
         </Descriptions>
       </Card>
     </>

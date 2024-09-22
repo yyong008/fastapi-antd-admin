@@ -11,7 +11,7 @@ type DeleteItProps = {
 };
 
 export function BlogTagDeleteIt({ refetch, record, title }: DeleteItProps) {
-  const [deleteBlogTagByIds] = [(...args: any) => args]
+  const [deleteBlogTagByIds] = [(...args: any) => args];
   return (
     <Form>
       <Popconfirm

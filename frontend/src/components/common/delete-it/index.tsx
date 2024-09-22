@@ -18,7 +18,7 @@ export function DeleteIt({ fetcher, record, title }: DeleteItProps) {
         onConfirm={() => {
           fetcher.submit(
             { ids: [record.id] },
-            { method: "DELETE", encType: "application/json" },
+            { method: "DELETE", encType: "application/json" }
           );
         }}
       >

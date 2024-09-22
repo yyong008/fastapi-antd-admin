@@ -9,7 +9,10 @@ const { EditOutlined } = ic;
 
 export default function BlogCategoryModalUpdate({ record, refetch }: any) {
   const { id } = useParams({ strict: false });
-  const [updateBlogCategory, other] =[(...args: any) => args, {isLoading: false}]
+  const [updateBlogCategory, other] = [
+    (...args: any) => args,
+    { isLoading: false },
+  ];
 
   return (
     <BlogCategoryModalForm

@@ -29,9 +29,7 @@ function LoginComponent() {
   const RemeberMe = memo(function Re() {
     return (
       <div style={{ margin: "10px 0px" }} className="text-black">
-        <ProFormCheckbox name="autoLogin">
-          {"记住密码"}
-        </ProFormCheckbox>
+        <ProFormCheckbox name="autoLogin">{"记住密码"}</ProFormCheckbox>
       </div>
     );
   });

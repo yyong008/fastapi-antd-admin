@@ -10,7 +10,7 @@ export const Route = createFileRoute("/admin/system/monitor/login-log")({
 });
 
 function LoginLogComponent() {
-  const [ loading, setLoading ] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
     pageSize: 10,
@@ -23,18 +23,18 @@ function LoginLogComponent() {
     const res: any = await getMonitorLoginLog({
       page: page.page,
       pageSize: page.pageSize,
-    })
+    });
 
-    if(res && res?.code === 0 ) {
-      setData(res.data)
-      setLoading(false)
+    if (res && res?.code === 0) {
+      setData(res.data);
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     getData();
-    setLoading(true)
-  }, [page])
+    setLoading(true);
+  }, [page]);
 
   return (
     <PageContainer>
@@ -47,9 +47,11 @@ function LoginLogComponent() {
         dataSource={data?.list || []}
         columns={createColumns()}
         loading={loading}
-        options={{
-          // reload: refetch,
-        }}
+        options={
+          {
+            // reload: refetch,
+          }
+        }
         pagination={{
           total: data?.total || 0,
           pageSize: 10,

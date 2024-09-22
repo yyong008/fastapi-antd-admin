@@ -1,4 +1,4 @@
-import {Tree} from "antd";
+import { Tree } from "antd";
 
 type CustomTreeProps = {
   value?: any;
@@ -9,12 +9,7 @@ type CustomTreeProps = {
 };
 
 export function CustomTree(props: CustomTreeProps) {
-  const {
-    onChange,
-    menu,
-    checkedKeys,
-    onCheck,
-  } = props
+  const { onChange, menu, checkedKeys, onCheck } = props;
   return (
     <div className="h-[300px] overflow-y-auto">
       <Tree
@@ -27,7 +22,7 @@ export function CustomTree(props: CustomTreeProps) {
         onCheck={(e, d) => {
           onCheck(e);
           onChange?.(
-            d.checkedNodes?.map(({id, key, value}) => ({id, key, value})),
+            d.checkedNodes?.map(({ id, key, value }) => ({ id, key, value }))
           );
         }}
       />

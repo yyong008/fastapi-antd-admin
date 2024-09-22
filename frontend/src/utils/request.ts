@@ -1,18 +1,18 @@
-import axios from "axios"
+import axios from "axios";
 import { message } from "antd";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 50000,
   headers: {
-    'Content-Type': 'application/json',
-  }
-})
+    "Content-Type": "application/json",
+  },
+});
 
 request.interceptors.request.use(
   (config) => {
     // 在请求发送之前做些什么
-    const token = localStorage.getItem('token'); // 假设你的令牌存储在 localStorage
+    const token = localStorage.getItem("token"); // 假设你的令牌存储在 localStorage
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -31,13 +31,13 @@ request.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if(error.response.data.code === 1) {
-      message.error(error.response.data.message)
+    if (error.response.data.code === 1) {
+      message.error(error.response.data.message);
     }
     // 对响应错误做些什么
     if (error.response && error.response.status === 401) {
       // 处理未授权的情况
-      console.error('Unauthorized request');
+      console.error("Unauthorized request");
     }
     return Promise.reject(error);
   }

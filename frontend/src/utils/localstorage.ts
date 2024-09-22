@@ -1,5 +1,5 @@
-const TOKEN = "token"
-const REFRESH_TOKEN = "refresh_token"
+const TOKEN = "token";
+const REFRESH_TOKEN = "refresh_token";
 
 export const setLocalStorageToken = (token: string) =>
   localStorage.setItem(TOKEN, token);

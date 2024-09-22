@@ -1,15 +1,18 @@
-import { ConfigProvider, message, } from "antd";
+import { ConfigProvider, message } from "antd";
 import { LoginForm, ProConfigProvider } from "@ant-design/pro-components";
-import { setLocalStorageRefreshToken, setLocalStorageToken } from "@/utils/localstorage";
+import {
+  setLocalStorageRefreshToken,
+  setLocalStorageToken,
+} from "@/utils/localstorage";
 
 import { genHashedPassword } from "@/utils/crypto-js";
 import { login } from "@/apis/login";
 import { useNavigate } from "@tanstack/react-router";
 
 export function LoginFormWrap({ children }: any) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleSubmit = async (values: any) => {
-   const data = {
+    const data = {
       username: values.username,
       password: genHashedPassword(values.password),
     };
@@ -18,7 +21,7 @@ export function LoginFormWrap({ children }: any) {
       setLocalStorageToken(result.data.access_token);
       setLocalStorageRefreshToken(result.data.refresh_token);
       message.success(result.message);
-      navigate({ to: `/admin/dashboard`});
+      navigate({ to: `/admin/dashboard` });
     } else {
       message.error(result.message);
     }
@@ -27,10 +30,7 @@ export function LoginFormWrap({ children }: any) {
 
   return (
     <ProConfigProvider>
-      <ConfigProvider
-        theme={{
-        }}
-      >
+      <ConfigProvider theme={{}}>
         <div className="flex flex-col h-[100vh]  ">
           <LoginForm
             className="flex-1 text-slate-950"

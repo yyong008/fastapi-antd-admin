@@ -13,7 +13,7 @@ const { EditOutlined } = ic;
 
 export function ChangeLogCreateModal({ refetch }: any) {
   const [form] = Form.useForm();
-  const [createChangelog, other] = [v => v, { isLoading: false }]
+  const [createChangelog, other] = [(v) => v, { isLoading: false }];
 
   return (
     <ModalForm

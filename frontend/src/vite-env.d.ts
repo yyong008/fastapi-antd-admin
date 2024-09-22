@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import type packageJSON from '../package.json';
+import type packageJSON from "../package.json";
 
 declare global {
   const __APP_INFO__: {
@@ -7,4 +7,3 @@ declare global {
     lastBuildTime: string;
   };
 }
-

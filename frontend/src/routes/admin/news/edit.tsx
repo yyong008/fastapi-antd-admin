@@ -12,19 +12,21 @@ export const Route = createFileRoute("/admin/news/edit")({
 });
 
 export function NewsEditRoute() {
-
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
-  const [newsCategoryData, setNewsCategoryData] = useState([])
+  const [newsCategoryData, setNewsCategoryData] = useState([]);
 
   const getData = async () => {
     setLoading(true);
-    const newsCategoryRes: any = await getNewsCategory({ page: 1, pageSize: 10000 });
+    const newsCategoryRes: any = await getNewsCategory({
+      page: 1,
+      pageSize: 10000,
+    });
 
     if (newsCategoryRes && newsCategoryRes.code === 0) {
       setNewsCategoryData(newsCategoryRes.data.list);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {

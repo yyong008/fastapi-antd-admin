@@ -70,7 +70,7 @@ export function NewsEditItem(props: any) {
         ]}
       />
       <ProForm.Item
-        style={{display:'none'}}
+        style={{ display: "none" }}
         label="编写新闻"
         name="content"
         rules={[

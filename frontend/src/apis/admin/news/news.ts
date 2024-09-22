@@ -37,7 +37,7 @@ export const createNews = async (data: any) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 export const updateNews = async (id, data: any) => {
   try {
@@ -46,15 +46,15 @@ export const updateNews = async (id, data: any) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 export const deleteNewsByIds = async (data: { ids: number[] }) => {
   try {
     const res = await request.delete("/api/admin/news/", {
-      data: data.ids
+      data: data.ids,
     });
     return res;
   } catch (error) {
     console.error(error);
   }
-}
+};

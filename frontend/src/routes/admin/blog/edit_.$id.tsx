@@ -1,15 +1,15 @@
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 
-import { BlogEditForm } from '@/components/Admin/Blog/EditDetail/blog-edit-form';
-import { createFileRoute } from '@tanstack/react-router'
+import { BlogEditForm } from "@/components/Admin/Blog/EditDetail/blog-edit-form";
+import { createFileRoute } from "@tanstack/react-router";
 import { getBlogById } from "@/apis/admin/blog/category";
 import { message } from "antd";
 import { useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/admin/blog/edit/$id')({
-  component:BlogEditDetailRoute
-})
+export const Route = createFileRoute("/admin/blog/edit/$id")({
+  component: BlogEditDetailRoute,
+});
 
 export function BlogEditDetailRoute() {
   const { id } = useParams({ strict: false });
@@ -23,14 +23,13 @@ export function BlogEditDetailRoute() {
   const getData = async () => {
     const res: any = await getBlogById(Number(id));
     if (res && res.code === 0) {
-
       setLoading(false);
       setData(res.data);
     }
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page, id]);
   return (
@@ -49,7 +48,6 @@ export function BlogEditDetailRoute() {
             //   },
             // };
             // const result: any = await updateBlog(data);
-
             // if (result.data && result.data.code === 1) {
             //   message.error(result.data.message);
             //   return false;

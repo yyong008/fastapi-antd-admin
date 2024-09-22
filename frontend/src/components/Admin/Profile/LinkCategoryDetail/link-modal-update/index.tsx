@@ -14,7 +14,7 @@ const { EditOutlined } = ic;
 export function LinkModalUpdate({ record, refetch }: any) {
   const [form] = Form.useForm();
   const { id } = useParams({ strict: false });
-  const [updateProfileLinkById, other] = [args => args, { isLoading: false }]
+  const [updateProfileLinkById, other] = [(args) => args, { isLoading: false }];
   return (
     <ModalForm
       key={Date.now()}

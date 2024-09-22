@@ -8,7 +8,7 @@ import {
 // import { useParams } from "@remix-run/react";
 
 export function MailForm({ content, refetch }: any) {
-  const [createMailTemplate, other] = [args => args, { isLoading: false}]
+  const [createMailTemplate, other] = [(args) => args, { isLoading: false }];
   const [form] = Form.useForm();
   // const { lang } = useParams();
 

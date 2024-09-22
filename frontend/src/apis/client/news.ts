@@ -13,7 +13,7 @@ export const getNewsList = async (searchParams: any) => {
 
 export const getNewsById = async (id: number) => {
   try {
-    const res = await request.get("/api/news/" + id, );
+    const res = await request.get("/api/news/" + id);
     return res;
   } catch (error) {
     console.error(error);

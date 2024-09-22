@@ -25,7 +25,6 @@ export function BlogCategoryRoute() {
     const res: any = await getBlogCategory({ ...page });
     if (res && res.code === 0) {
       setData(res.data);
-
     }
 
     setLoading(false);

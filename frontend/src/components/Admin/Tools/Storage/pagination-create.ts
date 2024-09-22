@@ -2,7 +2,7 @@ export const paginationCreate = (
   total: number,
   pageSize: number,
   current: number,
-  nav: any,
+  nav: any
 ) => {
   return {
     total,

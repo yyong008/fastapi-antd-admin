@@ -26,8 +26,7 @@ export function LinkCategoryDetailRoute() {
   });
 
   const getData = async () => {
-
-    const res: any = await getProfileLinkListByCategoryId(id,{ ...page });
+    const res: any = await getProfileLinkListByCategoryId(id, { ...page });
 
     if (res && res.code === 0) {
       setData(res.data);
@@ -36,7 +35,7 @@ export function LinkCategoryDetailRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
   return (

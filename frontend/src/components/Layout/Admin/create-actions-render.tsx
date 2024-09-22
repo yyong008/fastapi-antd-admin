@@ -20,7 +20,7 @@ const ActionRenderImpl = ({ value }: any) => {
     const p = location.pathname.split("/");
     p[1] = lang || "en-US";
 
-    navigate({to: p.join("/").trim()});
+    navigate({ to: p.join("/").trim() });
 
     value.setLang(lang || "en-US");
     window.location.href = p.join("/").trim();
@@ -57,7 +57,10 @@ export const createActionRenderWrap =
   (props: any) => {
     const goGithub = () => {
       let aTag: any = document.createElement("a");
-      aTag.setAttribute("href", "https://github.com/yyong008/fastapi-antd-admin");
+      aTag.setAttribute(
+        "href",
+        "https://github.com/yyong008/fastapi-antd-admin"
+      );
       aTag.setAttribute("target", "_blank");
       aTag.click();
       aTag = null;

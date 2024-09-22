@@ -14,7 +14,7 @@ const { EditOutlined } = ic;
 export default function ChangeLogUpdateModal({ record, refetch }: any) {
   const [form] = Form.useForm();
 
-  const [updateChangelogById, other] = [v =>v, { isLoading: false }]
+  const [updateChangelogById, other] = [(v) => v, { isLoading: false }];
   return (
     <ModalForm
       key={Date.now()}

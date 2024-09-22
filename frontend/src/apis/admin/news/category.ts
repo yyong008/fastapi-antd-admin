@@ -8,7 +8,7 @@ type TNewsCategory = {
 export type TNewsCategoryData = {
   name: string;
   description: string;
-}
+};
 
 export const getNewsCategory = async (searchParams: TNewsCategory) => {
   try {
@@ -30,7 +30,10 @@ export const createNewsCategory = async (data: TNewsCategoryData) => {
   }
 };
 
-export const updateNewsCategoryById = async (id: number, data: TNewsCategoryData) => {
+export const updateNewsCategoryById = async (
+  id: number,
+  data: TNewsCategoryData
+) => {
   try {
     const res = await request.put("/api/admin/news/category/" + id, data);
     return res;

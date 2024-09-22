@@ -3,9 +3,9 @@ import request from "@/utils/request";
 type TBlogTag = {
   page: number;
   pageSize: number;
-}
+};
 
-export const getBlogTag = async (searchParams : TBlogTag) => {
+export const getBlogTag = async (searchParams: TBlogTag) => {
   try {
     const res = await request.get("/api/admin/blog/tag/", {
       params: { page: searchParams.page, pageSize: searchParams.pageSize },

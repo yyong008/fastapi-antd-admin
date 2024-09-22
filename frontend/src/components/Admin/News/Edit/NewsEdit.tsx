@@ -35,7 +35,7 @@ export function NewsEditDrawer(props: NewsEditDrawerProps) {
           to: `/admin/news/result`,
           state: {
             title: values.title,
-            id: result.data.id
+            id: result.data.id,
           } as any,
         });
         return true;

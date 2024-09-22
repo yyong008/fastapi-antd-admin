@@ -12,7 +12,7 @@ type UpdateUserModalProps = {
 
 export function UpdateUserModal(props: UpdateUserModalProps) {
   const { loading, reload, depts, roles, record } = props;
-  const [updateUser] = [(...args: any[]): any => {}]
+  const [updateUser] = [(...args: any[]): any => {}];
   return (
     <UpdateUserModalUI
       initValue={record}

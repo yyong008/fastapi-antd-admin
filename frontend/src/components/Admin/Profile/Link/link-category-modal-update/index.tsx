@@ -11,7 +11,10 @@ const { EditOutlined } = ic;
 
 export function LinkCategoryModalUpdate({ record, refetch }: any) {
   const [form] = Form.useForm();
-  const [updateLinkCategoryById, other] = [args => args, { isLoading: false}]
+  const [updateLinkCategoryById, other] = [
+    (args) => args,
+    { isLoading: false },
+  ];
   return (
     <ModalForm
       key={Date.now()}

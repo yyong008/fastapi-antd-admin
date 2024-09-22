@@ -22,7 +22,7 @@ export function identity<T>(value: T): T {
  */
 export function formatDate(
   time: string | number | Date | dayjs.Dayjs | null | undefined,
-  format = "YYYY-MM-DD HH:mm:ss",
+  format = "YYYY-MM-DD HH:mm:ss"
 ) {
   return dayjs(time).format(format);
 }

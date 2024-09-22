@@ -7,16 +7,19 @@ import { useEffect, useState } from "react";
 
 import { MailForm } from "@/components/Admin/Tools/MailDetail/mail-form";
 import { QuillEditor } from "@/components/common/quill-editor";
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/admin/tools/mail/$id')({
-  component:MailDetailRoute
-})
+export const Route = createFileRoute("/admin/tools/mail/$id")({
+  component: MailDetailRoute,
+});
 
 export function MailDetailRoute() {
   const [content, setContent] = useState("");
   const { id } = useParams({ strict: false });
-  const { data, isLoading } = { data: {list: [], total: 0}, isLoading: false };
+  const { data, isLoading } = {
+    data: { list: [], total: 0 },
+    isLoading: false,
+  };
 
   useEffect(() => {
     setContent(data?.content);

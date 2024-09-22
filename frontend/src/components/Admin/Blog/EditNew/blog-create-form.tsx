@@ -12,9 +12,9 @@ import { useNavigate } from "@tanstack/react-router";
 
 export function BlogCreateForm() {
   const nav = useNavigate();
-  const [createBlog, others] = [(args) => args, {isLoading: false}];
-  const { data: categories = {} } = { data: {  list: [], total: 0 } };
-  const { data: tags = {} } = { data: {  list: [], total: 0 } };
+  const [createBlog, others] = [(args) => args, { isLoading: false }];
+  const { data: categories = {} } = { data: { list: [], total: 0 } };
+  const { data: tags = {} } = { data: { list: [], total: 0 } };
 
   const categoriesOptions = useMemo(() => {
     return (

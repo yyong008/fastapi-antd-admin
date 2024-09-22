@@ -3,7 +3,7 @@ import request from "@/utils/request";
 type TDict = {
   page: number;
   pageSize: number;
-}
+};
 
 export const getDict = async (searchParams: TDict) => {
   try {

@@ -1,5 +1,5 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { createFileRoute, useSearch } from '@tanstack/react-router'
+import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { blogColumnsCreate } from "@/components/Admin/Blog/Index/blog-columns-create";
@@ -11,9 +11,9 @@ import { getBlog } from "@/apis/admin/blog/blog";
 
 // import { message } from "antd";
 
-export const Route = createFileRoute('/admin/blog/')({
-  component: BlogIndexRoute
-})
+export const Route = createFileRoute("/admin/blog/")({
+  component: BlogIndexRoute,
+});
 
 export function BlogIndexRoute() {
   const search = useSearch({ strict: false });
@@ -28,18 +28,17 @@ export function BlogIndexRoute() {
   });
 
   const getData = async () => {
-    const ids: any = {}
-    if(search.category) {
-      ids.categoryId = search.category
+    const ids: any = {};
+    if (search.category) {
+      ids.categoryId = search.category;
     }
 
-    if(search.tag) {
-      ids.tagId = search.tag
+    if (search.tag) {
+      ids.tagId = search.tag;
     }
     const res: any = await getBlog({ ...page, ...ids });
     if (res && res.code === 0) {
       setData(res.data);
-
     }
 
     setLoading(false);

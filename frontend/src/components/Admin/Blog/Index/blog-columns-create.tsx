@@ -60,10 +60,7 @@ export const blogColumnsCreate = (info: any) => [
     render(_: string, record: any) {
       return (
         <Space>
-          <ButtonLink
-            to={`/admin/blog/edit/${record.id}`}
-            type={"edit"}
-          />
+          <ButtonLink to={`/admin/blog/edit/${record.id}`} type={"edit"} />
           <DeleteIt fetcher={() => {}} record={record} title={""} />
         </Space>
       );

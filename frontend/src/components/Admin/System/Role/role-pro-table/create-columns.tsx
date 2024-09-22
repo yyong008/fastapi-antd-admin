@@ -31,9 +31,7 @@ export const createColumns = ({ menus, menuRoles }: any) => [
     width: 200,
     ellipsis: true,
     render(_: any, record: any) {
-      return (
-        <Link to={`/admin/system/user?role=${record.id}`}>查看</Link>
-      );
+      return <Link to={`/admin/system/user?role=${record.id}`}>查看</Link>;
     },
   },
   {

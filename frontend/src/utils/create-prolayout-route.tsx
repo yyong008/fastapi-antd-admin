@@ -3,16 +3,14 @@ import { isExternalLink } from "./utils";
 
 function createProLayoutRouteImpl(
   items: any[],
-  parentId: number | null,
+  parentId: number | null
 ): any[] {
   return items
     .filter((item) => item.parent_menu_id === parentId)
     .map((item) => ({
       ...item,
       name: item.name,
-      path: isExternalLink(item.path)
-        ? item.path
-        : `/admin${item.path}`,
+      path: isExternalLink(item.path) ? item.path : `/admin${item.path}`,
       key: item.id + item.path, // https://github.com/ant-design/pro-components/issues/2511
       hideInMenu: !item.isShow,
       icon: item.icon ? <AntdIcon name={item.icon} /> : item.icon,

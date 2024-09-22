@@ -42,7 +42,6 @@ export function ChangeLogRoute() {
   });
 
   const getData = async () => {
-
     const res: any = await getDocsChangelog({ ...page });
 
     if (res && res.code === 0) {
@@ -52,10 +51,9 @@ export function ChangeLogRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
-
 
   const columns = [
     {

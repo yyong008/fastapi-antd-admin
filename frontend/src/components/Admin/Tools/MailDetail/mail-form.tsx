@@ -6,7 +6,7 @@ import {
 } from "@ant-design/pro-components";
 
 export function MailForm({ data, content, refetch }: any) {
-  const [createMailTemplate, other] = [ args => args, { isLoading: false}]
+  const [createMailTemplate, other] = [(args) => args, { isLoading: false }];
   const [form] = Form.useForm();
 
   const onSaveTemplate = async () => {

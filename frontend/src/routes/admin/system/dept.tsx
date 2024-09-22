@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 
 import { CreateDeptModal } from "@/components/Admin/System/Dept/create-dept-modal";
 import { createColumns } from "@/components/Admin/System/Dept/dept-pro-table/create-columns";
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { getDepts } from "@/apis/admin/system/dept";
 
-export const Route = createFileRoute('/admin/system/dept')({
-  component: DeptRoute
-})
+export const Route = createFileRoute("/admin/system/dept")({
+  component: DeptRoute,
+});
 
 export function DeptRoute() {
   const [page] = useState({
@@ -17,21 +17,19 @@ export function DeptRoute() {
   });
   const [data, setData] = useState({
     list: [],
-    total: 0
-  })
+    total: 0,
+  });
 
   const getData = async () => {
-    const res:any = await getDepts({ ...page })
-    if(res && res.code ===0) {
-      setData(res.data)
+    const res: any = await getDepts({ ...page });
+    if (res && res.code === 0) {
+      setData(res.data);
     }
-
-  }
-
+  };
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
   return (
     <PageContainer>
       <ProTable
@@ -41,9 +39,11 @@ export function DeptRoute() {
         search={false}
         pagination={false}
         // loading={isLoading}
-        options={{
-          // reload: refetch,
-        }}
+        options={
+          {
+            // reload: refetch,
+          }
+        }
         toolBarRender={() => [<CreateDeptModal record={{}} key="dept-modal" />]}
         dataSource={data?.list || []}
         columns={createColumns()}

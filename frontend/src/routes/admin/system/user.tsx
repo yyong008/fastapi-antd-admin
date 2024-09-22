@@ -19,7 +19,6 @@ export function UserRoute() {
   });
 
   const getData = async () => {
-
     const res: any = await getUsers({ ...page });
 
     if (res && res.code === 0) {
@@ -29,7 +28,7 @@ export function UserRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
   return (

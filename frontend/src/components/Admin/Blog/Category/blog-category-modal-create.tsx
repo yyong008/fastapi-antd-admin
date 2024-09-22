@@ -7,7 +7,10 @@ import BlogCategoryModalForm from "./blog-category-modal-form";
 const { EditOutlined } = ic;
 
 export function BlogCategoryModalCreate({ refetch }: any) {
-  const [createBlogCategory, other] =[(...args: any) => args, { isLoading: false }]
+  const [createBlogCategory, other] = [
+    (...args: any) => args,
+    { isLoading: false },
+  ];
   return (
     <BlogCategoryModalForm
       loading={other.isLoading}

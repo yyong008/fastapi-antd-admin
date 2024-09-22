@@ -22,11 +22,14 @@ export function EditDetailRoute() {
     pageSize: 10,
   });
   const [data, setData] = useState({});
-  const [newsCategoryData, setNewsCategoryData] = useState([])
+  const [newsCategoryData, setNewsCategoryData] = useState([]);
 
   const getData = async () => {
     const res: any = await getNewsById(Number(id));
-    const newsCategoryRes: any = await getNewsCategory({ page: 1, pageSize: 10000 });
+    const newsCategoryRes: any = await getNewsCategory({
+      page: 1,
+      pageSize: 10000,
+    });
     if (res && res.code === 0) {
       setLoading(false);
       setData(res.data);

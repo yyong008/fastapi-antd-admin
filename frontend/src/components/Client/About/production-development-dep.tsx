@@ -19,7 +19,7 @@ export const ProjectDevelopmentDep = () => {
                 <BlankLink url={value} text={pkg.devDependencies[value]} />
               </Descriptions.Item>
             );
-          },
+          }
         )}
       </Descriptions>
     </ProCard>

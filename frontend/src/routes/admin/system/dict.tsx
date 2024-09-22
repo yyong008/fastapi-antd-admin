@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 
 import { DictModal } from "@/components/Admin/System/Dict/dict/create-dict-modal";
 import { createColumns } from "@/components/Admin/System/Dict/dict-pro-table/create-columns";
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { getDict } from "@/apis/admin/system/dict";
 
-export const Route = createFileRoute('/admin/system/dict')({
-  component :DictRoute
-})
+export const Route = createFileRoute("/admin/system/dict")({
+  component: DictRoute,
+});
 
 export function DictRoute() {
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,6 @@ export function DictRoute() {
   });
 
   const getData = async () => {
-
     const res: any = await getDict({ ...page });
 
     if (res && res.code === 0) {
@@ -32,7 +31,7 @@ export function DictRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
   return (
@@ -46,11 +45,13 @@ export function DictRoute() {
         toolBarRender={() => [
           <DictModal record={{}} key="create-dict-modal" />,
         ]}
-        dataSource={ data.list ?? []}
+        dataSource={data.list ?? []}
         columns={createColumns()}
-        options={{
-          // reload: refetch,
-        }}
+        options={
+          {
+            // reload: refetch,
+          }
+        }
       />
     </PageContainer>
   );

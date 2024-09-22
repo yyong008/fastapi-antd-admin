@@ -3,9 +3,9 @@ import request from "@/utils/request";
 type TDict = {
   page: number;
   pageSize: number;
-}
+};
 
-export const getDictItem = async (id: number,searchParams: TDict) => {
+export const getDictItem = async (id: number, searchParams: TDict) => {
   try {
     const res = await request.get("/api/admin/system/dict-item/" + id, {
       params: {

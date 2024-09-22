@@ -7,12 +7,12 @@ import {
 } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { getProfileAccount } from "@/apis/admin/profile/account";
 
-export const Route = createFileRoute('/admin/profile/account')({
-  component: ProfileAccountRoute
-})
+export const Route = createFileRoute("/admin/profile/account")({
+  component: ProfileAccountRoute,
+});
 
 export function ProfileAccountRoute() {
   const [form] = ProForm.useForm();
@@ -21,10 +21,9 @@ export function ProfileAccountRoute() {
     page: 1,
     pageSize: 10,
   });
-  const [,setData] = useState({});
+  const [, setData] = useState({});
 
   const getData = async () => {
-
     const res: any = await getProfileAccount();
 
     if (res && res.code === 0) {
@@ -45,7 +44,7 @@ export function ProfileAccountRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
   return (

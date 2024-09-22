@@ -11,9 +11,7 @@ export function Disk({ data }: any) {
           <Col span={6}>
             <Progress
               type="dashboard"
-              percent={getPercentValue(
-                (diskInfo.used) / diskInfo.size
-              )}
+              percent={getPercentValue(diskInfo.used / diskInfo.size)}
             />
           </Col>
           <Col span={18}>

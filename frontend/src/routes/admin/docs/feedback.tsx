@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { FeedbackModalCreate } from "@/components/Admin/Docs/Feedback/FeedbackModalCreate";
 import { FormatTime } from "@/components/common/format-time";
 import { Image } from "antd";
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { getDocsFeedback } from "@/apis/admin/docs/feedback";
 
-export const Route = createFileRoute('/admin/docs/feedback')({
-  component: FeedbackRoute
-})
+export const Route = createFileRoute("/admin/docs/feedback")({
+  component: FeedbackRoute,
+});
 
 export function FeedbackRoute() {
-  const refetch = args => args
+  const refetch = (args) => args;
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
@@ -24,7 +24,6 @@ export function FeedbackRoute() {
   });
 
   const getData = async () => {
-
     const res: any = await getDocsFeedback({ ...page });
 
     if (res && res.code === 0) {
@@ -34,7 +33,7 @@ export function FeedbackRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
 

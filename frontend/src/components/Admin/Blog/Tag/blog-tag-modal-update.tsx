@@ -9,7 +9,7 @@ const { EditOutlined } = ic;
 
 export function BlogTagModalUpdate({ record, refetch }: any) {
   const { id } = useParams({ strict: false });
-  const [updateBlogTag] = [(...args: any) => args]
+  const [updateBlogTag] = [(...args: any) => args];
   return (
     <BlogTagModalForm
       title="修改标签"

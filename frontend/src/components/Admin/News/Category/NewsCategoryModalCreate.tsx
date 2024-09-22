@@ -1,11 +1,11 @@
 import { Button } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { NewsCategoryModalBase } from "./NewCategoryModalBase";
-import { createNewsCategory } from '@/apis/admin/news/category'
+import { createNewsCategory } from "@/apis/admin/news/category";
 import { useState } from "react";
 
 export function NewsCategoryModalCreate({ refetch }: any) {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   return (
     <NewsCategoryModalBase
       refetch={refetch}
@@ -20,13 +20,12 @@ export function NewsCategoryModalCreate({ refetch }: any) {
       onOpenChange={() => {}}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        setLoading(true)
+        setLoading(true);
 
         const result: any = await createNewsCategory(values);
-        setLoading(false)
-        return result
+        setLoading(false);
+        return result;
       }}
-    >
-    </NewsCategoryModalBase>
+    ></NewsCategoryModalBase>
   );
 }

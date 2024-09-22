@@ -11,7 +11,7 @@ const { EditOutlined } = ic;
 
 export function FeedbackModalCreate({ refetch }: any) {
   const [form] = Form.useForm();
-  const [createFeedback, other] = [v => v, { isLoading: false }]
+  const [createFeedback, other] = [(v) => v, { isLoading: false }];
   return (
     <ModalForm
       key={Date.now()}

@@ -11,7 +11,7 @@ type DeleteItProps = {
 };
 
 export function DeleteIt({ record, title, refetch }: DeleteItProps) {
-  const [deletePrpfileLinkCategory] = [args => args]
+  const [deletePrpfileLinkCategory] = [(args) => args];
 
   return (
     <Form>

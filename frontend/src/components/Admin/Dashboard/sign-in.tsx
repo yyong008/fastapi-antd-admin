@@ -9,7 +9,7 @@ const { CheckCircleFilled } = ic;
 
 export function SignIn({ data: _data }: any) {
   const [data, setData] = useState(_data);
-  const [signIn, signInOther] = [v =>v, { isLoading: false}];
+  const [signIn, signInOther] = [(v) => v, { isLoading: false }];
   const signInHanlder = async () => {
     const result: any = await signIn({}).unwrap();
     if (result.code === 0) {

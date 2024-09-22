@@ -17,8 +17,8 @@ export function BlogEditForm({
   onFinish: any;
   loading: boolean;
 }) {
-  const { data: categories = {} } = { data:  { list: [], total: 0 }}
-  const { data: tags = {} } = { data: {  list: [], total: 0 }}
+  const { data: categories = {} } = { data: { list: [], total: 0 } };
+  const { data: tags = {} } = { data: { list: [], total: 0 } };
 
   const categoriesOptions = useMemo(() => {
     return (

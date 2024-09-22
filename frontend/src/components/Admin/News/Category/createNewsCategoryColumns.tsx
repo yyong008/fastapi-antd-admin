@@ -31,10 +31,7 @@ export const createNewsCategoryColumns = ({ refetch }) => [
             record={record}
             refetch={refetch as any}
           />
-          <NewsCategoryPopconfirmDelete
-            record={record}
-            refetch={refetch}
-          />
+          <NewsCategoryPopconfirmDelete record={record} refetch={refetch} />
         </Space>
       );
     },

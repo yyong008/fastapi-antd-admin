@@ -11,17 +11,16 @@ type NewsEditDetailDrawerProps = {
   id: number;
   data: any;
   newsCategory: any;
-  content: string
-}
+  content: string;
+};
 
 export function NewsEditDetailDrawer(props: NewsEditDetailDrawerProps) {
   const nav = useNavigate();
-  const [form] = ProForm.useForm()
+  const [form] = ProForm.useForm();
   useEffect(() => {
-    form.setFieldsValue(props.data)
-    form.setFieldValue('content', props.content)
-
-  }, [props.data, props.content])
+    form.setFieldsValue(props.data);
+    form.setFieldValue("content", props.content);
+  }, [props.data, props.content]);
 
   return (
     <DrawerForm
@@ -40,13 +39,16 @@ export function NewsEditDetailDrawer(props: NewsEditDetailDrawerProps) {
           state: {
             title: values.title,
             id: result.data.id,
-            type: 'update'
+            type: "update",
           } as any,
         });
         return true;
       }}
     >
-      <NewsEditItem newsCategory={props.newsCategory || []}  content={props.content} />
+      <NewsEditItem
+        newsCategory={props.newsCategory || []}
+        content={props.content}
+      />
     </DrawerForm>
   );
 }

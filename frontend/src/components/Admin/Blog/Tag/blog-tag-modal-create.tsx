@@ -7,7 +7,7 @@ import { BlogTagModalForm } from "./blog-tag-modal-form";
 const { EditOutlined } = ic;
 
 export function BlogTagModalCreate({ refetch }: any) {
-  const [createBlogTag] = [(args: any) => args]
+  const [createBlogTag] = [(args: any) => args];
   return (
     <BlogTagModalForm
       title="创建标签"

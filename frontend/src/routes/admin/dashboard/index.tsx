@@ -24,7 +24,6 @@ export function DashboardRoute() {
   });
 
   const getData = async () => {
-
     const res: any = await getDashboardData();
 
     if (res && res.code === 0) {
@@ -34,7 +33,7 @@ export function DashboardRoute() {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [page]);
 

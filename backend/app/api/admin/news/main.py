@@ -6,7 +6,6 @@ from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.db.client import get_db
 from app.services.news.news import (
     create_news_service,
-    delete_news_by_ids_service,
     get_news_by_id_service,
     get_news_list_service,
     update_news_service,
@@ -54,5 +53,5 @@ def update_news(
 
 @router.delete("/", response_model=ResponseModel)
 def delete_news_by_ids(ids: List[int], db: Session = Depends(get_db)):
-    data = delete_news_by_ids_service(ids, db)
+    data = delete_news_by_ids(ids, db)
     return ResponseSuccessModel(data=data)

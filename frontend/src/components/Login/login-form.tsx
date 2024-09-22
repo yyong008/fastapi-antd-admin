@@ -41,28 +41,28 @@ export function LoginFormWrap({ children }: any) {
                 style={{ borderRadius: "10px" }}
               />
             }
-            title={"login-register.title"}
-            subTitle={"login-register.desc"}
+            title={"FastAPI Antd Admin"}
+            subTitle={"一个基于 FastAPI React Antd 的全栈管理系统"}
             initialValues={{
               autoLogin: true,
               username: "super admin",
               password: "123456",
             }}
-            actions={[
-              <div
-                className="flex items-centermt-[20px] text-black"
-                key="login-other"
-              >
-                <div>{"login-register.other-login"}</div>
-                {/* <ActionIcons key="icons" /> */}
-              </div>,
-            ]}
+            // actions={[
+            //   <div
+            //     className="flex items-centermt-[20px] text-black"
+            //     key="login-other"
+            //   >
+            //     <div>{"login-register.other-login"}</div>
+            //     {/* <ActionIcons key="icons" /> */}
+            //   </div>,
+            // ]}
             onFinish={async (values: string) => {
               await handleSubmit(values);
             }}
             submitter={{
               searchConfig: {
-                submitText: "login-register.submit",
+                submitText: "登录",
               },
             }}
           >

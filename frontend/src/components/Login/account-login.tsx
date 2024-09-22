@@ -31,7 +31,7 @@ export function AccountLogin(props: AccountLoginProps) {
           size: "large",
           prefix: <LockOutlined />,
         }}
-        placeholder={"login-register.placeholder.password"}
+        placeholder={"请输入密码"}
         rules={[
           {
             required: true,

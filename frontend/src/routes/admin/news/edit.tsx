@@ -1,4 +1,4 @@
-import { Button, Space, message } from "antd";
+import { Button, Space } from "antd";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 
@@ -6,16 +6,12 @@ import { NewsEditDrawer } from "@/components/Admin/News/Edit/NewsEdit";
 import { QuillEditor } from "@/components/common/quill-editor";
 import { createFileRoute } from "@tanstack/react-router";
 import { getNewsCategory } from "@/apis/admin/news/category";
-import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/news/edit")({
   component: NewsEditRoute,
 });
 
 export function NewsEditRoute() {
-  const nav = useNavigate();
-
-  const [createNews] = [(args) => args];
 
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
@@ -38,34 +34,18 @@ export function NewsEditRoute() {
   return (
     <PageContainer loading={loading}>
       <ProCard
-        style={{ height: 600 }}
-        title="新闻"
-        tooltip=""
+        title="编辑新闻（创建）"
         extra={
           <Space>
             <NewsEditDrawer
               newsCategory={newsCategoryData}
-              trigger={<Button type="primary">添加新闻</Button>}
-              onFinish={async (v) => {
-                const result = await createNews(v);
-                if (result.data?.code !== 0) {
-                  message.error(result.data?.message);
-                  return false;
-                }
-                message.success(result.data?.message);
-                nav({
-                  to: `/admin/news/result`,
-                  state: {
-                    // title: v.title, id: result.data.data.id
-                  },
-                });
-                return true;
-              }}
+              content={content}
+              trigger={<Button type="primary">创建新闻</Button>}
             />
           </Space>
         }
       >
-        <div style={{ height: "400px" }}>
+        <div>
           <QuillEditor content={content} setContent={setContent} />
         </div>
       </ProCard>

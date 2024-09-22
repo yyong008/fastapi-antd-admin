@@ -2,8 +2,13 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 
-from app.schemas.news.news_category import NewsCategory
-
+class NewsCreate(BaseModel):
+    author: str
+    categoryId: int
+    content: str
+    publishedAt: datetime
+    source: str
+    title: str
 
 class NewsBase(BaseModel):
     title: str = Field(..., title="Title", description="The title of the news article")
@@ -35,9 +40,6 @@ class NewsBase(BaseModel):
         description="The ID of the user who uploaded the news article",
     )
 
-
-class NewsCreate(NewsBase):
-    pass
 
 
 class NewsUpdate(NewsBase):

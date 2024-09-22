@@ -33,9 +33,19 @@ export const Editor = ({ onChange, content, setContent }: any) => {
   }, []);
 
   useEffect(() => {
-    // Ensure content is set after initialization
     if (quillRef.current && content) {
-      quillRef.current.root.innerHTML = content;
+      // Get current selection (cursor position)
+      const range = quillRef.current.getSelection();
+
+      // Use Quill's API to safely update the content
+      if (quillRef.current.root.innerHTML !== content) {
+        quillRef.current.clipboard.dangerouslyPasteHTML(content);
+      }
+
+      // Restore selection after content update
+      if (range) {
+        quillRef.current.setSelection(range.index, range.length);
+      }
     }
   }, [content]); // Only re-run when content changes
 

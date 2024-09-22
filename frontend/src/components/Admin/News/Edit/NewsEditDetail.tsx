@@ -1,5 +1,5 @@
-import { DrawerForm } from "@ant-design/pro-components";
-import { Form } from "antd";
+import { DrawerForm, ProForm } from "@ant-design/pro-components";
+
 import { NewsEditItem } from "./NewsEditItem";
 import { useEffect } from "react";
 
@@ -11,13 +11,11 @@ type NewsEditDetailDrawerProps = {
 }
 
 export function NewsEditDetailDrawer(props: NewsEditDetailDrawerProps) {
-  const [form] = Form.useForm()
+  const [form] = ProForm.useForm()
   useEffect(() => {
-    // console.log(props.data)
     form.setFieldsValue(props.data)
   }, [props.data])
 
-  console.log(props)
   return (
     <DrawerForm
       form={form}

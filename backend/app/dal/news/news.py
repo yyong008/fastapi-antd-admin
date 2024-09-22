@@ -43,3 +43,11 @@ def get_news_list_by_category_id(category_id: int, limit, offset, db: Session):
 
 def get_news_by_id(id, db):
     return db.query(News).filter(News.id == id).first()
+
+def create_news(news, db: Session):
+    
+    new_news = News(**news)
+    db.add(new_news)
+    db.commit()
+    db.refresh(new_news)
+    return new_news

@@ -79,6 +79,7 @@ export function NewsEditItem(props: any) {
             message: "请输入",
           },
         ]}
+        initialValue={props.content}
       >
         <ProFormTextArea />
       </ProForm.Item>

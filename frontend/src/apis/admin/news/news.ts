@@ -29,3 +29,12 @@ export const getNewsById = async (id: number) => {
     console.error(error);
   }
 };
+
+export const createNews = async (data: any) => {
+  try {
+    const res = await request.post("/api/admin/news/", data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}

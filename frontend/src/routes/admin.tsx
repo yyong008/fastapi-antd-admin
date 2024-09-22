@@ -26,6 +26,8 @@ export const Route = createFileRoute("/admin")({
     const res: any = await getUserInfo();
     if(res && res.code === 0) {
       localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+    } else {
+      throw redirect({ to: "/admin/login"});
     }
     return res?.data;
   },

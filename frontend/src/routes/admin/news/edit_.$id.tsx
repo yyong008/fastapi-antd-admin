@@ -1,12 +1,12 @@
-import { Button, Space, message } from "antd";
+import { Button, Space } from "antd";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 
-import { NewsEditDrawer } from "@/components/Admin/News/Edit/NewsEdit";
+import { NewsEditDetailDrawer } from "@/components/Admin/News/Edit/NewsEditDetail";
 import { QuillEditor } from "@/components/common/quill-editor";
 import { createFileRoute } from "@tanstack/react-router";
 import { getNewsById } from "@/apis/admin/news/news";
-import { updateNewsCategoryById } from "@/apis/admin/news/category";
+import { getNewsCategory } from "@/apis/admin/news/category";
 import { useParams } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/news/edit/$id")({
@@ -22,13 +22,19 @@ export function EditDetailRoute() {
     pageSize: 10,
   });
   const [data, setData] = useState({});
+  const [newsCategoryData, setNewsCategoryData] = useState([])
 
   const getData = async () => {
     const res: any = await getNewsById(Number(id));
+    const newsCategoryRes: any = await getNewsCategory({ page: 1, pageSize: 10000 });
     if (res && res.code === 0) {
       setLoading(false);
       setData(res.data);
       setContent(res.data.content);
+    }
+
+    if (newsCategoryRes && newsCategoryRes.code === 0) {
+      setNewsCategoryData(newsCategoryRes.data.list);
     }
   };
 
@@ -45,22 +51,24 @@ export function EditDetailRoute() {
         tooltip=""
         extra={
           <Space>
-            <NewsEditDrawer
+            <NewsEditDetailDrawer
+              data={data}
+              newsCategory={newsCategoryData}
               trigger={<Button type="primary">修改新闻</Button>}
-              onFinish={async (v) => {
-                const result: any = await updateNewsCategoryById(id, v);
-                if (result && result?.code !== 0) {
-                  message.error(result?.message);
-                  return false;
-                }
-                message.success(result?.message);
-                // nav({
-                //   to: `/admin/news/result`,
-                //   state: {
-                //     // title: v.title, id: result.data.data.id
-                //   },
-                // });
-                return true;
+              onFinish={async () => {
+                // const result: any = await updateNewsCategoryById(id, v);
+                // if (result && result?.code !== 0) {
+                //   message.error(result?.message);
+                //   return false;
+                // }
+                // message.success(result?.message);
+                // // nav({
+                // //   to: `/admin/news/result`,
+                // //   state: {
+                // //     // title: v.title, id: result.data.data.id
+                // //   },
+                // // });
+                // return true;
               }}
             />
           </Space>

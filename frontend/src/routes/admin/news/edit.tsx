@@ -1,11 +1,12 @@
 import { Button, Space, message } from "antd";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
+import { useEffect, useState } from "react";
 
 import { NewsEditDrawer } from "@/components/Admin/News/Edit/NewsEdit";
 import { QuillEditor } from "@/components/common/quill-editor";
 import { createFileRoute } from "@tanstack/react-router";
+import { getNewsCategory } from "@/apis/admin/news/category";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 
 export const Route = createFileRoute("/admin/news/edit")({
   component: NewsEditRoute,
@@ -13,10 +14,29 @@ export const Route = createFileRoute("/admin/news/edit")({
 
 export function NewsEditRoute() {
   const nav = useNavigate();
-  const [content, setContent] = useState("");
+
   const [createNews] = [(args) => args];
+
+  const [loading, setLoading] = useState(false);
+  const [content, setContent] = useState("");
+  const [newsCategoryData, setNewsCategoryData] = useState([])
+
+  const getData = async () => {
+    setLoading(true);
+    const newsCategoryRes: any = await getNewsCategory({ page: 1, pageSize: 10000 });
+
+    if (newsCategoryRes && newsCategoryRes.code === 0) {
+      setNewsCategoryData(newsCategoryRes.data.list);
+    }
+    setLoading(false)
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getData();
+  }, []);
   return (
-    <PageContainer>
+    <PageContainer loading={loading}>
       <ProCard
         style={{ height: 600 }}
         title="新闻"
@@ -24,6 +44,7 @@ export function NewsEditRoute() {
         extra={
           <Space>
             <NewsEditDrawer
+              newsCategory={newsCategoryData}
               trigger={<Button type="primary">添加新闻</Button>}
               onFinish={async (v) => {
                 const result = await createNews(v);

@@ -1,7 +1,13 @@
 import { DrawerForm } from "@ant-design/pro-components";
 import { NewsEditItem } from "./NewsEditItem";
 
-export function NewsEditDrawer(props: any) {
+type NewsEditDrawerProps = {
+  trigger: any;
+  onFinish: any;
+  newsCategory: any[]
+}
+
+export function NewsEditDrawer(props: NewsEditDrawerProps) {
   return (
     <DrawerForm
       title="创建新闻"
@@ -10,7 +16,7 @@ export function NewsEditDrawer(props: any) {
         props.onFinish(values);
       }}
     >
-      <NewsEditItem />
+      <NewsEditItem newsCategory={props.newsCategory || []} />
     </DrawerForm>
   );
 }

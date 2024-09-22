@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
-export function NewsEditItem() {
+export function NewsEditItem(props: any) {
   return (
     <>
       <ProFormText
@@ -41,7 +41,7 @@ export function NewsEditItem() {
       />
       <ProFormDateTimePicker
         label="新闻发布时间"
-        name="date"
+        name="publishedAt"
         width={"100%" as any}
         rules={[
           {
@@ -52,9 +52,9 @@ export function NewsEditItem() {
       />
       <ProFormSelect
         label="分类"
-        name="newsId"
+        name="categoryId"
         request={async () => {
-          const ncs: any[] = [];
+          const ncs: any[] = props.newsCategory;
           return ncs?.map((c: any) => {
             return {
               label: c.name,
@@ -70,6 +70,7 @@ export function NewsEditItem() {
         ]}
       />
       <ProForm.Item
+        style={{display:'none'}}
         label="编写新闻"
         name="content"
         rules={[

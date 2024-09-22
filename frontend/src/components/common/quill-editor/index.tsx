@@ -2,64 +2,50 @@ import "quill/dist/quill.snow.css";
 
 import { useEffect, useRef } from "react";
 
-const Q = async () => {
-  const Q = (await import("quill")).default;
-  return Q;
-};
+import Quill from "quill";
 
-export const Editor = ({
-  // value,
-  onChange,
-  // content,
-  setContent,
-  initContent,
-}: any) => {
+export const Editor = ({ onChange, content, setContent }: any) => {
   const editorRef = useRef<any>(null);
-  const quillRef = useRef<any>();
+  const quillRef = useRef<any>(null);
 
-  const init = async () => {
-    const Quill = await Q();
-    quillRef.current = new Quill(editorRef.current, {
-      theme: "snow",
-    });
+  // Initialize Quill Editor
+  const init = () => {
+    if (editorRef.current && !quillRef.current) {
+      quillRef.current = new Quill(editorRef.current, {
+        theme: "snow",
+      });
 
-    quillRef.current?.on("text-change", () => {
-      const content = quillRef.current?.root.innerHTML;
-      onChange?.(content);
-      setContent(content);
-    });
-
-    return quillRef;
+      quillRef.current?.on("text-change", () => {
+        const newContent = quillRef.current?.root.innerHTML;
+        onChange?.(newContent);
+        setContent(newContent);
+      });
+    }
   };
 
   useEffect(() => {
-    if (initContent && quillRef.current) {
-      quillRef.current?.clipboard.dangerouslyPasteHTML(initContent);
-      // quillRef.current.root.innerHTML = content
-    }
-  }, [initContent]);
+    init(); // Initialize the editor
 
-  useEffect(() => {
-    if (!quillRef.current) {
-      init();
-    }
-
+    // Cleanup when unmounting the component
     return () => {
       quillRef.current?.off("text-change");
     };
   }, []);
 
+  useEffect(() => {
+    // Ensure content is set after initialization
+    if (quillRef.current && content) {
+      quillRef.current.root.innerHTML = content;
+    }
+  }, [content]); // Only re-run when content changes
+
   return <div ref={editorRef} />;
 };
 
-export const QuillEditor = ({ content, setContent, initContent }: any) => {
+export const QuillEditor = ({ content, setContent }: any) => {
   return (
     <>
-      <Editor
-        initContent={initContent}
-        content={content}
-        setContent={setContent}
-      />
+      <Editor content={content} setContent={setContent} />
     </>
   );
 };

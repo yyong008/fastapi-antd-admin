@@ -28,6 +28,7 @@ def format_news_by_id(news):
         "author": news.author,
         "source": news.source,
         "viewCount": news.viewCount,
-        # "publishAt": news.publishAt,
+        "publishedAt": news.publishedAt,
         "userId": news.user_id,
+        "categoryId": news.news_id
     }

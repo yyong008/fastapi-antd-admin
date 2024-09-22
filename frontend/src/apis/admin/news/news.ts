@@ -38,3 +38,23 @@ export const createNews = async (data: any) => {
     console.error(error);
   }
 }
+
+export const updateNews = async (id, data: any) => {
+  try {
+    const res = await request.put("/api/admin/news/" + id, data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const deleteNewsByIds = async (data: { ids: number[] }) => {
+  try {
+    const res = await request.delete("/api/admin/news/", {
+      data: data.ids
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}

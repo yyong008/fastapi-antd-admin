@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -5,10 +6,12 @@ from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.db.client import get_db
 from app.services.news.news import (
     create_news_service,
+    delete_news_by_ids_service,
     get_news_by_id_service,
     get_news_list_service,
+    update_news_service,
 )
-from app.schemas.news.news import NewsCreate
+from app.schemas.news.news import NewsCreate, NewsUpdate
 from app.utils.current_user import get_current_user
 
 router = APIRouter(tags=["News Main"])
@@ -29,7 +32,7 @@ def get_news(category_id: int, page: int, pageSize: int, db: Session = Depends(g
 @router.post("/", response_model=ResponseModel)
 def create_news(
     data: NewsCreate,
-    current_user = Depends(get_current_user),
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     news = data.model_dump()
@@ -38,12 +41,18 @@ def create_news(
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_news():
-    data = {}
+def update_news(
+    id: int,
+    data: NewsUpdate,
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    news = data.model_dump()
+    data = update_news_service(id, news, current_user.id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_news_by_ids():
-    data = {}
+def delete_news_by_ids(ids: List[int], db: Session = Depends(get_db)):
+    data = delete_news_by_ids_service(ids, db)
     return ResponseSuccessModel(data=data)

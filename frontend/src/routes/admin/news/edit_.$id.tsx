@@ -52,24 +52,11 @@ export function EditDetailRoute() {
         extra={
           <Space>
             <NewsEditDetailDrawer
+              id={id}
               data={data}
+              content={content}
               newsCategory={newsCategoryData}
               trigger={<Button type="primary">修改新闻</Button>}
-              onFinish={async () => {
-                // const result: any = await updateNewsCategoryById(id, v);
-                // if (result && result?.code !== 0) {
-                //   message.error(result?.message);
-                //   return false;
-                // }
-                // message.success(result?.message);
-                // // nav({
-                // //   to: `/admin/news/result`,
-                // //   state: {
-                // //     // title: v.title, id: result.data.data.id
-                // //   },
-                // // });
-                // return true;
-              }}
             />
           </Space>
         }

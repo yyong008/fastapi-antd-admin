@@ -15,21 +15,15 @@ def get_account(current_user: dict = Depends(get_current_user), db: Session = De
     return ResponseSuccessModel(data=data)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_account_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
-def create_account():
-    return {"success": "ok"}
 
-
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_account_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
-
-@router.delete("/")
-def delete_account():
-    return {"success": "ok"}

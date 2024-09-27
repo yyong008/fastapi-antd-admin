@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.client import get_db
 
-from app.schemas.response import ResponseSuccessModel
+from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.services.sys.dept import get_dept_tree_data
 
 router = APIRouter(prefix="/dept", tags=["Dept"])
@@ -16,24 +16,28 @@ def get_dict_dept(page: int = 1, pageSize: int = 10, db: Session = Depends(get_d
     return ResponseSuccessModel(data=data)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_dict_dept_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_dict_dept():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_dict_dept_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_dict_dept():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:

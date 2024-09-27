@@ -13,18 +13,19 @@ def get_dict_item(id: int, page: int = 1, pageSize: int = 10, db: Session = Depe
     data = get_dict_item_list(id, page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
-
-
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_dict_item():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_dict_item_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_dict_item():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

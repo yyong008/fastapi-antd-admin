@@ -32,3 +32,14 @@ def get_blog_by_id_service(id, db: Session):
         return format_blog(blog)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
+
+
+def update_blog_service(id, name, db: Session):
+    pass
+
+def create_blog_service(name, db: Session):
+    pass
+
+def delete_blog_by_ids_service(ids, db: Session):
+    pass
+

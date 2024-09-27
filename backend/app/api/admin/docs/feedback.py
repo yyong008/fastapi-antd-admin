@@ -13,16 +13,18 @@ def docs_feedback(page: int, pageSize: int, db: Session = Depends(get_db)):
     return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def post_docs_feedback():
     return {"success": "ok"}
 
 
-@router.put("/")
+@router.put("/", response_model=ResponseModel)
 def put_docs_feedback():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_by_ids_docs_feedback():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

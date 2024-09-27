@@ -16,19 +16,23 @@ def get_dict(page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)):
 
 @router.get("/{id}")
 def get_dict_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 @router.post("/")
 def create_dict():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}")
 def update_dict_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 @router.delete("/")
 def delete_dict():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

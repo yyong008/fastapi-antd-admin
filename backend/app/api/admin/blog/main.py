@@ -9,7 +9,7 @@ from app.schemas.response import ResponseModel, ResponseSuccessModel
 router = APIRouter(tags=["Admin Blog Main"])
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_blog_by_id(id: int,  db: Session = Depends(get_db),):
     data = get_blog_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
@@ -27,16 +27,19 @@ def get_blogs(
     return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
-def create_blog():
-    return {"success": "ok"}
+@router.post("/", response_model=ResponseModel)
+def create_blog(blog):
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_blog():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_blog_by_ids():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

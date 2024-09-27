@@ -14,21 +14,25 @@ def get_link_category(page: int = 1, per_page: int = 10, db: Session = Depends(g
     return ResponseSuccessModel(data=data)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_link_category_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_link_category():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_link_category_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
-def delete_link_category():
-    return {"success": "ok"}
+@router.delete("/", response_model=ResponseModel)
+def delete_link_by_ids_category():
+    data = {}
+    return ResponseSuccessModel(data=data)

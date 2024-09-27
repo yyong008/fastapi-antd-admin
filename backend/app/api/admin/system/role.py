@@ -15,19 +15,23 @@ def get_all_roles(db: Session = Depends(get_db)):
 
 @router.get("/{id}")
 def get_role_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_role():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_role_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_role():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

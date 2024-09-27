@@ -20,16 +20,19 @@ def get_link_by_id(id: int, page: int, pageSize: int, db: Session = Depends(get_
     return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_link():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_link_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
-def delete_link():
-    return {"success": "ok"}
+@router.delete("/", response_model=ResponseModel)
+def delete_link_by_ids():
+    data = {}
+    return ResponseSuccessModel(data=data)

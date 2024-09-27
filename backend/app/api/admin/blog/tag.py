@@ -14,21 +14,25 @@ def get_blog_tag(page: int, pageSize: int, db: Session = Depends(get_db)):
     return ResponseSuccessModel(data=data)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_blog_tag_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_blog_tag():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_blog_tag_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_blog_tag():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

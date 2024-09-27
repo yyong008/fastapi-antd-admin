@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.news import NewsCategory
 
@@ -26,3 +27,27 @@ def get_news_category_by_name(name: str, db: Session):
 
 def get_news_category_by_id(id: int, db: Session):
     return db.query(NewsCategory).filter(NewsCategory.id == id).first()
+
+
+def create_news_category_category(news_category, db: Session):
+    db.add(news_category)
+    db.commit()
+    db.refresh(news_category)
+    return news_category
+
+def update_news_category_by_id(db: Session, news_category_id: int, news_category: NewsCategory):
+    db.query(NewsCategory).filter(NewsCategory.id == news_category_id).update(news_category)
+    db.commit()
+    db.refresh(news_category)
+    return news_category
+
+def delete_news_category_by_ids(ids, db):
+    try:
+        count = (
+            db.query(NewsCategory).filter(NewsCategory.id.in_(ids)).delete(synchronize_session=False)
+        )
+        db.commit()
+
+        return count
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

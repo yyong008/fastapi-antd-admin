@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.profile.link import LinkCategory
 
@@ -27,3 +28,27 @@ def get_link_category_by_id(link_id, db: Session):
 
 def get_link_category_by_ids(ids, db: Session):
     return db.query(LinkCategory).filter(LinkCategory.id.in_(ids)).all()
+
+
+def create_link_category(link_category, db: Session):
+    db.add(link_category)
+    db.commit()
+    db.refresh(link_category)
+    return link_category
+
+def update_link_category_by_id(db: Session, link_category_id: int, link_category: LinkCategory):
+    db.query(LinkCategory).filter(LinkCategory.id == link_category_id).update(link_category)
+    db.commit()
+    db.refresh(link_category)
+    return link_category
+
+def delete_link_category_by_ids(ids, db):
+    try:
+        count = (
+            db.query(LinkCategory).filter(LinkCategory.id.in_(ids)).delete(synchronize_session=False)
+        )
+        db.commit()
+
+        return count
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

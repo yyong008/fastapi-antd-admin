@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.system.config import Config
 
@@ -27,3 +28,27 @@ def get_config_by_id(config_id, db: Session):
 
 def get_configs_by_ids(ids, db: Session):
     return db.query(Config).filter(Config.id.in_(ids)).all()
+
+def create_config_category(config, db: Session):
+    db.add(config)
+    db.commit()
+    db.refresh(config)
+    return config
+
+def update_config_by_id(db: Session, config_id: int, config: Config):
+    db.query(Config).filter(Config.id == config_id).update(config)
+    db.commit()
+    db.refresh(config)
+    return config
+
+def delete_config_by_ids(ids, db):
+    try:
+        count = (
+            db.query(Config).filter(Config.id.in_(ids)).delete(synchronize_session=False)
+        )
+        db.commit()
+
+        return count
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+

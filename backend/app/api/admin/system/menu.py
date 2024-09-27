@@ -20,19 +20,23 @@ def get_menu_tree(db: Session = Depends(get_db)):
 
 @router.get("/{id}")
 def get_menu_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 @router.post("/")
 def create_menu():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}")
 def update_menu_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
 @router.delete("/")
 def delete_menu():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

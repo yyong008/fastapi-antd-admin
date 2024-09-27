@@ -1,28 +1,35 @@
 from fastapi import APIRouter
 
+from app.schemas.response import ResponseModel, ResponseSuccessModel
+
 router = APIRouter(prefix="/mail", tags=["Mail"])
 
 
-@router.get("/")
+@router.get("/", response_model=ResponseModel)
 def get_mail():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_mail_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_mail():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_mail_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_mail():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

@@ -1,28 +1,35 @@
 from fastapi import APIRouter
 
+from app.schemas.response import ResponseModel, ResponseSuccessModel
+
 router = APIRouter(prefix="/config", tags=["Admin System Config"])
 
 
-@router.get("/")
+@router.get("/", response_model=ResponseModel)
 def get_config_list():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=ResponseModel)
 def get_config_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 def create_config():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=ResponseModel)
 def update_config_by_id():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)
 
 
-@router.delete("/")
+@router.delete("/", response_model=ResponseModel)
 def delete_config():
-    return {"success": "ok"}
+    data = {}
+    return ResponseSuccessModel(data=data)

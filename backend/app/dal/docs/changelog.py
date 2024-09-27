@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.docs.changelog import ChangeLog
 
@@ -18,3 +19,26 @@ def get_changelog_list(db: Session, page: int = 1, pageSize: int = 10):
     offset = (page - 1) * pageSize
     # sort_column = ChangeLog.createdAt.desc()
     return db.query(ChangeLog).offset(offset).limit(limit).all()
+
+def create_changelog_category(changelog, db: Session):
+    db.add(changelog)
+    db.commit()
+    db.refresh(changelog)
+    return changelog
+
+def update_changelog_by_id(db: Session, blog_id: int, changelog: ChangeLog):
+    db.query(ChangeLog).filter(ChangeLog.id == blog_id).update(changelog)
+    db.commit()
+    db.refresh(changelog)
+    return changelog
+
+def delete_changelog_by_ids(ids, db):
+    try:
+        count = (
+            db.query(ChangeLog).filter(ChangeLog.id.in_(ids)).delete(synchronize_session=False)
+        )
+        db.commit()
+
+        return count
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

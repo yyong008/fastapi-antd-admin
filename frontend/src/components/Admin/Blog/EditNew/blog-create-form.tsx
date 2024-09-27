@@ -1,5 +1,5 @@
 import {
-  ProForm,
+  DrawerForm,
   ProFormDateTimePicker,
   ProFormSelect,
   ProFormText,
@@ -10,7 +10,7 @@ import { message } from "antd";
 import { useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 
-export function BlogCreateForm() {
+export function BlogCreateForm(props: any) {
   const nav = useNavigate();
   const [createBlog, others] = [(args) => args, { isLoading: false }];
   const { data: categories = {} } = { data: { list: [], total: 0 } };
@@ -53,7 +53,7 @@ export function BlogCreateForm() {
     return true;
   };
   return (
-    <ProForm
+    <DrawerForm
       submitter={{
         resetButtonProps: {
           style: {
@@ -61,6 +61,7 @@ export function BlogCreateForm() {
           },
         },
       }}
+      trigger={props.trigger}
       onFinish={onFinish}
       loading={others.isLoading}
     >
@@ -137,6 +138,6 @@ export function BlogCreateForm() {
           },
         ]}
       ></ProFormTextArea>
-    </ProForm>
+    </DrawerForm>
   );
 }

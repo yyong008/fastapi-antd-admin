@@ -1,5 +1,5 @@
 import {
-  ProForm,
+  DrawerForm,
   ProFormDateTimePicker,
   ProFormSelect,
   ProFormText,
@@ -12,10 +12,14 @@ export function BlogEditForm({
   data,
   onFinish,
   loading,
+  content,
+  ...props
 }: {
   data: any;
   onFinish: any;
   loading: boolean;
+  trigger: any;
+  content: string
 }) {
   const { data: categories = {} } = { data: { list: [], total: 0 } };
   const { data: tags = {} } = { data: { list: [], total: 0 } };
@@ -42,8 +46,8 @@ export function BlogEditForm({
     );
   }, [tags]);
 
-  return (
-    <ProForm
+  return <DrawerForm
+      trigger={props.trigger}
       initialValues={{
         ...data,
         categoryId: data.categoryId,
@@ -131,6 +135,5 @@ export function BlogEditForm({
           },
         ]}
       ></ProFormTextArea>
-    </ProForm>
-  );
+    </DrawerForm>
 }

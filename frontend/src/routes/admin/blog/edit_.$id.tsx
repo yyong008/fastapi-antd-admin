@@ -1,10 +1,11 @@
+import { Button, Space } from "antd";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 
 import { BlogEditForm } from "@/components/Admin/Blog/EditDetail/blog-edit-form";
+import { QuillEditor } from "@/components/common/quill-editor";
 import { createFileRoute } from "@tanstack/react-router";
 import { getBlogById } from "@/apis/admin/blog/category";
-import { message } from "antd";
 import { useParams } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/blog/edit/$id")({
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/admin/blog/edit/$id")({
 });
 
 export function BlogEditDetailRoute() {
+  const [content, setContent] = useState("");
   const { id } = useParams({ strict: false });
   const [loading, setLoading] = useState(false);
   const [page] = useState({
@@ -25,6 +27,7 @@ export function BlogEditDetailRoute() {
     if (res && res.code === 0) {
       setLoading(false);
       setData(res.data);
+      setContent(res.data.content);
     }
   };
 
@@ -32,32 +35,23 @@ export function BlogEditDetailRoute() {
     setLoading(true);
     getData();
   }, [page, id]);
-  return (
-    <PageContainer>
-      <ProCard loading={loading}>
-        <BlogEditForm
-          loading={loading}
-          data={data || {}}
-          onFinish={async () => {
-            // const values = v;
-            // if (id) values.id = Number(id);
-            // const data = {
-            //   type: "",
-            //   data: {
-            //     ...values,
-            //   },
-            // };
-            // const result: any = await updateBlog(data);
-            // if (result.data && result.data.code === 1) {
-            //   message.error(result.data.message);
-            //   return false;
-            // } else {
-            //   message.success(result.data.message);
-            //   return true;
-            // }
-          }}
-        />
+  return <PageContainer>
+      <ProCard
+        title="编辑博客（创建）"
+        extra={
+          <Space>
+            <BlogEditForm
+              data={data}
+              loading={loading}
+              content={content}
+              trigger={<Button type="primary">编辑博客</Button>}
+            />
+          </Space>
+        }
+      >
+        <div>
+          <QuillEditor content={content} setContent={setContent} />
+        </div>
       </ProCard>
     </PageContainer>
-  );
 }

@@ -1,11 +1,8 @@
-import * as ic from "@ant-design/icons";
-
 import { BlogTagDeleteIt } from "./blog-tag-delete-it";
 import { BlogTagModalUpdate } from "./blog-tag-modal-update";
 import { Link } from "@tanstack/react-router";
 import { Space } from "antd";
-
-const { SwitcherOutlined } = ic;
+import { TagOutlined } from "@ant-design/icons";
 
 export const blogTagColumnsCreate = (lang: string, refetch: any) => [
   {
@@ -15,7 +12,7 @@ export const blogTagColumnsCreate = (lang: string, refetch: any) => [
       return (
         <Link to={`/admin/blog?tag=${record.id}`}>
           <Space>
-            <SwitcherOutlined />
+            <TagOutlined />
             <span>{record.name}</span>
           </Space>
         </Link>

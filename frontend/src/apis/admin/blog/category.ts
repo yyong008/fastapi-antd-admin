@@ -24,3 +24,34 @@ export const getBlogById = async (id: number) => {
     console.error(error);
   }
 };
+
+export const createBlogCategory = async (data: any) => {
+  try {
+    const res = await request.post("/api/admin/blog/category/", data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateBlogCategory = async (id: number, data: any) => {
+  try {
+    const res = await request.put("/api/admin/blog/category/" + id, data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteBlogCategoryByIds = async (ids: number[]) => {
+  try {
+    const res = await request.delete("/api/admin/blog/category/", {
+      data: {
+        ids,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

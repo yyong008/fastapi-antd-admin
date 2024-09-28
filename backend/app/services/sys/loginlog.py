@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import HTTPException, Request
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
@@ -47,3 +48,10 @@ async def create_loginlog_by_userId_name(request: Request, name, userId, db: Ses
     except Exception as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
+
+
+def update_loginlog_by_id(loginlog_id: int, item, db: Session):
+    pass
+
+def delete_loginlog_by_ids(ids: List[int], db: Session):
+    pass

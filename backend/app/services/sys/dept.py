@@ -36,3 +36,15 @@ def get_dept_tree_data(page, pageSize, db):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
         )
+
+def get_dept_by_id(id, db):
+    pass
+
+def create_dept():
+    pass
+
+def update_dept_by_id():
+    pass
+
+def delete_dept_by_ids():
+    pass

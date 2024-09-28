@@ -13,3 +13,6 @@ def get_profile_account_service(current_user_id, db: Session):
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
+
+def update_profile_account_service(current_user_id, user, db: Session):
+    pass

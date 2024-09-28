@@ -15,3 +15,41 @@ export const getDepts = async (searchParams: TDepts) => {
     console.error(error);
   }
 };
+
+export const getDeptById = async (id: number) => {
+  try {
+    const res = await request.get(`/api/admin/system/dept/${id}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const createDept = async (data: any) => {
+  try {
+    const res = await request.post("/api/admin/system/dept", data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateDept = async (data: any) => {
+  try {
+    const res = await request.put(`/api/admin/system/dept`, data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteDeptByIds = async (ids: number[]) => {
+  try {
+    const res = await request.delete(`/api/admin/system/dept/`, {
+      data: { ids },
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

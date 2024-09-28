@@ -21,3 +21,16 @@ def get_dict_list(page, pageSize, db: Session):
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
+
+
+def get_dict_by_id():
+    pass
+
+def create_dict():
+    pass
+
+def update_dict():
+    pass
+
+def delete_dict_by_ids():
+    pass

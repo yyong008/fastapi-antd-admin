@@ -20,3 +20,13 @@ def get_link_list_by_id_service(category_id,page, pageSize, db: Session):
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
+
+def get_link_list_by_ids_service(ids, db: Session):
+    pass
+
+def delete_link_by_ids_service(ids, db: Session):
+    pass
+
+
+def create_link_service(link, user_id, db: Session):
+    pass

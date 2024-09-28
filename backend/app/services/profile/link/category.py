@@ -20,3 +20,13 @@ def get_link_category_list_service(page, pageSize, db: Session):
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
+
+def create_link_category_service(link_category, user_id, db):
+    pass
+
+def update_link_category_service(id, link_category, user_id, db):
+    pass
+
+
+def delete_link_category_by_ids_service(ids, db):
+    pass

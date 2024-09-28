@@ -1,4 +1,5 @@
 
+from typing import List
 from sqlalchemy.orm import Session
 
 from app.dal.sys.menu import get_menu_all
@@ -40,3 +41,15 @@ def get_menu_tree_service(db: Session):
     format_menu_list = format_menu_all_list(menu_list)
     menu_tree = build_menu_tree_raw(format_menu_list, None)
     return menu_tree
+
+def get_menu_by_id(menu_id: int, db: Session):
+    pass
+
+def create_menu(menu, db: Session):
+    pass
+
+def update_menu_by_id(menu_id: int, item, db: Session):
+    pass
+
+def delete_menu_by_ids(ids: List[int], db: Session):
+    pass

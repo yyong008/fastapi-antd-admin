@@ -20,7 +20,7 @@ def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
     ]
 
 
-def get_dept_tree_data(page, pageSize, db):
+def get_dept_tree_data_service(page, pageSize, db):
     try:
         res = db.query(Department).offset(page).limit(pageSize).all()
         total = db.query(Department).count()
@@ -37,14 +37,14 @@ def get_dept_tree_data(page, pageSize, db):
             detail="Internal server error",
         )
 
-def get_dept_by_id(id, db):
+def get_dept_by_id_service(id, db):
     pass
 
-def create_dept():
+def create_dept_service():
     pass
 
-def update_dept_by_id():
+def update_dept_by_id_service():
     pass
 
-def delete_dept_by_ids():
+def delete_dept_by_ids_service():
     pass

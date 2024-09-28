@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.dal.sys.dict_item import get_dictionary_entry_count, get_dictionary_entry_list
 from app.services.sys.format import format_dict_item
 
-def get_dict_item_list(id, page, pageSize, db: Session):
+def get_dict_item_list_service(id, page, pageSize, db: Session):
     try:
         count = get_dictionary_entry_count(id, db)
         users = get_dictionary_entry_list(id, db, page, pageSize)
@@ -21,17 +21,16 @@ def get_dict_item_list(id, page, pageSize, db: Session):
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-def get_dict_item_by_id(id, db: Session):
+def get_dict_item_by_id_service(id, db: Session):
     pass
 
-def create_dict_item():
-    pass
-
-
-def update_dict_item_by_id():
+def create_dict_item_service():
     pass
 
 
-def delete_dict_item_by_ids():
+def update_dict_item_by_id_service():
+    pass
 
+
+def delete_dict_item_by_ids_service():
     pass

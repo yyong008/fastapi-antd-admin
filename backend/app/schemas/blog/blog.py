@@ -43,10 +43,5 @@ class BlogInDBBase(BlogBase):
     class Config:
         from_attributes = True
 
-
-class Blog(BlogInDBBase):
-    pass
-
-
-class BlogInDB(BlogInDBBase):
-    pass
+class BlogDeleteByIds(BaseModel):
+    ids: list[int]

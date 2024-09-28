@@ -42,14 +42,14 @@ def get_menu_tree_service(db: Session):
     menu_tree = build_menu_tree_raw(format_menu_list, None)
     return menu_tree
 
-def get_menu_by_id(menu_id: int, db: Session):
+def get_menu_by_id_service(menu_id: int, db: Session):
     pass
 
-def create_menu(menu, db: Session):
+def create_menu_service(menu, db: Session):
     pass
 
-def update_menu_by_id(menu_id: int, item, db: Session):
+def update_menu_by_id_service(menu_id: int, item, db: Session):
     pass
 
-def delete_menu_by_ids(ids: List[int], db: Session):
+def delete_menu_by_ids_service(ids: List[int], db: Session):
     pass

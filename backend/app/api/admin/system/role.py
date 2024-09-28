@@ -1,7 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.client import get_db
-from app.services.sys.role import get_all_role_service
+from app.services.sys.role import (
+    get_all_role_service,
+    get_role_by_id_service,
+    create_role_service,
+    update_role_by_id_service,
+    delete_role_by_ids_service,
+)
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 
 router = APIRouter(prefix="/role", tags=["Role"])
@@ -14,24 +20,24 @@ def get_all_roles(db: Session = Depends(get_db)):
 
 
 @router.get("/{id}")
-def get_role_by_id():
-    data = {}
+def get_role_by_id(id: int, db: Session = Depends(get_db)):
+    data = get_role_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_role():
-    data = {}
+def create_role(role: dict, db: Session = Depends(get_db)):
+    data = create_role_service(role, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_role_by_id():
-    data = {}
+def update_role_by_id(id: int, item: dict, db: Session = Depends(get_db)):
+    data = update_role_by_id_service(id, item, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_role():
-    data = {}
+def delete_role(ids: list[int], db: Session = Depends(get_db)):
+    data = delete_role_by_ids_service(ids, db)
     return ResponseSuccessModel(data=data)

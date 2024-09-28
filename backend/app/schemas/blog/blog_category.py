@@ -21,17 +21,5 @@ class BlogCategoryCreate(BlogCategoryBase):
 class BlogCategoryUpdate(BlogCategoryBase):
     pass
 
-
-class BlogCategoryInDBBase(BlogCategoryBase):
-    id: int
-
-    class Config:
-        from_attributes = True
-
-
-class BlogCategory(BlogCategoryInDBBase):
-    pass
-
-
-class BlogCategoryInDB(BlogCategoryInDBBase):
-    pass
+class BlogCategoryDeleteByIds(BaseModel):
+    ids: list[int]

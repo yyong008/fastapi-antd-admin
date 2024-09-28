@@ -21,6 +21,9 @@ def get_link_category_list_service(page, pageSize, db: Session):
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
+def get_link_category_by_id_service(id, db: Session):
+    pass
+
 def create_link_category_service(link_category, user_id, db):
     pass
 

@@ -3,7 +3,12 @@ from sqlalchemy.orm import Session
 
 from app.db.client import get_db
 from app.schemas.response import ResponseModel, ResponseSuccessModel
-from app.services.profile.link.link import get_link_list_by_id_service
+from app.services.profile.link.link import (
+    get_link_list_by_id_service,
+    create_link_service,
+    update_link_by_id_service,
+    delete_link_by_ids_service,
+)
 
 router = APIRouter(prefix="/link", tags=["Link"])
 
@@ -21,18 +26,18 @@ def get_link_by_id(id: int, page: int, pageSize: int, db: Session = Depends(get_
 
 
 @router.post("/", response_model=ResponseModel)
-def create_link():
-    data = {}
+def create_link(link: dict, db: Session = Depends(get_db)):
+    data = create_link_service(link, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_link_by_id():
-    data = {}
+def update_link_by_id(id: int, link: dict, db: Session = Depends(get_db)):
+    data = update_link_by_id_service(id, link, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_link_by_ids():
-    data = {}
+def delete_link_by_ids(ids: list[int], db: Session = Depends(get_db)):
+    data = delete_link_by_ids_service(ids, db)
     return ResponseSuccessModel(data=data)

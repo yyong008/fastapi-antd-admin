@@ -24,9 +24,11 @@ def get_link_list_by_id_service(category_id,page, pageSize, db: Session):
 def get_link_list_by_ids_service(ids, db: Session):
     pass
 
-def delete_link_by_ids_service(ids, db: Session):
+def update_link_by_id_service(link, db: Session):
     pass
 
+def delete_link_by_ids_service(ids, db: Session):
+    pass
 
 def create_link_service(link, user_id, db: Session):
     pass

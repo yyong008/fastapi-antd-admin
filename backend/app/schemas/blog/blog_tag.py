@@ -26,10 +26,5 @@ class BlogTagInDBBase(BlogTagBase):
     class Config:
         from_attributes = True
 
-
-class BlogTag(BlogTagInDBBase):
-    pass
-
-
-class BlogTagInDB(BlogTagInDBBase):
-    pass
+class BlogTagDeleteByIds(BaseModel):
+    ids: list[int]

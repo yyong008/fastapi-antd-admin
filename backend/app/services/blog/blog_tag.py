@@ -22,6 +22,9 @@ def get_blog_tag_list_service(page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
+def update_blog_tag_by_id_service(id, name, db: Session):
+    pass
+
 def update_blog_tag_service(id, name, db: Session):
     pass
 

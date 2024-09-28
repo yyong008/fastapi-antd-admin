@@ -1,35 +1,45 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
 from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.services.sys.config import (
+    get_config_by_id_service,
+    get_config_list_service,
+    create_config_service,
+    update_config_by_id_service,
+    delete_config_by_ids_service,
+)
+from app.db.client import get_db
+
 
 router = APIRouter(prefix="/config", tags=["Admin System Config"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_config_list():
-    data = {}
+def get_config_list(page: int, pageSize: int, db: Session = Depends(get_db)):
+    data = get_config_list_service(page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_config_by_id():
-    data = {}
+def get_config_by_id(id: int, db: Session = Depends(get_db)):
+    data = get_config_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_config():
-    data = {}
+def create_config(config: dict, db: Session = Depends(get_db)):
+    data = create_config_service(config, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_config_by_id():
-    data = {}
+def update_config_by_id(id: int, db: Session = Depends(get_db)):
+    data = update_config_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_config():
-    data = {}
+def delete_config(ids: list, db: Session = Depends(get_db)):
+    data = delete_config_by_ids_service(ids, db)
     return ResponseSuccessModel(data=data)

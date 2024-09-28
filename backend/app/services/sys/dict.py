@@ -6,7 +6,7 @@ from app.dal.sys.dict import get_dictionary_count, get_dictionary_list
 from app.services.sys.format import format_dict
 
 
-def get_dict_list(page, pageSize, db: Session):
+def get_dict_lists_service(page, pageSize, db: Session):
     try:
         count = get_dictionary_count(db)
         users = get_dictionary_list(db, page, pageSize)
@@ -23,14 +23,14 @@ def get_dict_list(page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_dict_by_id():
+def get_dict_by_id_service():
     pass
 
-def create_dict():
+def create_dict_service():
     pass
 
-def update_dict():
+def update_dict_by_id_service():
     pass
 
-def delete_dict_by_ids():
+def delete_dict_by_ids_service():
     pass

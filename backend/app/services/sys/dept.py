@@ -38,13 +38,29 @@ def get_dept_tree_data_service(page, pageSize, db):
         )
 
 def get_dept_by_id_service(id, db):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 def create_dept_service():
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 def update_dept_by_id_service():
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 def delete_dept_by_ids_service():
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")

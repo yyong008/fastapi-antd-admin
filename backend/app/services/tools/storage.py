@@ -33,12 +33,27 @@ def get_tools_storage_by_id_service(user_id: int, db):
 
 
 def create_tools_storage_service(item, db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
 
 
 def update_tools_storage_by_id_service(user_id: int, item, db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
 
 
 def delete_tools_storage_by_ids_service(ids: List[int], db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+

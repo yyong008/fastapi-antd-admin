@@ -1,11 +1,17 @@
-
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.dal.docs.changelog import get_changelog_count,get_changelog_list
+from app.dal.docs.changelog import (
+    get_changelog_count,
+    get_changelog_list,
+    get_changelog_by_id,
+    create_changelog,
+    update_changelog_by_id,
+    delete_changelog_by_ids,
+)
 from app.services.docs.format import format_changelog
+
 
 def get_user_list_service(page, pageSize, db: Session):
     try:
@@ -25,13 +31,38 @@ def get_user_list_service(page, pageSize, db: Session):
 
 
 def change_log_by_id_service(id, db: Session):
-    pass
+    try:
+        changelog = get_changelog_by_id(id, db)
+        item = format_changelog(changelog)
+        return item
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
 
 def create_change_log_service(name, db: Session):
-    pass
+    try:
+        changelog = create_changelog(name, db)
+        item = format_changelog(changelog)
+        return item
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
 
 def update_change_log_service(id, name, db: Session):
-    pass
+    try:
+        changelog = update_changelog_by_id(db, id, name)
+        item = format_changelog(changelog)
+        return item
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
 
 def delete_change_log_by_ids_service(ids, db: Session):
-    pass
+    try:
+        delete_changelog_by_ids(ids, db)
+        return {"status": "success"}
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")

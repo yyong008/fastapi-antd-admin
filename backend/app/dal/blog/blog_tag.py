@@ -23,19 +23,19 @@ def get_blog_tag_list(db: Session, page: int = 1, pageSize: int = 10):
 def get_blog_tag_by_id(id: int, db: Session):
     return db.query(BlogTag).filter(BlogTag.id == id).first()
 
-def create_blog_category(blog_tag, db: Session):
+def create_blog_tag(blog_tag, db: Session):
     db.add(blog_tag)
     db.commit()
     db.refresh(blog_tag)
     return blog_tag
 
-def update_blog_category_by_id(db: Session, blog_id: int, blog: BlogTag):
+def update_blog_tag_by_id(db: Session, blog_id: int, blog: BlogTag):
     db.query(BlogTag).filter(BlogTag.id == blog_id).update(blog)
     db.commit()
     db.refresh(blog)
     return blog
 
-def delete_news_by_ids(ids, db):
+def delete_blog_tag_by_ids(ids, db):
     try:
         count = (
             db.query(BlogTag).filter(BlogTag.id.in_(ids)).delete(synchronize_session=False)

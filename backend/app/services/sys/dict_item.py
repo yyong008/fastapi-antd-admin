@@ -22,15 +22,31 @@ def get_dict_item_list_service(id, page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 def get_dict_item_by_id_service(id, db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 def create_dict_item_service():
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 
 def update_dict_item_by_id_service():
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 
 def delete_dict_item_by_ids_service():
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")

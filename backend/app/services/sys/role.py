@@ -28,15 +28,31 @@ def get_all_role_service(db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 def get_role_by_id_service(role_id: int, db):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 def create_role_service(user, db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 
 def update_role_by_id_service(role_id: int, item, db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 
 def delete_role_by_ids_service(ids: List[int], db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")

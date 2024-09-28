@@ -13,6 +13,8 @@ def get_changelog_all(db: Session):
     sort_column = ChangeLog.createdAt.desc()
     return db.query(ChangeLog).order_by(sort_column).all()
 
+def get_changelog_by_id(id: int, db: Session):
+    return db.query(ChangeLog).filter(ChangeLog.id == id).first()
 
 def get_changelog_list(db: Session, page: int = 1, pageSize: int = 10):
     limit = pageSize
@@ -20,7 +22,7 @@ def get_changelog_list(db: Session, page: int = 1, pageSize: int = 10):
     # sort_column = ChangeLog.createdAt.desc()
     return db.query(ChangeLog).offset(offset).limit(limit).all()
 
-def create_changelog_category(changelog, db: Session):
+def create_changelog(changelog, db: Session):
     db.add(changelog)
     db.commit()
     db.refresh(changelog)

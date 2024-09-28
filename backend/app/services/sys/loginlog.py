@@ -51,7 +51,15 @@ async def create_loginlog_by_userId_name(request: Request, name, userId, db: Ses
 
 
 def update_loginlog_by_id(loginlog_id: int, item, db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 def delete_loginlog_by_ids(ids: List[int], db: Session):
-    pass
+    try:
+        pass
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")

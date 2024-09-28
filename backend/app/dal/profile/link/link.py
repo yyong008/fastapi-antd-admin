@@ -53,7 +53,7 @@ def update_link_by_id(db: Session, blog_id: int, link: Link):
     db.refresh(link)
     return link
 
-def delete_Link_by_ids(ids, db):
+def delete_link_by_ids(ids, db):
     try:
         count = (
             db.query(Link).filter(Link.id.in_(ids)).delete(synchronize_session=False)

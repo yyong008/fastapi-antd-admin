@@ -27,6 +27,12 @@ export default defineConfig({
         followRedirects: true, // 确保代理会跟随重定向
         // rewrite: (path) => path.replace(/^\/api/, "/api")
       },
+      "/static": {
+        target: "http://localhost:8003",
+        changeOrigin: true,
+        followRedirects: true, // 确保代理会跟随重定向
+        rewrite: (path) => path.replace(/^\/static/, "/static")
+      },
     },
   },
 });

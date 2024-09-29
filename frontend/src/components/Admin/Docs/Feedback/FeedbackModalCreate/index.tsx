@@ -29,12 +29,13 @@ export function FeedbackModalCreate({ refetch }: any) {
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
+
         const data = { ...values };
         if (values.file && values.file.length > 0) {
-          const url: string = values.file[0].response.data.name;
-          const prefix = "/uploads/";
-          data.url = url.startsWith(prefix) ? url : `${prefix}${url}`;
+          const url: string = values.file[0].response.data.url;
+          data.url = url
         }
+
         delete data.file;
         setLoading(true);
         const result: any = await createDocsFeedback(data);

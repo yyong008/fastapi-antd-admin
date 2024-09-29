@@ -44,7 +44,7 @@ export function FeedbackRoute() {
         search={false}
         loading={loading}
         dataSource={data?.list ?? []}
-        columns={createFeedbackColumns()}
+        columns={createFeedbackColumns({ refetch: getData })}
         options={{
           reload: getData,
         }}

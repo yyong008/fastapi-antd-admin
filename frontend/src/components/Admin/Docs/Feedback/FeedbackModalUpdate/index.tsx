@@ -1,5 +1,3 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, message } from "antd";
 import {
   ModalForm,
@@ -7,18 +5,18 @@ import {
   ProFormUploadButton,
 } from "@ant-design/pro-components";
 
-import { useUpdateFeedbackByIdMutation } from "~/apis-client/admin/docs/feedback";
-
-const { EditOutlined } = ic;
+import { EditOutlined } from "@ant-design/icons";
+import { updateDocsFeedback } from "@/apis/admin/docs/feedback";
+import { useState } from "react";
 
 export default function FeedbackModal({ record, refetch }: any) {
   const [form] = Form.useForm();
-  const [updateFeedback, other] = useUpdateFeedbackByIdMutation();
+  const [loading, setLoading] = useState(false);
   return (
     <ModalForm
       key={Date.now()}
       preserve={false}
-      loading={other.isLoading}
+      loading={loading}
       title={record?.id ? "修改反馈" : "创建反馈"}
       onOpenChange={(c) => {
         if (!c || !record.id) {
@@ -40,22 +38,23 @@ export default function FeedbackModal({ record, refetch }: any) {
         const data = { ...values };
         if (values.file && values.file.length > 0) {
           const url: string = values.file[0].response.data.name;
-          const prefix = "/uploads/";
-          data.url = url.startsWith(prefix) ? url : `${prefix}${url}`;
+          data.url = url;
         }
         if (record.id) {
           data.id = record.id;
         }
         delete data.file;
-        const result = await updateFeedback(data);
-        if (result.data?.code !== 0) {
-          message.error(result.data?.message);
-          return false;
+        setLoading(true);
+        const result: any = await updateDocsFeedback(record.id, data);
+        setLoading(false);
+        if (result && result?.code === 0) {
+          message.success(result?.message);
+          refetch();
+          form.resetFields();
+          return true;
         }
-        message.success(result.data?.message);
-        refetch();
-        form.resetFields();
-        return true;
+        message.error(result?.message);
+        return false;
       }}
     >
       <ProFormTextArea

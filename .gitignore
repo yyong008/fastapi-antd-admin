@@ -166,3 +166,4 @@ todo.md
 TODO.md
 
 .ruff_cache
+backend/static/upload

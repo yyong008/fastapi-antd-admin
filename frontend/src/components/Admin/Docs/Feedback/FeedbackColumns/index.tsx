@@ -1,7 +1,7 @@
 import { FormatTime } from "@/components/common/format-time";
 import { Image } from "antd";
 
-export const createFeedbackColumns = () => [
+export const createFeedbackColumns = ({ refetch }: any) => [
     {
       dataIndex: "id",
       title: "反馈编号",

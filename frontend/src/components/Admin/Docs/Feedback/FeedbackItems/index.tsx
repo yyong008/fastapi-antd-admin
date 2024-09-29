@@ -23,6 +23,11 @@ export const FeedbackItems = () => {
         placeholder="请输入名称"
         listType="picture-card"
         action="/api/upload"
+        fieldProps={{
+          "headers": {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }}
         max={1}
         rules={[
           {

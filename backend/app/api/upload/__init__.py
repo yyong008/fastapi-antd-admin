@@ -1,10 +1,12 @@
 from fastapi import UploadFile, APIRouter
 from datetime import datetime
 
+from app.schemas.response import ResponseModel, ResponseSuccessModel
+
 router = APIRouter(prefix="/upload", tags=["Upload"])
 
 
-@router.post("/")
+@router.post("/", response_model=ResponseModel)
 async def create_upload_file(file: UploadFile):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     path = f"/static/upload/uploaded_{timestamp}_{file.filename}"
@@ -13,4 +15,5 @@ async def create_upload_file(file: UploadFile):
         content = await file.read()
         f.write(content)
 
-    return {"filename": file.filename, "url": path}
+    data = {"name": file.filename, "url": path}
+    return ResponseSuccessModel(data=data)

@@ -11,6 +11,7 @@ from app.dal.blog.blog_tag import (
     delete_blog_tag_by_ids,
 )
 from app.services.blog.format import format_blog_tag
+from app.models.blog import BlogTag
 
 
 def get_blog_tag_list_service(page, pageSize, db: Session):
@@ -30,22 +31,27 @@ def get_blog_tag_list_service(page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_blog_tag_by_id_service(id, bt, db: Session):
+def update_blog_tag_by_id_service(id, bt, current_user_id,db: Session):
     try:
-        o_data = get_blog_tag_by_id(id, db)
-        if o_data is None:
+        bc_in_db = get_blog_tag_by_id(id, db)
+        if bc_in_db is None:
             raise HTTPException(status_code=400, detail="Tag not found")
-        data = update_blog_tag_by_id(id, bt, db)
-        return data
+        bc_in_db.description = bt['description']
+        bc_in_db.name = bt['name']
+        bc_in_db.user_id = current_user_id
+        data = update_blog_tag_by_id(db, id, bc_in_db)
+        return format_blog_tag(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_blog_tag_service(bt, db: Session):
+def create_blog_tag_service(bt, current_user_id, db: Session):
     try:
+        bt['user_id'] = current_user_id
+        bt = BlogTag(**bt)
         data = create_blog_tag(bt, db)
-        return data
+        return format_blog_tag(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

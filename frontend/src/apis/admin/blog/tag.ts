@@ -43,7 +43,7 @@ export const updateBlogTagById = async (id: number, data: any) => {
   }
 }
 
-export const deleteBlogTagByIds = async (ids: number)  => {
+export const deleteBlogTagByIds = async (ids: number[])  => {
   try {
     const res = await request.delete("/api/admin/blog/tag/", {
       data: { ids },

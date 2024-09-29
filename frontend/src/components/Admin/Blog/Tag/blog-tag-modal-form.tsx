@@ -6,12 +6,8 @@ import {
 
 import { Form } from "antd";
 
-export function BlogTagModalForm({
-  trigger,
-  title,
-  onOpenChange,
-  onFinish,
-}: any) {
+export function BlogTagModalForm(props: any) {
+  const { trigger, title, onOpenChange, onFinish } = props;
   const [form] = Form.useForm();
 
   return (

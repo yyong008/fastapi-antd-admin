@@ -13,11 +13,13 @@ class BlogTagBase(BaseModel):
 
 
 class BlogTagCreate(BlogTagBase):
-    pass
+    class Config:
+        from_attributes = True
 
 
 class BlogTagUpdate(BlogTagBase):
-    pass
+    class Config:
+        from_attributes = True
 
 
 class BlogTagInDBBase(BlogTagBase):
@@ -28,3 +30,6 @@ class BlogTagInDBBase(BlogTagBase):
 
 class BlogTagDeleteByIds(BaseModel):
     ids: list[int]
+
+    class Config:
+        from_attributes = True

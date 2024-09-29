@@ -30,7 +30,6 @@ def create_blog_tag(blog_tag, db: Session):
     return blog_tag
 
 def update_blog_tag_by_id(db: Session, blog_id: int, blog: BlogTag):
-    db.query(BlogTag).filter(BlogTag.id == blog_id).update(blog)
     db.commit()
     db.refresh(blog)
     return blog

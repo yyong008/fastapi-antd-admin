@@ -11,7 +11,6 @@ export const Route = createFileRoute("/admin/blog/tag")({
 });
 
 export function BlogTagRoute() {
-  const { lang } = { lang: "en_US" };
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
@@ -44,13 +43,11 @@ export function BlogTagRoute() {
         search={false}
         loading={loading}
         dataSource={data?.list ?? []}
-        toolBarRender={() => blogTagToolBarRender(() => {})}
-        columns={blogTagColumnsCreate(lang!, () => {})}
-        options={
-          {
-            // reload: refetch,
-          }
-        }
+        toolBarRender={() => blogTagToolBarRender(getData)}
+        columns={blogTagColumnsCreate(getData)}
+        options={{
+          reload: getData,
+        }}
         pagination={{
           total: data?.total ?? 0,
           pageSize: 10,

@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { Space } from "antd";
 import { TagOutlined } from "@ant-design/icons";
 
-export const blogTagColumnsCreate = (lang: string, refetch: any) => [
+export const blogTagColumnsCreate = (refetch: any) => [
   {
     dataIndex: "name",
     title: "标签名字",

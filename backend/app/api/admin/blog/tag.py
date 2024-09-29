@@ -10,6 +10,7 @@ from app.services.blog.blog_tag import (
     update_blog_tag_by_id_service,
     delete_blog_tag_by_ids_service,
 )
+from app.utils.current_user import get_current_user
 
 router = APIRouter(prefix="/tag", tags=["Admin Blog Category Tag"])
 
@@ -27,20 +28,29 @@ def get_blog_tag_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=ResponseModel)
-def create_blog_tag(blog_tag: BlogTagCreate, db: Session = Depends(get_db)):
-    data = create_blog_tag_service(blog_tag, db)
+def create_blog_tag(
+    blog_tag: BlogTagCreate,
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    bt = blog_tag.model_dump()
+    data = create_blog_tag_service(bt, current_user.id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
 def update_blog_tag_by_id(
-    id: int, blog_tag: BlogTagUpdate, db: Session = Depends(get_db)
+    id: int,
+    blog_tag: BlogTagUpdate,
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
-    data = update_blog_tag_by_id_service(id, blog_tag, db)
+    bt = blog_tag.model_dump()
+    data = update_blog_tag_by_id_service(id, bt, current_user.id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
 def delete_blog_tag(ids: BlogTagDeleteByIds, db: Session = Depends(get_db)):
-    data = delete_blog_tag_by_ids_service(ids, db)
+    data = delete_blog_tag_by_ids_service(ids.ids, db)
     return ResponseSuccessModel(data=data)

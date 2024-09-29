@@ -30,17 +30,15 @@ def create_blog_tag(blog_tag, db: Session):
     return blog_tag
 
 def update_blog_tag_by_id(db: Session, blog_id: int, blog: BlogTag):
+    # db.query(BlogTag).filter(BlogTag.id == blog_id).update(blog.dict(), synchronize_session=False)
     db.commit()
     db.refresh(blog)
     return blog
 
 def delete_blog_tag_by_ids(ids, db):
     try:
-        count = (
-            db.query(BlogTag).filter(BlogTag.id.in_(ids)).delete(synchronize_session=False)
-        )
+        count = db.query(BlogTag).filter(BlogTag.id.in_(ids)).delete(synchronize_session=False)
         db.commit()
-
         return count
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

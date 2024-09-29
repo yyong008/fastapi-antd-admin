@@ -38,25 +38,21 @@ def get_blog_by_id(blog_id: int, db: Session):
     return db.query(Blog).filter(Blog.id == blog_id).first()
 
 
-def create_blog_category(blog, db: Session):
+def create_blog(blog, db: Session):
     db.add(blog)
     db.commit()
     db.refresh(blog)
     return blog
 
-def update_blog_category_by_id(db: Session, blog_id: int, blog: Blog):
-    db.query(Blog).filter(Blog.id == blog_id).update(blog)
+def update_blog_by_id(db: Session, blog: Blog, id):
     db.commit()
     db.refresh(blog)
     return blog
 
-def delete_news_by_ids(ids, db):
+def delete_blog_by_ids(ids, db):
     try:
-        count = (
-            db.query(Blog).filter(Blog.id.in_(ids)).delete(synchronize_session=False)
-        )
+        count = db.query(Blog).filter(Blog.id.in_(ids)).delete(synchronize_session=False)
         db.commit()
-
         return count
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

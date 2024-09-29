@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 
 
@@ -14,19 +14,19 @@ class BlogBase(BaseModel):
     source: Optional[str] = Field(
         None, title="Source", description="The source of the blog post"
     )
-    view_count: int = Field(
+    viewCount: int = Field(
         0, title="View Count", description="The number of views for the blog post"
     )
-    published_at: datetime = Field(
-        ..., title="Published At", description="The publication date of the blog post"
+    publishedAt: datetime = Field(
+        None, title="Published At", description="The publication date of the blog post"
     )
     user_id: int = Field(
-        ..., title="User ID", description="The ID of the user who created the blog post"
+        None, title="User ID", description="The ID of the user who created the blog post"
     )
-    category_ids: List[int] = Field(
+    category_id: int = Field(
         ..., title="Category IDs", description="List of category IDs"
     )
-    tag_ids: List[int] = Field(..., title="Tag IDs", description="List of tag IDs")
+    tag_id: int = Field(..., title="Tag IDs", description="List of tag IDs")
 
 
 class BlogCreate(BlogBase):

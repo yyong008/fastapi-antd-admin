@@ -1,59 +1,59 @@
 import {
   DrawerForm,
+  ProForm,
   ProFormDateTimePicker,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
+import { createBlog } from "@/apis/admin/blog/blog";
 import { message } from "antd";
-import { useMemo } from "react";
+import { useCategories } from "@/hooks/useCategories";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { useTags } from "@/hooks/useTags";
 
-export function BlogCreateForm(props: any) {
+type BlogCreateFormProps = {
+  categories: any;
+  tags: any;
+  trigger: any;
+  content: string;
+};
+
+export function BlogCreateForm(props: BlogCreateFormProps) {
+  const [form] = ProForm.useForm();
+  const [loading, setLoading] = useState(false);
+  const { categories, tags } = props;
   const nav = useNavigate();
-  const [createBlog, others] = [(args) => args, { isLoading: false }];
-  const { data: categories = {} } = { data: { list: [], total: 0 } };
-  const { data: tags = {} } = { data: { list: [], total: 0 } };
 
-  const categoriesOptions = useMemo(() => {
-    return (
-      categories?.list?.map((c: any) => {
-        return {
-          label: c.name,
-          value: c.id,
-        };
-      }) ?? []
-    );
-  }, [categories]);
-
-  const tagsOptions = useMemo(() => {
-    return (
-      tags?.list?.map((c: any) => {
-        return {
-          label: c.name,
-          value: c.id,
-        };
-      }) ?? []
-    );
-  }, [tags]);
+  const categoriesOptions = useCategories(categories)
+  const tagsOptions = useTags(tags)
 
   const onFinish = async (v: any) => {
+    setLoading(true);
+    v.category_id = v.categoryId;
+    v.tag_id = v.tagId;
     const result: any = await createBlog(v);
-    if (result.data?.code !== 0) {
-      message.error(result.data?.message);
-      return false;
+    setLoading(false);
+    if (result?.code === 0) {
+      message.success(result?.message);
+      nav({
+        to: `/admin/blog/result`,
+        state: {
+          title: v.title,
+          id: result.data.id,
+        } as any,
+      });
+      return true;
     }
-
-    message.success(result.data?.message);
-    nav({
-      to: `/admin/blog/result`,
-      // state: { title: v.title, id: result.data.data.id },
-    });
-    return true;
+    message.error(result?.message);
+    return false;
   };
   return (
     <DrawerForm
+      form={form}
+      title="创建博客"
       submitter={{
         resetButtonProps: {
           style: {
@@ -63,7 +63,7 @@ export function BlogCreateForm(props: any) {
       }}
       trigger={props.trigger}
       onFinish={onFinish}
-      loading={others.isLoading}
+      loading={loading}
     >
       <ProFormText
         label="博客标题"
@@ -128,8 +128,9 @@ export function BlogCreateForm(props: any) {
           },
         ]}
       />
-      <ProFormTextArea
-        label="编写博客"
+      <ProForm.Item
+        style={{ display: "none" }}
+        label="编写新闻"
         name="content"
         rules={[
           {
@@ -137,7 +138,10 @@ export function BlogCreateForm(props: any) {
             message: "请输入",
           },
         ]}
-      ></ProFormTextArea>
+        initialValue={props.content}
+      >
+        <ProFormTextArea />
+      </ProForm.Item>
     </DrawerForm>
   );
 }

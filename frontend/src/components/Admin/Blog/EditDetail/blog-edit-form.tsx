@@ -1,52 +1,44 @@
 import {
   DrawerForm,
+  ProForm,
   ProFormDateTimePicker,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-components";
+import { useEffect, useState } from "react";
 
-import { useMemo } from "react";
+import { message } from "antd";
+import { updateBlogById } from "@/apis/admin/blog/blog";
+import { useCategories } from "@/hooks/useCategories";
+import { useNavigate } from "@tanstack/react-router";
+import { useTags } from "@/hooks/useTags";
 
-export function BlogEditForm({
-  data,
-  onFinish,
-  loading,
-  content,
-  ...props
-}: {
+type BlogEditFormProps = {
+  id: number;
   data: any;
-  onFinish: any;
-  loading: boolean;
   trigger: any;
-  content: string
-}) {
-  const { data: categories = {} } = { data: { list: [], total: 0 } };
-  const { data: tags = {} } = { data: { list: [], total: 0 } };
+  content: string;
+  categories: any[];
+  tags: any[];
+};
 
-  const categoriesOptions = useMemo(() => {
-    return (
-      categories?.list?.map((c: any) => {
-        return {
-          label: c.name,
-          value: c.id,
-        };
-      }) ?? []
-    );
-  }, [categories]);
+export function BlogEditForm(props: BlogEditFormProps) {
+  const nav = useNavigate();
+  const [form] = ProForm.useForm();
+  const [loading, setLoading] = useState(false);
+  const { data, content, categories = [], tags = [] } = props;
 
-  const tagsOptions = useMemo(() => {
-    return (
-      tags?.list?.map((c: any) => {
-        return {
-          label: c.name,
-          value: c.id,
-        };
-      }) ?? []
-    );
-  }, [tags]);
+  const categoriesOptions = useCategories(categories);
+  const tagsOptions = useTags(tags);
 
-  return <DrawerForm
+  useEffect(() => {
+    form.setFieldValue("content", content);
+  }, [props.content]);
+
+  return (
+    <DrawerForm
+      form={form}
       trigger={props.trigger}
       initialValues={{
         ...data,
@@ -59,7 +51,26 @@ export function BlogEditForm({
           },
         },
       }}
-      onFinish={onFinish}
+      onFinish={async (v) => {
+        setLoading(true);
+        v.category_id = v.categoryId;
+        v.tag_id = v.tagId;
+        const result: any = await updateBlogById(props.id, v);
+        setLoading(false);
+        if (result?.code === 0) {
+          message.success(result?.message);
+          nav({
+            to: `/admin/blog/result`,
+            state: {
+              title: v.title,
+              id: result.data.id,
+            } as any,
+          });
+          return true;
+        }
+        message.error(result?.message);
+        return false;
+      }}
       loading={loading}
     >
       <ProFormText
@@ -125,7 +136,8 @@ export function BlogEditForm({
           },
         ]}
       />
-      <ProFormTextArea
+      <ProForm.Item
+        style={{ display: "none" }}
         label="编写博客"
         name="content"
         rules={[
@@ -134,6 +146,10 @@ export function BlogEditForm({
             message: "请输入",
           },
         ]}
-      ></ProFormTextArea>
+        initialValue={content}
+      >
+        <ProFormTextArea />
+      </ProForm.Item>
     </DrawerForm>
+  );
 }

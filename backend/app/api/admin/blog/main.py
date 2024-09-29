@@ -12,6 +12,7 @@ from app.services.blog.blog import (
 )
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.schemas.blog.blog import BlogCreate, BlogUpdate, BlogDeleteByIds
+from app.utils.current_user import get_current_user
 
 router = APIRouter(tags=["Admin Blog Main"])
 
@@ -38,14 +39,16 @@ def get_blogs(
 
 
 @router.post("/", response_model=ResponseModel)
-def create_blog(blog: BlogCreate, db: Session = Depends(get_db)):
-    data = create_blog_service(blog, db)
+def create_blog(blog: BlogCreate, current_user=Depends(get_current_user), db: Session = Depends(get_db)):
+    blog = blog.model_dump()
+    data = create_blog_service(blog, current_user.id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_blog(id: int, blog: BlogUpdate, db: Session = Depends(get_db)):
-    data = update_blog_service(id, blog, db)
+def update_blog(id: int, blog: BlogUpdate, current_user=Depends(get_current_user),  db: Session = Depends(get_db)):
+    blog = blog.model_dump()
+    data = update_blog_service(id, current_user.id, blog, db)
     return ResponseSuccessModel(data=data)
 
 

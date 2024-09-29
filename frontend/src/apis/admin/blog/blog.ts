@@ -32,7 +32,7 @@ export const getBlogById = async (id: number) => {
   }
 }
 
-export const createLog = async (data: any) => {
+export const createBlog = async (data: any) => {
   try {
     const res = await request.post("/api/admin/blog/", data);
     return res;

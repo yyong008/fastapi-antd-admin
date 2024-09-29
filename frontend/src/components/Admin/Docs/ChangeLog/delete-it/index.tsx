@@ -1,8 +1,7 @@
-import * as _icon from "@ant-design/icons";
-
 import { Button, Form, Popconfirm, message } from "antd";
 
-const { DeleteOutlined } = _icon;
+import { DeleteOutlined } from "@ant-design/icons";
+import { deleteDocsChangelogByIds } from "@/apis/admin/docs/changelog";
 
 type DeleteItProps = {
   refetch: any;
@@ -10,9 +9,9 @@ type DeleteItProps = {
   title: string;
 };
 
-export function DeleteIt({ record, title, refetch }: DeleteItProps) {
+export function DeleteIt(props: DeleteItProps) {
+  const { record, title, refetch } = props;
   const [form] = Form.useForm();
-  const [deleteByIds] = [(v) => v];
   return (
     <Form>
       <Popconfirm
@@ -25,12 +24,12 @@ export function DeleteIt({ record, title, refetch }: DeleteItProps) {
             data.ids = [record.id];
           }
 
-          const result = await deleteByIds(data);
-          if (result.data?.code !== 0) {
-            message.error(result.data?.message);
+          const result: any = await deleteDocsChangelogByIds([record.id]);
+          if (result?.code !== 0) {
+            message.error(result?.message);
             return false;
           }
-          message.success(result.data?.message);
+          message.success(result?.message);
           refetch();
           form.resetFields();
           return true;

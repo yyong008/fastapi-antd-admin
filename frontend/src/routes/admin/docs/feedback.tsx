@@ -2,8 +2,7 @@ import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 
 import { FeedbackModalCreate } from "@/components/Admin/Docs/Feedback/FeedbackModalCreate";
-import { FormatTime } from "@/components/common/format-time";
-import { Image } from "antd";
+import { createFeedbackColumns } from "@/components/Admin/Docs/Feedback/FeedbackColumns";
 import { createFileRoute } from "@tanstack/react-router";
 import { getDocsFeedback } from "@/apis/admin/docs/feedback";
 
@@ -12,7 +11,6 @@ export const Route = createFileRoute("/admin/docs/feedback")({
 });
 
 export function FeedbackRoute() {
-  const refetch = (args) => args;
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
@@ -37,34 +35,6 @@ export function FeedbackRoute() {
     getData();
   }, [page]);
 
-  const columns = [
-    {
-      dataIndex: "id",
-      title: "反馈编号",
-    },
-    {
-      dataIndex: "content",
-      title: "反馈内容",
-    },
-    {
-      dataIndex: "url",
-      title: "反馈图片",
-      render(_: any, record: any) {
-        return (
-          <div className="w-[100px]">
-            <Image src={record.url}></Image>
-          </div>
-        );
-      },
-    },
-    {
-      dataIndex: "createdAt",
-      title: "反馈时间",
-      render(_: any, record: any) {
-        return <FormatTime timeStr={record.createdAt} />;
-      },
-    },
-  ];
   return (
     <PageContainer>
       <ProTable
@@ -74,14 +44,14 @@ export function FeedbackRoute() {
         search={false}
         loading={loading}
         dataSource={data?.list ?? []}
-        columns={columns}
+        columns={createFeedbackColumns()}
         options={{
-          reload: refetch,
+          reload: getData,
         }}
         toolBarRender={() => [
           <FeedbackModalCreate
             key="changelog-modal-create"
-            refetch={refetch}
+            refetch={getData}
           />,
         ]}
         pagination={{

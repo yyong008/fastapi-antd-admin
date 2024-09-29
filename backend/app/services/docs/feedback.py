@@ -9,6 +9,7 @@ from app.dal.docs.feedback import (
     get_feedback_list,
 )
 from app.services.docs.format import format_feedback
+from app.models.docs.feedback import FeedBack
 
 
 def get_feedback_list_service(page, pageSize, db: Session):
@@ -28,10 +29,13 @@ def get_feedback_list_service(page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_feedback_service(feedback, db: Session):
+def create_feedback_service(feedback, current_user_id, db: Session):
     try:
-        data = create_feedback(feedback, db)
-        return data
+        del feedback['user_id']
+        feedback['userId'] = current_user_id
+        fb = FeedBack(**feedback)
+        data = create_feedback(fb, db)
+        return format_feedback(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
@@ -40,7 +44,7 @@ def create_feedback_service(feedback, db: Session):
 def delete_feedback_by_ids_service(ids, db: Session):
     try:
         data = delete_feedback_by_ids_service(ids, db)
-        return data
+        return format_feedback(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
@@ -52,7 +56,7 @@ def update_feedback_service(id, name, email, content, db: Session):
         if o_data is None:
             raise HTTPException(status_code=400, detail="Feedback not found")
         data = update_feedback_service(id, name, email, content, db)
-        return data
+        return format_feedback(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

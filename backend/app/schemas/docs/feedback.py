@@ -5,7 +5,7 @@ from datetime import datetime
 
 class FeedBackBase(BaseModel):
     user_id: int = Field(
-        ...,
+        None,
         title="User ID",
         description="The ID of the user who submitted the feedback",
     )
@@ -15,10 +15,10 @@ class FeedBackBase(BaseModel):
     url: Optional[str] = Field(
         None, title="URL", description="The URL of the feedback image"
     )
-    created_at: Optional[datetime] = Field(
+    createdAt: Optional[datetime] = Field(
         None, title="Created At", description="The time when the feedback was created"
     )
-    updated_at: Optional[datetime] = Field(
+    updatedAt: Optional[datetime] = Field(
         None,
         title="Updated At",
         description="The time when the feedback was last updated",
@@ -32,17 +32,8 @@ class FeedBackCreate(FeedBackBase):
 class FeedBackUpdate(FeedBackBase):
     pass
 
-
-class FeedBackInDBBase(FeedBackBase):
-    id: int
-
-    class Config:
-        from_attributes = True
-
-
-class FeedBack(FeedBackInDBBase):
+class FeedBack(FeedBackBase):
     pass
 
-
-class FeedBackInDB(FeedBackInDBBase):
-    pass
+class FeedBackDeleteByIds(BaseModel):
+    ids: list[int]

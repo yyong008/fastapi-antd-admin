@@ -34,7 +34,7 @@ export const createDocsChangelog = async (data: any) => {
   }
 }
 
-export const updateDocsChangelog = async (id: string, data: any) => {
+export const updateDocsChangelogById = async (id: string, data: any) => {
   try {
     const res = await request.put(`/api/admin/docs/changelog/${id}`, data);
     return res;
@@ -45,7 +45,7 @@ export const updateDocsChangelog = async (id: string, data: any) => {
 
 export const deleteDocsChangelogByIds = async (ids: number[]) => {
   try {
-    const res = await request.delete(`/api/admin/docs/changelog`, { data: { ids } });
+    const res = await request.delete(`/api/admin/docs/changelog`, { data: ids });
     return res;
   } catch (error) {
     console.error(error);

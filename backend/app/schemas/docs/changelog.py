@@ -5,7 +5,7 @@ from datetime import datetime
 
 class ChangeLogBase(BaseModel):
     user_id: int = Field(
-        ..., title="User ID", description="The ID of the user who made the change"
+        None, title="User ID", description="The ID of the user who made the change"
     )
     publish_name: str = Field(
         ..., title="Publish Name", description="The name of the publisher"
@@ -25,10 +25,10 @@ class ChangeLogBase(BaseModel):
     url: str = Field(
         ..., title="URL", description="The URL for more information about the update"
     )
-    created_at: Optional[datetime] = Field(
+    createdAt: Optional[datetime] = Field(
         None, title="Created At", description="The time when this record was created"
     )
-    updated_at: Optional[datetime] = Field(
+    updatedAt: Optional[datetime] = Field(
         None,
         title="Updated At",
         description="The time when this record was last updated",

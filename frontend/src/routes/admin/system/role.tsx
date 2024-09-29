@@ -43,7 +43,6 @@ export function RoleRoute() {
       return genMenuTreeForRole(menu || [], null);
     }
   }, [menu]);
-  console.log("menus", menus, menu);
 
   return (
     <PageContainer>

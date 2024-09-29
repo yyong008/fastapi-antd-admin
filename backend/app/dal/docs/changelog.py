@@ -28,17 +28,15 @@ def create_changelog(changelog, db: Session):
     db.refresh(changelog)
     return changelog
 
-def update_changelog_by_id(db: Session, blog_id: int, changelog: ChangeLog):
-    db.query(ChangeLog).filter(ChangeLog.id == blog_id).update(changelog)
+def update_changelog_by_id(db: Session, changelog_id: int, changelog):
+    # db.query(ChangeLog).filter(ChangeLog.id == changelog_id).update(changelog)
     db.commit()
     db.refresh(changelog)
     return changelog
 
 def delete_changelog_by_ids(ids, db):
     try:
-        count = (
-            db.query(ChangeLog).filter(ChangeLog.id.in_(ids)).delete(synchronize_session=False)
-        )
+        count = db.query(ChangeLog).filter(ChangeLog.id.in_(ids)).delete(synchronize_session=False)
         db.commit()
 
         return count

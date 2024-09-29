@@ -42,13 +42,11 @@ export function BlogCategoryRoute() {
         search={false}
         loading={loading}
         dataSource={data?.list || ([] as any[])}
-        toolBarRender={() => createBlogCategoryToolBarRender(() => {})}
-        columns={blogCategoryColumnsCreate("en-US", () => {})}
-        options={
-          {
-            // reload: refetch,
-          }
-        }
+        toolBarRender={() => createBlogCategoryToolBarRender(getData)}
+        columns={blogCategoryColumnsCreate(getData)}
+        options={{
+          reload: getData,
+        }}
         pagination={{
           total: data?.total,
           pageSize: 10,

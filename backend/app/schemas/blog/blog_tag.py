@@ -7,8 +7,8 @@ class BlogTagBase(BaseModel):
     description: Optional[str] = Field(
         None, title="Description", description="A description of the blog tag"
     )
-    user_id: int = Field(
-        ..., title="User ID", description="The ID of the user who created the blog tag"
+    user_id: Optional[int] = Field(
+        None, title="User ID", description="The ID of the user who created the blog tag"
     )
 
 

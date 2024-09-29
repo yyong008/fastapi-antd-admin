@@ -34,7 +34,7 @@ export const createBlogCategory = async (data: any) => {
   }
 };
 
-export const updateBlogCategory = async (id: number, data: any) => {
+export const updateBlogCategoryById = async (id: number, data: any) => {
   try {
     const res = await request.put("/api/admin/blog/category/" + id, data);
     return res;

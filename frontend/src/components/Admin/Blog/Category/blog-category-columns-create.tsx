@@ -7,7 +7,7 @@ import { Space } from "antd";
 
 const { SwitcherOutlined } = ic;
 
-export const blogCategoryColumnsCreate = (lang: string, refetch: any) => [
+export const blogCategoryColumnsCreate = (refetch: any) => [
   {
     dataIndex: "name",
     title: "分类名字",

@@ -7,8 +7,8 @@ class BlogCategoryBase(BaseModel):
     description: Optional[str] = Field(
         None, title="Description", description="A description of the blog category"
     )
-    user_id: int = Field(
-        ...,
+    user_id: Optional[int] = Field(
+        None,
         title="User ID",
         description="The ID of the user who created the blog category",
     )

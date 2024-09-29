@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from app.models.blog import BlogCategory
 
 from app.dal.blog.blog_category import (
     delete_news_by_ids,
@@ -39,22 +40,28 @@ def get_blog_category_by_id_service(id, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_blog_category_service(id, bc, db: Session):
+def update_blog_category_by_id_service(id, bc, current_user_id, db: Session):
     try:
-        b_data = get_blog_category_by_id(id, db)
-        if b_data is None:
+        bc_in_db = get_blog_category_by_id(id, db)
+        if bc_in_db is None:
             raise HTTPException(status_code=400, detail="Blog category not found")
-        data = update_blog_category_by_id(id, bc, db)
-        return data
+        bc_in_db.description = bc['description']
+        bc_in_db.name = bc['name']
+        bc_in_db.user_id = current_user_id
+
+        data = update_blog_category_by_id(id, bc_in_db, db)
+        return  format_blog_category(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_blog_category_service(bc, db: Session):
+def create_blog_category_service(bc, current_user_id, db: Session):
     try:
-        data = create_blog_category(bc, db)
-        return data
+        bc['user_id'] = current_user_id
+        blog_category = BlogCategory(**bc)
+        data = create_blog_category(blog_category, db)
+        return format_blog_category(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

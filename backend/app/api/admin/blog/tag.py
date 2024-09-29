@@ -7,7 +7,7 @@ from app.db.client import get_db
 from app.schemas.blog.blog_tag import BlogTagCreate, BlogTagDeleteByIds, BlogTagUpdate
 from app.services.blog.blog_tag import (
     create_blog_tag_service,
-    update_blog_tag_service,
+    update_blog_tag_by_id_service,
     delete_blog_tag_by_ids_service,
 )
 
@@ -36,7 +36,7 @@ def create_blog_tag(blog_tag: BlogTagCreate, db: Session = Depends(get_db)):
 def update_blog_tag_by_id(
     id: int, blog_tag: BlogTagUpdate, db: Session = Depends(get_db)
 ):
-    data = update_blog_tag_service(id, blog_tag, db)
+    data = update_blog_tag_by_id_service(id, blog_tag, db)
     return ResponseSuccessModel(data=data)
 
 

@@ -24,18 +24,21 @@ def get_blog_category_list(db: Session, page: int = 1, pageSize: int = 10):
 def get_blog_category_by_id(id: int, db: Session):
     return db.query(BlogCategory).filter(BlogCategory.id == id).first()
 
-def create_blog_category(blog_category, db: Session):
-    db.add(blog_category)
+# =====================================CREATE===================================================
+def create_blog_category(bc, db: Session):
+    db.add(bc)
     db.commit()
-    db.refresh(blog_category)
-    return blog_category
+    db.refresh(bc)
+    return bc
 
-def update_blog_category_by_id(db: Session, blog_id: int, blog: BlogCategory):
-    db.query(BlogCategory).filter(BlogCategory.id == blog_id).update(blog)
+# =====================================UPDATE===================================================
+def update_blog_category_by_id(bc_id: int, bc, db: Session):
+    # db.query(BlogCategory).filter(BlogCategory.id == bc_id).update(bc)
     db.commit()
-    db.refresh(blog)
-    return blog
+    db.refresh(bc)
+    return bc
 
+# =====================================DELETE===================================================
 def delete_news_by_ids(ids, db):
     try:
         count = (

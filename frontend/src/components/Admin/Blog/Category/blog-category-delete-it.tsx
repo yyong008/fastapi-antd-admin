@@ -1,8 +1,7 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, Popconfirm, message } from "antd";
 
-const { DeleteOutlined } = ic;
+import { DeleteOutlined } from "@ant-design/icons";
+import { deleteBlogCategoryByIds } from "@/apis/admin/blog/category";
 
 type DeleteItProps = {
   record: any;
@@ -10,28 +9,21 @@ type DeleteItProps = {
   refetch: any;
 };
 
-export function BlogCategoryDeleteIt({
-  record,
-  title,
-  refetch,
-}: DeleteItProps) {
-  const [deleteBlog] = [(...args: any) => args];
+export function BlogCategoryDeleteIt(props: DeleteItProps) {
+  const { record, title, refetch } = props;
   return (
     <Form>
       <Popconfirm
         title={title || "确定要删除吗?"}
         onConfirm={async () => {
-          const data = { ids: [record.id] };
+          const result: any = await deleteBlogCategoryByIds([record.id]);
 
-          const result: any = await deleteBlog(data);
-
-          if (result.data.code === 1) {
-            message.error(result.data.message);
-            return false;
+          if (result && result.code === 0) {
+            message.success(result.message);
+            refetch();
+            return true;
           }
-
-          message.success(result.data.message);
-          refetch();
+          message.error(result.message);
           return false;
         }}
       >

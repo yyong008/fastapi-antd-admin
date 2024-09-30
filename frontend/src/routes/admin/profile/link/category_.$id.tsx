@@ -1,13 +1,11 @@
-import { Link, useParams } from "@tanstack/react-router";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Space, Tag } from "antd";
 import { useEffect, useState } from "react";
 
 import { LinkModalCreate } from "@/components/Admin/Profile/LinkCategoryDetail/link-modal-create";
-import { LinkModalUpdate } from "@/components/Admin/Profile/LinkCategoryDetail/link-modal-update";
-import LinkSvg from "@/components/Admin/Profile/LinkCategoryDetail/link-svg";
 import { createFileRoute } from "@tanstack/react-router";
+import { createLinkCategoryDetailColumns } from "@/components/Admin/Profile/LinkCategoryDetail/createLinkCategoryDetailColumns";
 import { getProfileLinkListByCategoryId } from "@/apis/admin/profile/link/link";
+import { useParams } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/profile/link/category/$id")({
   component: LinkCategoryDetailRoute,
@@ -63,45 +61,7 @@ export function LinkCategoryDetailRoute() {
             });
           },
         }}
-        columns={[
-          {
-            dataIndex: "name",
-            title: "链接名",
-          },
-          {
-            dataIndex: "url",
-            title: "链接地址",
-            renderText(_, record: any) {
-              return (
-                <Link to={record.url} target="_blank">
-                  <Tag className="inline-flex" color="cyan">
-                    {record.url}
-                    <LinkSvg className="border-yellow-200 w-[16px]" />
-                  </Tag>
-                </Link>
-              );
-            },
-          },
-          {
-            dataIndex: "description",
-            title: "描述",
-          },
-          {
-            dataIndex: "op",
-            title: "操作",
-            render(_, record) {
-              return (
-                <Space>
-                  <LinkModalUpdate
-                    refetch={getData}
-                    record={record}
-                    key="modify-link-modal"
-                  />
-                </Space>
-              );
-            },
-          },
-        ]}
+        columns={createLinkCategoryDetailColumns({ refetch: getData })}
       />
     </PageContainer>
   );

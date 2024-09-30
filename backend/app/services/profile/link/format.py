@@ -12,5 +12,6 @@ def format_link(link):
         "id": link.id,
         "name": link.name,
         "url": link.url,
+        "description": link.description,
     }
     return item

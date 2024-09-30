@@ -1,5 +1,3 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, message } from "antd";
 import {
   ModalForm,
@@ -7,20 +5,21 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
+import { EditOutlined } from "@ant-design/icons";
+import { udpateProfileLinkById } from "@/apis/admin/profile/link/link";
 import { useParams } from "@tanstack/react-router";
-
-const { EditOutlined } = ic;
+import { useState } from "react";
 
 export function LinkModalUpdate({ record, refetch }: any) {
   const [form] = Form.useForm();
-  const { id } = useParams({ strict: false });
-  const [updateProfileLinkById, other] = [(args) => args, { isLoading: false }];
+  const { id: categoryId } = useParams({ strict: false });
+  const [loading, setLoading] = useState(false);
   return (
     <ModalForm
       key={Date.now()}
       preserve={false}
       title="更新 link"
-      loading={other.isLoading}
+      loading={loading}
       onOpenChange={(c) => {
         if (!c || !record.id) {
           return;
@@ -42,21 +41,18 @@ export function LinkModalUpdate({ record, refetch }: any) {
           ...values,
         };
 
-        if (id) {
-          vals.categoryId = Number(id);
+        vals.categoryId = Number(categoryId);
+        setLoading(true);
+        const result: any = await udpateProfileLinkById(record.id, vals);
+        setLoading(false);
+        if (result && result?.code === 0) {
+          message.success(result?.message);
+          refetch();
+          form.resetFields();
+          return true;
         }
-        const result = await updateProfileLinkById({
-          id: record.id,
-          ...vals,
-        });
-        if (result.data?.code !== 0) {
-          message.error(result.data?.message);
-          return false;
-        }
-        message.success(result.data?.message);
-        refetch();
-        form.resetFields();
-        return true;
+        message.error(result?.message);
+        return false;
       }}
     >
       <ProFormText

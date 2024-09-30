@@ -38,7 +38,7 @@ export const createProfileLink = async (data: any) => {
   }
 }
 
-export const udpateProfileLink = async (id: number, data: any) => {
+export const udpateProfileLinkById = async (id: number, data: any) => {
   try {
     const res = await request.put("/api/admin/profile/link/" + id, data);
     return res;

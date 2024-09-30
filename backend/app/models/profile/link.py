@@ -10,7 +10,7 @@ class Link(Base):
     name = Column(String, nullable=False)
     url = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    # user_id = Column(Integer, nullable=False)  # 上传用户，可能需要外键根据需求
+    # user_id = Column(Integer, nullable=False)  # 上传用户，可能需要外键根据需求 Todo: user_id
     category_id = Column(
         Integer,
         ForeignKey("profile_link_category.id", ondelete="RESTRICT", onupdate="CASCADE"),

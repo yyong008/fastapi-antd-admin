@@ -6,12 +6,14 @@ import {
 } from "@ant-design/pro-components";
 
 import { EditOutlined } from "@ant-design/icons";
+import { createProfileLink } from "@/apis/admin/profile/link/link";
 import { useParams } from "@tanstack/react-router";
+import { useState } from "react";
 
 export function LinkModalCreate({ refetch }: any) {
   const [form] = Form.useForm();
-  const { id } = useParams({ strict: false });
-  const [createProfileLinkById, other] = [(args) => args, { isLoading: false }]; // todo
+  const { id: categoryId } = useParams({ strict: false });
+  const [loading, setLoading] = useState(false);
 
   return (
     <ModalForm
@@ -19,7 +21,7 @@ export function LinkModalCreate({ refetch }: any) {
       preserve={false}
       title={"创建链接"}
       onOpenChange={() => {}}
-      loading={other.isLoading}
+      loading={loading}
       trigger={
         <Button type={"primary"} icon={<EditOutlined />}>
           新建
@@ -37,18 +39,19 @@ export function LinkModalCreate({ refetch }: any) {
           ...values,
         };
 
-        if (id) {
-          vals.categoryId = Number(id);
+        vals.categoryId = Number(categoryId);
+
+        setLoading(true);
+        const result: any = await createProfileLink(vals);
+        setLoading(false);
+        if (result && result?.code === 0) {
+          message.success(result?.message);
+          refetch();
+          form.resetFields();
+          return true;
         }
-        const result = await createProfileLinkById(vals);
-        if (result.data?.code !== 0) {
-          message.error(result.data?.message);
-          return false;
-        }
-        message.success(result.data?.message);
-        refetch();
-        form.resetFields();
-        return true;
+        message.error(result?.message);
+        return false;
       }}
     >
       <ProFormText

@@ -41,14 +41,14 @@ def get_links_by_category_id(category_id, page, pageSize, db: Session):
     limit = pageSize
     return db.query(Link).filter(Link.category_id == category_id).offset(skip).limit(limit).all()
 
-def create_link_category(feedback, db: Session):
-    db.add(feedback)
+def create_link_category(link, db: Session):
+    db.add(link)
     db.commit()
-    db.refresh(feedback)
-    return feedback
+    db.refresh(link)
+    return link
 
-def update_link_by_id(db: Session, blog_id: int, link: Link):
-    db.query(Link).filter(Link.id == blog_id).update(link)
+def update_link_by_id( blog_id: int, link: Link, db: Session,):
+    # db.query(Link).filter(Link.id == blog_id).update(link)
     db.commit()
     db.refresh(link)
     return link

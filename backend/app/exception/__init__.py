@@ -10,10 +10,13 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
         content={"code": 1, "message": message, "data": {}},
     )
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    errors = exc.detail if not hasattr(exc, 'errors') else exc.errors()
-    message = errors
+def validation_exception_handler(request, exc: RequestValidationError):
+    messages = [f"{err['loc'][-1]}: {err['msg']}" for err in exc.errors()]
     return JSONResponse(
         status_code=422,
-        content={"code": 1, "message": message, "data": {}},
+        content={
+            "code": 1,
+            "message": ", ".join(messages),
+            "data": {}
+        },
     )

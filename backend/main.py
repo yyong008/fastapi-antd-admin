@@ -2,6 +2,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
 
 # config
 from app.config.config import get_settings
@@ -40,7 +41,7 @@ app.add_middleware(DemoModeMiddleware)
 
 # register exception handler
 app.add_exception_handler(HTTPException, http_exception_handler)
-app.add_exception_handler(HTTPException, validation_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
 
 if config.BACKEND_CORS_ORIGINS:
     app.add_middleware(

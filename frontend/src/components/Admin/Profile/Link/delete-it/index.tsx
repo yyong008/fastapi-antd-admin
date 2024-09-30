@@ -1,8 +1,7 @@
-import * as _icon from "@ant-design/icons";
-
 import { Button, Form, Popconfirm, message } from "antd";
 
-const { DeleteOutlined } = _icon;
+import{ DeleteOutlined }  from "@ant-design/icons";
+import { deleteProfileLinkCategoryByIds } from "@/apis/admin/profile/link/category"
 
 type DeleteItProps = {
   refetch: any;
@@ -10,21 +9,21 @@ type DeleteItProps = {
   title: string;
 };
 
-export function DeleteIt({ record, title, refetch }: DeleteItProps) {
-  const [deletePrpfileLinkCategory] = [(args) => args];
-
+export function DeleteIt(props: DeleteItProps) {
+  const { record, title, refetch } = props
   return (
     <Form>
       <Popconfirm
         title={title || "确定要删除吗?"}
         onConfirm={async () => {
-          const result = await deletePrpfileLinkCategory([record.id]);
-          if (result.data?.code !== 0) {
-            message.error(result.data?.message);
+          const result: any = await deleteProfileLinkCategoryByIds([record.id]);
+          if (result && result?.code === 0) {
+            message.success(result?.message);
+            refetch();
             return false;
           }
-          message.success(result.data?.message);
-          refetch();
+          message.error(result?.message);
+
           return true;
         }}
       >

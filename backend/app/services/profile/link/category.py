@@ -11,6 +11,7 @@ from app.dal.profile.link.category import (
     update_link_category_by_id,
 )
 from app.services.profile.link.format import format_category
+from app.models.profile.link import LinkCategory
 
 
 def get_link_category_list_service(page, pageSize, db: Session):
@@ -42,8 +43,10 @@ def get_link_category_by_id_service(id, db: Session):
 
 def create_link_category_service(link_category, user_id, db):
     try:
-        data = create_link_category(link_category, db)
-        return data
+        lc = LinkCategory(**link_category)
+        lc.user_id = user_id
+        data = create_link_category(lc, db)
+        return format_category(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
@@ -54,8 +57,12 @@ def update_link_category_service(id, link_category, user_id, db):
         o_data = get_link_category_by_id(id, db)
         if o_data is None:
             raise HTTPException(status_code=400, detail="Link category not found")
-        data = update_link_category_by_id(id, link_category, db)
-        return data
+
+        o_data.name = link_category['name']
+        o_data.user_id = user_id
+        o_data.description = link_category['description']
+        data = update_link_category_by_id(id, o_data, db)
+        return format_category(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

@@ -9,7 +9,9 @@ def get_link_category_by_name(name: str, db: Session):
 
 
 def get_link_category_list(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(LinkCategory).offset(skip).limit(limit).all()
+    offset = (skip - 1) * limit
+    limit = limit
+    return db.query(LinkCategory).offset(offset).limit(limit).all()
 
 
 def get_link_category_count(db: Session):
@@ -36,17 +38,15 @@ def create_link_category(link_category, db: Session):
     db.refresh(link_category)
     return link_category
 
-def update_link_category_by_id(db: Session, link_category_id: int, link_category: LinkCategory):
-    db.query(LinkCategory).filter(LinkCategory.id == link_category_id).update(link_category)
+def update_link_category_by_id(link_category_id: int, link_category: LinkCategory, db: Session):
+    # db.query(LinkCategory).filter(LinkCategory.id == link_category_id).update(link_category)
     db.commit()
     db.refresh(link_category)
     return link_category
 
 def delete_link_category_by_ids(ids, db):
     try:
-        count = (
-            db.query(LinkCategory).filter(LinkCategory.id.in_(ids)).delete(synchronize_session=False)
-        )
+        count = db.query(LinkCategory).filter(LinkCategory.id.in_(ids)).delete(synchronize_session=False)
         db.commit()
 
         return count

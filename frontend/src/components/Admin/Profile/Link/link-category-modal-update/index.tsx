@@ -1,5 +1,3 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, message } from "antd";
 import {
   ModalForm,
@@ -7,14 +5,13 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
-const { EditOutlined } = ic;
+import { EditOutlined } from "@ant-design/icons";
+import { udpateProfileLinkCategoryById } from "@/apis/admin/profile/link/category";
+import { useState } from "react";
 
 export function LinkCategoryModalUpdate({ record, refetch }: any) {
   const [form] = Form.useForm();
-  const [updateLinkCategoryById, other] = [
-    (args) => args,
-    { isLoading: false },
-  ];
+  const [loading, setLoading] = useState(false);
   return (
     <ModalForm
       key={Date.now()}
@@ -31,21 +28,20 @@ export function LinkCategoryModalUpdate({ record, refetch }: any) {
         destroyOnClose: true,
         onCancel: () => form.resetFields(),
       }}
-      loading={other.isLoading}
+      loading={loading}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const result = await updateLinkCategoryById({
-          id: record.id,
-          ...values,
-        });
-        if (result.data?.code !== 0) {
-          message.error(result.data?.message);
-          return false;
+        setLoading(true);
+        const result: any = await udpateProfileLinkCategoryById(record.id, values);
+        setLoading(false);
+        if (result && result?.code === 0) {
+          message.success(result?.message);
+          refetch();
+          form.resetFields();
+          return true;
         }
-        message.success(result.data?.message);
-        refetch();
-        form.resetFields();
-        return true;
+        message.error(result?.message);
+        return false;
       }}
     >
       <ProFormText

@@ -1,12 +1,9 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Space, Tag } from "antd";
 import { useEffect, useState } from "react";
 
-import { DeleteIt } from "@/components/Admin/Profile/Link/delete-it";
-import { Link } from "@tanstack/react-router";
 import { LinkCategoryModalCreate } from "@/components/Admin/Profile/Link/link-category-modal-create";
-import { LinkCategoryModalUpdate } from "@/components/Admin/Profile/Link/link-category-modal-update";
 import { createFileRoute } from "@tanstack/react-router";
+import { createProfileLinkCategories } from "@/components/Admin/Profile/Link/createProfileCategoryColumns";
 import { getProfileLinkCategory } from "@/apis/admin/profile/link/category";
 
 export const Route = createFileRoute("/admin/profile/link/category")({
@@ -38,7 +35,7 @@ export function LinkCategoryRoute() {
     getData();
   }, [page]);
   return (
-    <PageContainer>
+    <PageContainer loading={loading}>
       <ProTable
         rowKey="id"
         size="small"
@@ -49,58 +46,23 @@ export function LinkCategoryRoute() {
           reload: getData,
         }}
         toolBarRender={() => [
-          <LinkCategoryModalCreate key="link-category-modal-create" />,
+          <LinkCategoryModalCreate refetch={getData} key="link-category-modal-create" />,
         ]}
         dataSource={data?.list || []}
-        columns={[
-          {
-            dataIndex: "name",
-            title: "链接分类名",
-            render(_, record) {
-              return <LinkTag record={record} />;
-            },
-          },
-          {
-            dataIndex: "description",
-            title: "描述",
-          },
-          {
-            dataIndex: "op",
-            title: "操作",
-            render(_, record) {
-              return (
-                <Space>
-                  <LinkCategoryModalUpdate
-                    key="link-category-modal-modify"
-                    record={record}
-                    refetch={getData}
-                  />
-                  <DeleteIt record={record} refetch={getData} title="删除" />
-                </Space>
-              );
-            },
-          },
-        ]}
+        columns={createProfileLinkCategories({  refetch: getData })}
         pagination={{
           total: data?.total,
+          current: page.page,
           pageSize: 10,
           onChange(_page, pageSize) {
-            setPage({
-              ...page,
+            setPage((p) => ({
+              ...p,
               page: _page,
               pageSize,
-            });
+            }));
           },
         }}
       />
     </PageContainer>
-  );
-}
-
-function LinkTag({ record }: any) {
-  return (
-    <Link to={`/admin/profile/link/category/${record?.id}`}>
-      <Tag color="blue">{record?.name}</Tag>
-    </Link>
   );
 }

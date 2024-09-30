@@ -36,19 +36,19 @@ export const createProfileLinkCategory = async (data: any) => {
   }
 }
 
-export const udpateProfileLinkCategory = async (data: any) => {
+export const udpateProfileLinkCategoryById = async (id: number, data: any) => {
   try {
-    const res = await request.put("/api/admin/profile/link/category/", data);
+    const res = await request.put("/api/admin/profile/link/category/" +id, data);
     return res;
   } catch (error) {
     console.error(error);
   }
 }
 
-export const deleteProfileLinkCategory = async (ids: number[]) => {
+export const deleteProfileLinkCategoryByIds = async (ids: number[]) => {
   try {
     const res = await request.delete(`/api/admin/profile/link/category/`, {
-      data: { ids: ids}
+      data: { ids }
     });
     return res;
   } catch (error) {

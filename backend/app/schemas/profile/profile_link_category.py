@@ -1,14 +1,40 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
-from app.db.client import Base
+from typing import Optional
+from pydantic import BaseModel, Field
 
 
-class LinkCategory(Base):
-    __tablename__ = "profile_link_category"
+class LinkCategoryCreate(BaseModel):
+    name: str = Field(
+        ...,
+        title="Name",
+        description="The name or title of the link category",
+    )
+    description: Optional[str] = Field(
+        None,
+        title="Description",
+        description="A brief description of the link category",
+    )
+    user_id: int = Field(
+        None,
+        title="User ID",
+        description="The ID of the user associated with the link category",
+    )
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    description = Column(String, nullable=True)
-    user_id = Column(Integer, nullable=False)  # 上传用户，可能需要外键根据需求
+class LinkCategoryUpdate(BaseModel):
+    name: str = Field(
+        ...,
+        title="Name",
+        description="The name or title of the link category",
+    )
+    description: Optional[str] = Field(
+        None,
+        title="Description",
+        description="A brief description of the link category",
+    )
+    user_id: int = Field(
+        None,
+        title="User ID",
+        description="The ID of the user associated with the link category",
+    )
 
-    links = relationship("Link", back_populates="category")  # 反向关系
+class LinkCategoryDeleteByIds(BaseModel):
+    ids: list[int]

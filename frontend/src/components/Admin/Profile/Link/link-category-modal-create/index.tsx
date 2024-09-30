@@ -1,5 +1,3 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, message } from "antd";
 import {
   ModalForm,
@@ -7,11 +5,17 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 
-const { EditOutlined } = ic;
+import { EditOutlined } from "@ant-design/icons";
+import { createProfileLinkCategory } from "@/apis/admin/profile/link/category";
+import { useState } from "react";
 
-export function LinkCategoryModalCreate({ refetch }: any) {
+type LinkCategoryModalCreateProps = {
+  refetch: () => void;
+};
+
+export function LinkCategoryModalCreate({ refetch }: LinkCategoryModalCreateProps) {
   const [form] = Form.useForm();
-  const [createLinkCategory, other] = [(args) => args, { isLoading: false }]; // todo
+  const [loading, setLoading] = useState(false);
 
   return (
     <ModalForm
@@ -30,18 +34,20 @@ export function LinkCategoryModalCreate({ refetch }: any) {
         destroyOnClose: true,
         onCancel: () => form.resetFields(),
       }}
-      loading={other.isLoading}
+      loading={loading}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const result = await createLinkCategory(values);
-        if (result.data?.code !== 0) {
-          message.error(result.data?.message);
-          return false;
+        setLoading(true);
+        const result: any = await createProfileLinkCategory(values);
+        setLoading(false);
+        if (result && result?.code === 0) {
+          message.success(result?.message);
+          refetch();
+          form.resetFields();
+          return true;
         }
-        message.success(result.data?.message);
-        refetch();
-        form.resetFields();
-        return true;
+        message.error(result?.message);
+        return false;
       }}
     >
       <ProFormText

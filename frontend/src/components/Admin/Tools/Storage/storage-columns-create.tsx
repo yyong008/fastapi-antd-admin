@@ -1,5 +1,5 @@
 import { FormatTime } from "@/components/common/format-time";
-import { Image } from "antd";
+import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 
 export const storageColumnsCreate = () => {
   return [
@@ -10,7 +10,7 @@ export const storageColumnsCreate = () => {
       width: 80,
       render(_: string, record: any) {
         if (record?.type?.startsWith("image")) {
-          return <Image style={{ width: "50px" }} src={record.path} />;
+          return <ImageWithFallback style={{ width: "30px" }} src={record.path}  />
         }
         return record.path;
       },

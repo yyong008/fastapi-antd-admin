@@ -43,7 +43,7 @@ export function MailListRoute() {
         loading={loading}
         size="small"
         search={false}
-        headerTitle="登录记录"
+        headerTitle="邮件模板"
         rowKey="id"
         showSorterTooltip
         dataSource={data?.list || []}

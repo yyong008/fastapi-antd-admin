@@ -4,16 +4,17 @@ import {
   ProFormDigit,
   ProFormText,
 } from "@ant-design/pro-components";
+import { SaveOutlined, SendOutlined } from "@ant-design/icons";
+import { sendMail, updateMailById } from "@/apis/admin/tools/mail";
 
-export function MailForm({ data, content, refetch }: any) {
-  const [createMailTemplate, other] = [(args) => args, { isLoading: false }];
+import { useState } from "react";
+
+export function MailForm({ id, data, content, refetch }: any) {
   const [form] = Form.useForm();
+  const [saveTplLoading, setSaveTplLoading] = useState(false)
+  const [sendMailLoading, setSendMailLoading] = useState(false)
 
-  const onSaveTemplate = async () => {
-    if (!content) {
-      return message.error("input email content ~");
-    }
-
+  const getFormData = () => {
     const vals = {
       subject: form.getFieldValue("subject"),
       to: form.getFieldValue("to"),
@@ -23,20 +24,45 @@ export function MailForm({ data, content, refetch }: any) {
       user: form.getFieldValue("user"),
       pass: form.getFieldValue("pass"),
     };
+    return vals;
+  };
 
-    const result = await createMailTemplate(vals);
-    if (result.data?.code !== 0) {
-      message.error(result.data?.message);
-      return false;
+  const onSaveTemplate = async () => {
+    if (!content) {
+      return message.error("input email content ~");
     }
-    message.success(result.data?.message);
-    refetch?.();
-    form.resetFields();
-    return true;
+
+    const vals = getFormData();
+    setSaveTplLoading(true)
+    const result: any = await updateMailById(id, vals);
+    setSaveTplLoading(false)
+    if (result && result?.code === 0) {
+      message.success(result?.message);
+      refetch?.();
+      form.resetFields();
+      return true;
+    }
+    message.error(result?.message);
+      return false;
+  };
+
+  const onSendMail = async () => {
+    const vals = getFormData();
+    setSendMailLoading(true)
+    const result: any = await sendMail(vals);
+    setSendMailLoading(false)
+    if (result && result?.code === 0) {
+      message.success(result?.message);
+      refetch?.();
+      return true;
+    }
+
+    message.error(result?.message);
+    return false;
   };
   return (
     <DrawerForm
-      loading={other.isLoading}
+      title="修改邮件"
       form={form}
       initialValues={{ ...data }}
       submitter={{
@@ -45,26 +71,30 @@ export function MailForm({ data, content, refetch }: any) {
             <Button
               type="primary"
               key="rest"
+              loading={saveTplLoading}
               onClick={() => {
                 onSaveTemplate();
               }}
             >
-              保存模板
+
+              保存模板<SaveOutlined />
             </Button>,
             <Button
+              loading={sendMailLoading}
               type="primary"
               key="submit"
               onClick={() => props.form?.submit?.()}
             >
-              发送邮件
+
+              发送邮件<SendOutlined />
             </Button>,
           ];
         },
       }}
       onFinish={async () => {
-        //
+        onSendMail();
       }}
-      trigger={<Button type="primary">发布邮件</Button>}
+      trigger={<Button type="primary">发送邮件<SendOutlined /></Button>}
     >
       <ProFormText
         label="邮件标题"

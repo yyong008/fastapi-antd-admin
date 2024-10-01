@@ -58,3 +58,33 @@ class Mail(MailInDBBase):
 
 class MailInDB(MailInDBBase):
     pass
+
+class MailCreateSchema(BaseModel):
+    content: str
+    host: str
+    port: int
+    subject: str
+    to: str
+    user: str
+    password: str = Field(..., alias="pass")
+
+class MailUpdateSchema(BaseModel):
+    content: str
+    host: str
+    port: int
+    subject: str
+    to: str
+    user: str
+    password: str = Field(..., alias="pass")
+
+class MailDeleteByIdsSchema(BaseModel):
+    ids: list[int]
+
+class SendEmailSchema(BaseModel):
+    content: str
+    host: str
+    port: int
+    subject: str
+    to: str
+    user: str
+    password: str = Field(..., alias="pass")

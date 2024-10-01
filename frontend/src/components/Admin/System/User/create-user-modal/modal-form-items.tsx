@@ -40,7 +40,8 @@ export function UserModalFormItems(props: UserModalFormItemProps) {
       <ProFormText.Password
         width="md"
         name="password"
-        label="密码"
+        label="密码f"
+
         placeholder="不修改无需填写"
         rules={[
           {

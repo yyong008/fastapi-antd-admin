@@ -21,7 +21,7 @@ export function PDrawerForm({
       onFinish={async (v) => {
         onFinish(v);
       }}
-      trigger={<Button type="primary">发布邮件</Button>}
+      trigger={<Button type="primary">发送邮件</Button>}
     >
       {children}
     </DrawerForm>

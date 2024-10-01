@@ -5,6 +5,15 @@ type TMail = {
   pageSize: number;
 };
 
+export const sendMail = async (data: any) => {
+  try {
+    const res = await request.post("/api/admin/tools/mail/send", data);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const getToolsMail = async (searchParams: TMail) => {
   try {
     const res = await request.get("/api/admin/tools/mail/", {

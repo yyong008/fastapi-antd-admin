@@ -12,11 +12,9 @@ class Mail(Base):
     host = Column(String, nullable=True)
     port = Column(Integer, nullable=True)
     user = Column(String, nullable=True)
-    password = Column(
-        String, nullable=True
-    )  # 用 `password` 代替 `pass`，因为 `pass` 是 Python 的保留字
-    from_address = Column(String, nullable=True)  # 用 `from_address` 代替 `from`
-    to_address = Column(String, nullable=True)  # 用 `to_address` 代替 `to`
+    pass_ = Column("pass", String, nullable=True)
+    from_ = Column("from",String, nullable=True)
+    to_ = Column("to",String, nullable=True)
     subject = Column(String, nullable=True)
     content = Column(String, nullable=True)
     html = Column(String, nullable=True)

@@ -1,37 +1,46 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { ButtonLink } from "@/components/common/button-link";
 import { createFileRoute } from "@tanstack/react-router";
 import { createMaiListColumns } from "@/components/Admin/Tools/MailList/mail-list-columns-create";
+import { getToolsMail } from "@/apis/admin/tools/mail"
 
 export const Route = createFileRoute("/admin/tools/mail/list")({
   component: MailListRoute,
 });
 
 export function MailListRoute() {
-  const { lang } = { lang: "en-US" };
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState({
     page: 1,
-    pageSize: 110,
+    pageSize: 10,
   });
-  const { data, isLoading, refetch } = {
-    data: {
-      list: [],
-      total: 0,
-    },
-    isLoading: false,
-    refetch: (args) => args,
+  const [data, setData] = useState({
+    list: [],
+    total: 0,
+  });
+
+  const getData = async () => {
+    const res: any = await getToolsMail({ ...page });
+    if (res && res.code === 0) {
+      setData(res.data);
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    setLoading(true);
+    getData();
+  }, [page]);
   const columns = useMemo(() => {
-    return createMaiListColumns(lang!);
-  }, [lang]);
+    return createMaiListColumns({ refetch: getData });
+  }, []);
 
   return (
     <PageContainer>
       <ProTable
-        loading={isLoading}
+        loading={loading}
         size="small"
         search={false}
         headerTitle="登录记录"
@@ -48,11 +57,12 @@ export function MailListRoute() {
         ]}
         columns={columns as any}
         options={{
-          reload: refetch,
+          reload: getData,
         }}
         pagination={{
           total: data?.total,
           pageSize: 10,
+          current: page.page,
           onChange(page, pageSize) {
             setPage({
               page,

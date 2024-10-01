@@ -12,3 +12,20 @@ def format_tools_storage(storage):
         "type": storage.type,
     }
     return item
+
+
+def format_tools_mail(mail):
+    item = {
+        "id": mail.id,
+        "name": mail.name,
+        "title": mail.title,
+        "host": mail.host,
+        "port": mail.port,
+        "user": mail.user,
+        "pass": mail.pass_,
+        "from": mail.from_,
+        "to": mail.to_,
+        "subject": mail.subject,
+        "content": mail.content,
+    }
+    return item

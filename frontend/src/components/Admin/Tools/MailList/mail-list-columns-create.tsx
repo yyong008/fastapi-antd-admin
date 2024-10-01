@@ -1,8 +1,8 @@
 import { ButtonLink } from "@/components/common/button-link";
-import { DeleteIt } from "@/components/common/delete-it";
+import { DeleteIt } from "./delete-it";
 import { Space } from "antd";
 
-export const createMaiListColumns = (lang: string) => [
+export const createMaiListColumns = ({ refetch }) => [
   {
     dataIndex: "subject",
     title: "邮件标题",
@@ -48,10 +48,10 @@ export const createMaiListColumns = (lang: string) => [
         <Space>
           <ButtonLink
             key="create-mail"
-            to={`/${lang!}/admin/tools/mail/${record.id}`}
+            to={`/admin/tools/mail/${record.id}`}
             type={"edit"}
           />
-          <DeleteIt fetcher={() => {}} record={record} title={"用户"} />
+          <DeleteIt refetch={refetch} record={record} title={"用户"} />
         </Space>
       );
     },

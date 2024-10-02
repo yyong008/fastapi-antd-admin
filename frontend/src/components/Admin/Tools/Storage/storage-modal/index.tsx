@@ -1,15 +1,10 @@
-import * as ic from "@ant-design/icons";
-
 import { Alert, Button, Progress, message } from "antd";
 import { ModalForm, ProTable } from "@ant-design/pro-components";
+import { STORAGE_MAX_FILES, STORAGE_MAX_SIZE, STORAGE_MAX_SIZE_MB } from "@/constants/upload";
 import { useEffect, useRef, useState } from "react";
 
-import { ajax } from "rxjs/ajax";
-import { combineLatest } from "rxjs";
-
-const { EditOutlined } = ic;
-
-const FileSizeLimit = 2; // MB
+import { EditOutlined } from "@ant-design/icons";
+import { uploadImages } from "./upload";
 
 enum FileStatus {
   BeforeUpload,
@@ -25,7 +20,7 @@ type StorageModalProps = {
 export function StorageModal(props: StorageModalProps) {
   const inputRef = useRef<HTMLInputElement>();
   const { trigger } = props;
-  const [fileList, setFileList] = useState<any[]>();
+  const [fileList, setFileList] = useState<any[]>([]);
   const chooseFileListRef = useRef<any[]>([]);
 
   const reset = () => {
@@ -42,48 +37,13 @@ export function StorageModal(props: StorageModalProps) {
     <ModalForm
       title="文件上传"
       onFinish={async () => {
-        const files = chooseFileListRef.current?.map((file) => file) ?? [];
-
-        const fileUpload$ = files.map((file) => {
-          const formData = new FormData();
-          formData.append("file", file.file);
-          return ajax({
-            method: "POST",
-            url: `/api/upload`,
-            body: formData,
-            includeUploadProgress: true,
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
+        await uploadImages({
+          chooseFileListRef,
+          fileList,
+          setFileList,
+          refetch: props.refetch,
         });
-
-        combineLatest(fileUpload$).subscribe({
-          next(fileuploads) {
-            // 所有的已经完成？
-            const newFiles = fileuploads.map((uploadInfo, index) => {
-              const info = {
-                ...(chooseFileListRef?.current?.[index] ?? []),
-                progress: {
-                  loaded: uploadInfo.originalEvent.loaded,
-                  total: uploadInfo.originalEvent.total,
-                },
-              };
-              return info;
-            });
-
-            setFileList(() => {
-              return newFiles;
-            });
-          },
-          error(e) {
-            console.log(e);
-          },
-          complete() {
-            message.info("upload success");
-            props?.refetch();
-          },
-        });
+        return true;
       }}
       submitter={{
         searchConfig: {
@@ -118,9 +78,9 @@ export function StorageModal(props: StorageModalProps) {
           const files = inputRef.current?.files ?? [];
 
           Array.from(files)?.forEach((file: any) => {
-            if (file.size > 1024 * 1024 * 2) {
+            if (file.size > STORAGE_MAX_SIZE) {
               return message.error(
-                `单个文件不超过${FileSizeLimit}MB，最多只能上传10个文件`
+                `单个文件不超过${STORAGE_MAX_SIZE_MB}MB，最多只能上传${STORAGE_MAX_FILES}个文件`
               );
             }
             chooseFileListRef.current?.push({
@@ -142,7 +102,7 @@ export function StorageModal(props: StorageModalProps) {
         }}
       />
       <Alert
-        message={`单个文件不超过${FileSizeLimit}MB，最多只能上传10个文件`}
+        message={`单个文件不超过${STORAGE_MAX_SIZE_MB}MB，最多只能上传${STORAGE_MAX_FILES}个文件`}
         type="info"
         showIcon
       />

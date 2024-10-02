@@ -16,7 +16,7 @@ def get_storage_list(db: Session, page: int = 1, pageSize: int = 10):
 def get_storage_by_id(db: Session, id):
     return db.query(Storage).filter_by(Storage.id == id).all()
 
-def create_storage(storage, db: Session):
+async def create_storage(storage, db: Session):
     db.add(storage)
     db.commit()
     db.refresh(storage)

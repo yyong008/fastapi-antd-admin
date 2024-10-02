@@ -3,7 +3,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.dal.tools.storage import get_storage_by_id, get_storage_count, get_storage_list
+from app.dal.tools.storage import create_storage, get_storage_by_id, get_storage_count, get_storage_list
+from app.models.tools.storage import Storage
 
 from .format import format_tools_storage
 
@@ -32,9 +33,11 @@ def get_tools_storage_by_id_service(user_id: int, db):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_tools_storage_service(item, db: Session):
+async def create_tools_storage_service(file_info, db: Session):
     try:
-        pass
+        file_info = Storage(**file_info)
+        storage = await create_storage(file_info, db)
+        return format_tools_storage(storage)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

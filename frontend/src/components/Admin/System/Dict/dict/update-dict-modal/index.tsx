@@ -1,31 +1,34 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form, message } from "antd";
 
+import { EditOutlined } from "@ant-design/icons";
 import { ModalForm } from "@ant-design/pro-components";
 import { ModalFormItems } from "./modal-form-items";
-import { useEffect } from "react";
+import { ResponseStatus } from "@/constants/status";
+import { updateDict } from "@/apis/admin/system/dict"
 
-const { PlusOutlined } = ic;
-
-export function UpdateDictModal({ trigger, record }: any) {
+export function UpdateDictModal({ refetch, trigger, record }: any) {
   const [form] = Form.useForm<{ name: string; company: string }>();
-
-  useEffect(() => {
-    form.setFieldsValue(record);
-  }, [form, record]);
 
   return (
     <ModalForm
-      title="修改用户"
+      title="修改字典"
       trigger={
         trigger ?? (
-          <Button type="primary">
-            <PlusOutlined />
-            修改用户
+          <Button type="link">
+            <EditOutlined />
           </Button>
         )
       }
+      onOpenChange={(c) => {
+        if (!c) {
+          return;
+        }
+        form.setFieldsValue({
+          key: record.name,
+          value: record.code,
+          ...record,
+        });
+      }}
       form={form}
       autoFocusFirstInput
       modalProps={{
@@ -34,8 +37,15 @@ export function UpdateDictModal({ trigger, record }: any) {
       }}
       submitTimeout={2000}
       onFinish={async (values) => {
-        message.success("提交成功");
-        return true;
+        const result: any = await updateDict(record.id, values);
+        if (result && result.code === ResponseStatus.S) {
+          message.success(result?.message || "创建成功");
+          form.resetFields();
+          refetch?.()
+          return true;
+        }
+        message.error(result.message || "创建失败");
+        return false;
       }}
     >
       <ModalFormItems />

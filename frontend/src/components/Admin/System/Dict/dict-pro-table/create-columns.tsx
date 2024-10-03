@@ -1,16 +1,13 @@
-import * as _icons from "@ant-design/icons";
-
 import { Button, Space, Tag, Tooltip } from "antd";
 
-import { DeleteIt } from "@/components/common/delete-it";
-import { DictModal } from "../dict/create-dict-modal";
+import { DeleteIt } from "../dict/delete-it-dict";
+import { EyeOutlined } from "@ant-design/icons";
 import { FormatTime } from "@/components/common/format-time";
 import { Link } from "@tanstack/react-router";
 import { StatusType } from "@/components/common/status-type";
+import { UpdateDictModal } from "../dict/update-dict-modal";
 
-const { EyeOutlined } = _icons;
-
-export const createColumns = () => [
+export const createColumns = ({ refetch }) => [
   {
     dataIndex: "name",
     title: "字典名",
@@ -57,15 +54,10 @@ export const createColumns = () => [
     render(_: any, record: any) {
       return (
         <Space size="small">
-          <Tooltip title="预览字典">
-            <Link to={`/admin/system/dict-item/${record.id}`}>
-              <Button type="link" icon={<EyeOutlined />}></Button>
-            </Link>
-          </Tooltip>
-          <DictModal record={record} key="create-dict-modal" />
+          <SeeDictItem record={record} />
+          <UpdateDictModal refetch={refetch} record={record} key="create-dict-modal" />
           <DeleteIt
-            title="确定要删除此部门吗?"
-            fetcher={() => {}}
+            refetch={refetch}
             record={record}
           />
         </Space>
@@ -79,5 +71,15 @@ function TagLink({ record }: any) {
     <Link to={`/admin/system/dict-item/${record.id}`}>
       <Tag color="yellow">{record.code}</Tag>
     </Link>
+  );
+}
+
+function SeeDictItem({ record }: any) {
+  return (
+    <Tooltip title="预览字典">
+      <Link to={`/admin/system/dict-item/${record.id}`}>
+        <Button type="link" icon={<EyeOutlined />}></Button>
+      </Link>
+    </Tooltip>
   );
 }

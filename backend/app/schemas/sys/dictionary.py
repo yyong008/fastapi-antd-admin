@@ -1,8 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
-from datetime import datetime
-
-from app.schemas.sys.dictionary_entry import DictionaryEntry
+from typing import Optional
 
 
 class DictionaryBase(BaseModel):
@@ -31,18 +28,5 @@ class DictionaryUpdate(DictionaryBase):
     pass
 
 
-class DictionaryInDBBase(DictionaryBase):
-    id: int
-    created_at: datetime
-    updated_at: Optional[datetime]
-
-    class Config:
-        from_attributes = True
-
-
-class Dictionary(DictionaryInDBBase):
-    entries: List[DictionaryEntry] = []
-
-
-class DictionaryInDB(DictionaryInDBBase):
-    pass
+class DictionaryDeleteByIds(BaseModel):
+    ids: list[int]

@@ -1,34 +1,34 @@
-import * as ic from "@ant-design/icons";
+import { Button, Form, message } from "antd";
 
-import { Button, Form } from "antd";
-
+import { EditOutlined } from "@ant-design/icons";
 import { ModalForm } from "@ant-design/pro-components";
 import { ModalFormItems } from "./modal-form-items";
+import { createDict } from "@/apis/admin/system/dict"
 
-const { EditOutlined } = ic;
+type DictModalCreateProps = {
+  trigger?: JSX.Element;
+  refetch: (...args: any[]) => void;
+}
 
-export function DictModal({ trigger, record, fetcher }: any) {
+export function DictModalCreate({ trigger, refetch }: DictModalCreateProps) {
   const [form] = Form.useForm();
   return (
     <ModalForm
       key={Date.now()}
       preserve={false}
-      title={record?.id ? "修改字典" : "创建字典"}
+      title={"创建字典"}
       onOpenChange={(c) => {
-        if (!c || !record.id) {
+        if (!c) {
           return;
         }
-        form.setFieldsValue({
-          ...record,
-        });
       }}
       trigger={
         trigger ?? (
           <Button
-            type={!record.id ? "primary" : "link"}
+            type={"primary"}
             icon={<EditOutlined />}
           >
-            {!record.id ? "新建" : ""}
+            新建字典
           </Button>
         )
       }
@@ -40,16 +40,15 @@ export function DictModal({ trigger, record, fetcher }: any) {
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const vals = { ...values };
-        if (record.id) {
-          vals.id = record.id;
+        const result: any = await createDict(values);
+        if (result && result.code === 0) {
+          message.success(result?.message || "创建成功");
+          form.resetFields();
+          refetch?.();
+          return true;
         }
-        fetcher.submit(vals, {
-          method: record.id ? "PUT" : "POST", // 修改或新建
-          encType: "application/json",
-        });
-        form.resetFields();
-        return true;
+        message.error(result?.message || "创建失败");
+        return false;
       }}
     >
       <ModalFormItems />

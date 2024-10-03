@@ -16,9 +16,9 @@ router = APIRouter(prefix="/dict-item", tags=["Dict Item"])
 
 @router.get("/", response_model=ResponseModel)
 def get_dict_item(
-    id: int, page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)
+    dictId: int, page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)
 ):
-    data = get_dict_item_list_service(id, page, pageSize, db)
+    data = get_dict_item_list_service(dictId, page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
 

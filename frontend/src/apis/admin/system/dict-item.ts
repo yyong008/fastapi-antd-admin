@@ -7,8 +7,9 @@ type TDict = {
 
 export const getDictItem = async (id: number, searchParams: TDict) => {
   try {
-    const res = await request.get("/api/admin/system/dict-item/" + id, {
+    const res = await request.get("/api/admin/system/dict-item/", {
       params: {
+        dictId: id,
         page: searchParams.page,
         pageSize: searchParams.pageSize,
       },

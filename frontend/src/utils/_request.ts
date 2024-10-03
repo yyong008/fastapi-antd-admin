@@ -1,5 +1,7 @@
+import * as eventTypes from "./event/event-type"
+
 import axios from "axios";
-import { message } from "antd";
+import { eventCenter } from "./event";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -31,14 +33,12 @@ request.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if (error.response.data.code === 1) {
-      message.error(error.response.data.message);
-    }
-    // 对响应错误做些什么
     if (error.response && error.response.status === 401) {
-      // 处理未授权的情况
-      console.error("Unauthorized request");
+      eventCenter.emit(eventTypes.USER_AUTHORIZED, error.response?.data?.message)
+    } else if (error.response.data.code === 1) {
+      eventCenter.emit(eventTypes.DATA_ERROR, error.response?.data?.message)
     }
+
     return Promise.reject(error);
   }
 );

@@ -1,10 +1,10 @@
-import { DeleteIt } from "@/components/common/delete-it";
-import { DictItemModal } from "../../Dict/dict/create-dict-item-modal";
+import { DeleteIt } from "../delete-it";
+import { DictItemModalUpdate } from "../update-dict-item-modal";
 import { Space } from "antd";
 import { StatusType } from "@/components/common/status-type";
 import { formatDate } from "@/utils/utils";
 
-export const createColumns = () => [
+export const createColumns = ({ refetch, dictId }: any ) => [
   {
     dataIndex: "key",
     title: "字典键",
@@ -48,11 +48,10 @@ export const createColumns = () => [
     render(_: any, record: any) {
       return (
         <Space>
-          <DictItemModal key="create-dict-modal" record={record} />
+          <DictItemModalUpdate dictId={dictId} refetch={refetch} key="create-dict-modal" record={record} />
           <DeleteIt
-            title="确定要删除此部门吗?"
-            fetcher={() => {}}
             record={record}
+            refetch={refetch}
           />
         </Space>
       );

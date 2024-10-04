@@ -38,7 +38,7 @@ export const createDictItem = async (data: any) => {
   }
 }
 
-export const updateDictItem = async (id: number, data: any) => {
+export const updateDictItemById = async (id: number, data: any) => {
   try {
     const res = await request.put("/api/admin/system/dict-item/" + id, data);
     return res;

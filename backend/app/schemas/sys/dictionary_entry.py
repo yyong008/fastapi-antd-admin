@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 from typing import Optional
-from datetime import datetime
 
 
 class DictionaryEntryBase(BaseModel):
@@ -19,28 +18,15 @@ class DictionaryEntryBase(BaseModel):
     remark: Optional[str] = Field(
         None, title="Remark", description="Any additional remarks"
     )
+    dictionary_id: int = Field(..., description="The ID of the dictionary")
 
+class DictinonaryEntryByIds(BaseModel):
+    ids: list[int]
 
 class DictionaryEntryCreate(DictionaryEntryBase):
     pass
-
 
 class DictionaryEntryUpdate(DictionaryEntryBase):
     pass
 
 
-class DictionaryEntryInDBBase(DictionaryEntryBase):
-    id: int
-    created_at: datetime
-    updated_at: Optional[datetime]
-
-    class Config:
-        from_attributes = True
-
-
-class DictionaryEntry(DictionaryEntryInDBBase):
-    dictionary_id: int
-
-
-class DictionaryEntryInDB(DictionaryEntryInDBBase):
-    pass

@@ -10,37 +10,46 @@ from app.services.sys.dict_item import (
     delete_dict_item_by_ids_service,
 )
 from app.db.client import get_db
+from app.schemas.sys.dictionary_entry import (
+    DictionaryEntryCreate,
+    DictionaryEntryUpdate,
+    DictinonaryEntryByIds,
+)
 
 router = APIRouter(prefix="/dict-item", tags=["Dict Item"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_dict_item(
+async def get_dict_item(
     dictId: int, page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)
 ):
-    data = get_dict_item_list_service(dictId, page, pageSize, db)
+    data = await get_dict_item_list_service(dictId, page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_dict_item_by_id(id: int, db: Session = Depends(get_db)):
-    data = get_dict_item_by_id_service(id, db)
+async def get_dict_item_by_id(id: int, db: Session = Depends(get_db)):
+    data = await get_dict_item_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_dict_item(dict_item: dict, db: Session = Depends(get_db)):
-    data = create_dict_item_service(dict_item, db)
+async def create_dict_item(
+    dict_item: DictionaryEntryCreate, db: Session = Depends(get_db)
+):
+    data = await create_dict_item_service(dict_item, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_dict_item_by_id(id: int, dict_item: dict, db: Session = Depends(get_db)):
-    data = update_dict_item_by_id_service(id, dict_item, db)
+async def update_dict_item_by_id(
+    id: int, dict_item: DictionaryEntryUpdate, db: Session = Depends(get_db)
+):
+    data = await update_dict_item_by_id_service(id, dict_item, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_dict_item(ids: list[int], db: Session = Depends(get_db)):
-    data = delete_dict_item_by_ids_service(ids, db)
+async def delete_dict_item(ids: DictinonaryEntryByIds, db: Session = Depends(get_db)):
+    data = await delete_dict_item_by_ids_service(ids, db)
     return ResponseSuccessModel(data=data)

@@ -1,34 +1,38 @@
-import * as ic from "@ant-design/icons";
-
 import { Button, Form } from "antd";
 
+import { EditOutlined } from "@ant-design/icons";
 import { ModalForm } from "@ant-design/pro-components";
 import { ModalFormItems } from "./modal-form-items";
+import { ResponseStatus } from "@/constants/status";
+import { createDictItem } from "@/apis/admin/system/dict-item"
 
-const { EditOutlined } = ic;
+type DictItemModalCreateProps = {
+  trigger?: any;
+  refetch: (...args: any[]) => void;
+  dictId: number
+}
 
-export function DictItemModal({ trigger, record, fetcher }: any) {
+export function DictItemModalCreate(props: DictItemModalCreateProps) {
+  const { trigger, refetch, dictId } = props;
   const [form] = Form.useForm();
   return (
     <ModalForm
       key={Date.now()}
       preserve={false}
-      title={record?.id ? "修改字典" : "创建字典"}
+      title={"创建字典"}
       onOpenChange={(c) => {
-        if (!c || !record.id) {
+        if (!c) {
           return;
         }
-        form.setFieldsValue({
-          ...record,
-        });
+        form.resetFields();
       }}
       trigger={
         trigger ?? (
           <Button
-            type={!record.id ? "primary" : "link"}
+            type={"primary"}
             icon={<EditOutlined />}
           >
-            {!record.id ? "新建" : ""}
+            新建
           </Button>
         )
       }
@@ -40,16 +44,14 @@ export function DictItemModal({ trigger, record, fetcher }: any) {
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const vals = { ...values };
-        if (record.id) {
-          vals.id = record.id;
+        const result: any = await createDictItem({...values, dictionary_id: dictId });
+        if(result && result.code === ResponseStatus.S) {
+          form.resetFields();
+          refetch?.();
+          return true;
         }
-        fetcher.submit(vals, {
-          method: record.id ? "PUT" : "POST", // 修改或新建
-          encType: "application/json",
-        });
         form.resetFields();
-        return true;
+        return false;
       }}
     >
       <ModalFormItems />

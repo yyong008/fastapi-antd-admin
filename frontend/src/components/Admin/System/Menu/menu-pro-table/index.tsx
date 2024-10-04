@@ -37,7 +37,7 @@ export function MenuProTable(props: SystemMenuProps) {
   return (
     <ProTable<TableListItem>
       size="small"
-      columns={createColumns({ refetch }) as any}
+      columns={createColumns({ refetch, menuNotPerm }) as any}
       scroll={{ x: 1300 }}
       dataSource={menuRaw}
       rowKey="id"

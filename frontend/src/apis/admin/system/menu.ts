@@ -18,6 +18,15 @@ export const getAllMenuTree = async () => {
   }
 };
 
+export const getAllMenuTreeNoPermission = async () => {
+  try {
+    const res = await request.get("/api/admin/system/menu/tree/no-permission");
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getMenuById = async (id: number) => {
   try {
     const res = await request.get(`/api/admin/system/menu/${id}`);

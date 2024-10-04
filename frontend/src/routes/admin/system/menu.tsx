@@ -1,9 +1,10 @@
+import { getAllMenuTree, getAllMenuTreeNoPermission } from "@/apis/admin/system/menu";
 import { useEffect, useState } from "react";
 
 import { MenuProTable } from "@/components/Admin/System/Menu/menu-pro-table";
 import { PageContainer } from "@ant-design/pro-components";
+import { ResponseStatus } from "@/constants/status";
 import { createFileRoute } from "@tanstack/react-router";
-import { getAllMenuTree } from "@/apis/admin/system/menu";
 
 export const Route = createFileRoute("/admin/system/menu")({
   component: MenuRoute,
@@ -12,13 +13,19 @@ export const Route = createFileRoute("/admin/system/menu")({
 function MenuRoute() {
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState([]);
-
+  const [menuNotPerm, setMenuNotPerm] = useState([])
   const getData = async () => {
     setLoading(true);
     const menuRes: any = await getAllMenuTree();
+    const menuNotPermRes: any = await getAllMenuTreeNoPermission()
 
-    if (menuRes && menuRes.code === 0) {
+    if (menuRes && menuRes.code === ResponseStatus.S) {
       setMenu(menuRes?.data);
+      setLoading(false);
+    }
+
+    if (menuNotPermRes && menuNotPermRes.code === ResponseStatus.S) {
+      setMenuNotPerm(menuNotPermRes?.data);
       setLoading(false);
     }
   };
@@ -31,7 +38,7 @@ function MenuRoute() {
       <MenuProTable
         menuRaw={menu}
         loading={false}
-        menuNotPerm={[]}
+        menuNotPerm={menuNotPerm ?? []}
         refetch={getData}
       />
     </PageContainer>

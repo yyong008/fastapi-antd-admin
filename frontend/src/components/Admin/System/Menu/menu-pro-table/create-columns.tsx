@@ -10,7 +10,7 @@ import { MenuType } from "@/components/common/menu-type";
 import { ShowType } from "@/components/common/show-type";
 import { StatusType } from "@/components/common/status-type";
 
-export const createColumns = ({ refetch }) => [
+export const createColumns = ({ refetch, menuNotPerm }) => [
   {
     key: "name",
     title: "名称",
@@ -147,7 +147,7 @@ export const createColumns = ({ refetch }) => [
         <MenuModalUpdate
           key="memu-modal"
           record={record}
-          menuNotPerm={[]}
+          menuNotPerm={menuNotPerm ?? []}
           refetch={refetch}
         />
         <DeleteIt

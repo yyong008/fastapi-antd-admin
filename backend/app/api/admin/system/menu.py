@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.services.sys.menu import (
     get_all_menu_service,
+    get_menu_tree_no_permission_service,
     get_menu_tree_service,
     get_menu_by_id_service,
     create_menu_service,
@@ -25,6 +26,11 @@ def get_menu(db: Session = Depends(get_db)):
 @router.get("/tree", response_model=ResponseModel)
 def get_menu_tree(db: Session = Depends(get_db)):
     data = get_menu_tree_service(db)
+    return ResponseSuccessModel(data=data)
+
+@router.get("/tree/no-permission", response_model=ResponseModel)
+def get_menu_tree_no_permission(db: Session = Depends(get_db)):
+    data = get_menu_tree_no_permission_service(db)
     return ResponseSuccessModel(data=data)
 
 

@@ -13,6 +13,7 @@ from app.db.client import init_db
 # middleware
 from app.middlewares.count_requests import CountRequeset
 from app.middlewares.demo_mode import DemoModeMiddleware
+from app.middlewares.dev_body_logger import DebugMiddleware
 
 # exception handler
 from app.exception import http_exception_handler, validation_exception_handler
@@ -22,6 +23,7 @@ from app.api import router
 from app.api.metrics import router as metries_router
 from app.api.health import router as health_check_router
 from app.api.home import router as home_router
+
 
 init_db()
 config = get_settings()
@@ -38,6 +40,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # register middlewares
 app.add_middleware(CountRequeset)
 app.add_middleware(DemoModeMiddleware)
+
+# 在 FastAPI 应用中添加中间件
+if app.debug:  # 仅在开发模式下添加中间件
+    app.add_middleware(DebugMiddleware)
 
 # register exception handler
 app.add_exception_handler(HTTPException, http_exception_handler)

@@ -27,7 +27,7 @@ export const getMenuById = async (id: number) => {
   }
 }
 
-export const creaetMenu = async (data: any) => {
+export const createMenu = async (data: any) => {
   try {
     const res = await request.post("/api/admin/system/menu", data);
     return res;

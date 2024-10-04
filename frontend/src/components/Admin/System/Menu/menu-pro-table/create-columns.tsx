@@ -2,15 +2,15 @@ import { Space, Tag, Tooltip } from "antd";
 
 import { AntdIcon } from "@/components/common/antd-icon";
 import { CacheType } from "@/components/common/cache-type";
-import { DeleteIt } from "@/components/common/delete-it";
+import { DeleteIt } from "../delete-it";
 import { FormatTime } from "@/components/common/format-time";
 import { LinkType } from "@/components/common/link-type";
-import MenuModal from "../create-menu-modal";
+import MenuModalUpdate from "../update-menu-modal";
 import { MenuType } from "@/components/common/menu-type";
 import { ShowType } from "@/components/common/show-type";
 import { StatusType } from "@/components/common/status-type";
 
-export const createColumns = () => [
+export const createColumns = ({ refetch }) => [
   {
     key: "name",
     title: "名称",
@@ -144,16 +144,16 @@ export const createColumns = () => [
     width: 150,
     render: (_: any, record: any) => (
       <Space>
-        <MenuModal
+        <MenuModalUpdate
           key="memu-modal"
-          fetcher={() => {}}
           record={record}
           menuNotPerm={[]}
+          refetch={refetch}
         />
         <DeleteIt
           title="确定要删除此用户吗?"
-          fetcher={() => {}}
           record={record}
+          refetch={refetch}
         />
       </Space>
     ),

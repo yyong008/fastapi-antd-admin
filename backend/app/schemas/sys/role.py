@@ -1,9 +1,6 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
-from datetime import datetime
+from typing import Optional
 
-from app.schemas.sys.menu import Menu
-from app.schemas.sys.user import UserResponse
 
 
 class RoleBase(BaseModel):
@@ -29,20 +26,3 @@ class RoleCreate(RoleBase):
 class RoleUpdate(RoleBase):
     pass
 
-
-class RoleInDBBase(RoleBase):
-    id: int
-    created_at: datetime
-    updated_at: Optional[datetime]
-
-    class Config:
-        from_attributes = True
-
-
-class Role(RoleInDBBase):
-    users: List[UserResponse] = []
-    menus: List[Menu] = []
-
-
-class RoleInDB(RoleInDBBase):
-    pass

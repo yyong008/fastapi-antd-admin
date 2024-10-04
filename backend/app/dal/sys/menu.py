@@ -20,17 +20,18 @@ def get_menu_list(db: Session, page: int = 1, pageSize: int = 10):
     sort_column = Menu.createdAt.desc()
     return db.query(Menu).order_by(sort_column).offset(offset).limit(limit).all()
 
-def create_menu_category(meun, db: Session):
+def create_menu(meun, db: Session):
     db.add(meun)
     db.commit()
     db.refresh(meun)
     return meun
 
-def update_menu_by_id(db: Session, menu_id: int, role: Menu):
-    db.query(Menu).filter(Menu.id == menu_id).update(role)
+def update_menu_by_id(db: Session, menu_id: int, menu: Menu):
+    db.query(Menu).filter(Menu.id == menu_id).update(menu)
     db.commit()
-    db.refresh(role)
-    return role
+    menu = db.query(Menu).filter(Menu.id == menu_id).first()
+    db.refresh(menu)
+    return menu
 
 def delete_menu_by_ids(ids, db):
     try:

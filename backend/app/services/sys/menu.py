@@ -4,8 +4,9 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.dal.sys.menu import get_menu_all
+from app.dal.sys.menu import delete_menu_by_ids, get_menu_all, create_menu, update_menu_by_id
 from .format import format_menu, format_menu_tree
+from app.models.system.menu import Menu
 
 def format_menu_all_list(menu_raw):
   menu = []
@@ -53,21 +54,25 @@ def get_menu_by_id_service(menu_id: int, db: Session):
 
 def create_menu_service(menu, db: Session):
     try:
-        pass
+        m = Menu(**menu)
+        data = create_menu(m, db)
+        return format_menu(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 def update_menu_by_id_service(menu_id: int, item, db: Session):
     try:
-        pass
+        data = update_menu_by_id(db, menu_id, item.model_dump())
+        return format_menu(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 def delete_menu_by_ids_service(ids: List[int], db: Session):
     try:
-        pass
+        count = delete_menu_by_ids(ids, db)
+        return count
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

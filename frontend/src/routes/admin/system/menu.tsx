@@ -32,7 +32,7 @@ function MenuRoute() {
         menuRaw={menu}
         loading={false}
         menuNotPerm={[]}
-        reload={() => {}}
+        refetch={getData}
       />
     </PageContainer>
   );

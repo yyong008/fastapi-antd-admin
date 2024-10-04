@@ -5,17 +5,21 @@ import { EditOutlined } from "@ant-design/icons";
 import { MenuModalFormItems } from "./menu-modal-form-items";
 import { ModalForm } from "@ant-design/pro-components";
 import { ResponseStatus } from "@/constants/status";
-import { createMenu } from "@/apis/admin/system/menu";
+import { updateMenu } from "@/apis/admin/system/menu";
 
 type MenuModalProps = {
   trigger?: () => void;
   record?: any;
   menuNotPerm?: any[];
-  refetch: (...args: any[]) => void;
+  refetch?: () => void;
 };
 
-export default function MenuModal(props: MenuModalProps) {
-  const { trigger, menuNotPerm, refetch } = props;
+export default function MenuModalUpdate({
+  trigger,
+  record,
+  menuNotPerm,
+  refetch,
+}: MenuModalProps) {
   const [form] = Form.useForm();
 
   const [innerMenuNotPerm, setInnerMenuNotPerm] = useState<any>();
@@ -38,17 +42,31 @@ export default function MenuModal(props: MenuModalProps) {
       labelCol={{ span: 3 }}
       key={Date.now()}
       preserve={false}
-      title={"创建菜单"}
+      title={record?.id ? "修改菜单" : "创建菜单"}
       onOpenChange={(c) => {
-        if (!c) {
+        if (!c || !record.id) {
           return;
         }
+        let parentId: null | number = null;
+        if (record.id && record.parent_menu_id) {
+          parentId = record.parent_menu_id;
+        } else if (record.parent_menu_id === null) {
+          parentId = -1;
+        }
+        form.setFieldsValue({
+          ...record,
+          parentId,
+          type: Number(record.type),
+        });
       }}
       trigger={
         trigger ??
         ((
-          <Button type={"primary"} icon={<EditOutlined />}>
-            {"新建菜单"}
+          <Button
+            type={!record.id ? "primary" : "link"}
+            icon={<EditOutlined />}
+          >
+            {!record.id ? "新建" : ""}
           </Button>
         ) as any)
       }
@@ -60,18 +78,20 @@ export default function MenuModal(props: MenuModalProps) {
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const result: any = await createMenu(values);
+        const result: any = await updateMenu(record.id, values);
+
         if (result && result.code === ResponseStatus.S) {
-          message.success(result?.message || "创建成功");
+          message.success(result.message || "修改成功")
+          refetch?.();
           form.resetFields();
-          refetch?.()
           return true;
         }
-        message.error(result?.message || "创建失败");
-        return true;
+
+        message.error(result.message || "修改失败");
+        return false;
       }}
     >
-      <MenuModalFormItems innerMenuNotPerm={innerMenuNotPerm} />
+      <MenuModalFormItems innerMenuNotPerm={innerMenuNotPerm} record={record} />
     </ModalForm>
   );
 }

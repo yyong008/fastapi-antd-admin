@@ -11,6 +11,7 @@ from app.services.sys.menu import (
     delete_menu_by_ids_service,
 )
 from app.db.client import get_db
+from app.schemas.sys.menu import MenuCreate, MenuDeleteByIds, MenuUpdate
 
 router = APIRouter(prefix="/menu", tags=["Menu"])
 
@@ -34,18 +35,20 @@ def get_menu_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/")
-def create_menu(menu: dict, db: Session = Depends(get_db)):
+def create_menu(menu: MenuCreate, db: Session = Depends(get_db)):
+    
+    menu = menu.model_dump()
     data = create_menu_service(menu, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}")
-def update_menu_by_id(id: int, menu: dict, db: Session = Depends(get_db)):
+def update_menu_by_id(id: int, menu: MenuUpdate, db: Session = Depends(get_db)):
     data = update_menu_by_id_service(id, menu, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/")
-def delete_menu(ids: list[int], db: Session = Depends(get_db)):
-    data = delete_menu_by_ids_service(ids, db)
+def delete_menu(ids: MenuDeleteByIds, db: Session = Depends(get_db)):
+    data = delete_menu_by_ids_service(ids.ids, db)
     return ResponseSuccessModel(data=data)

@@ -4,18 +4,19 @@ import { TypeDir } from "./type-dir";
 import { TypeMenu } from "./type-menu";
 import { TypePermission } from "./type-permission";
 
-export function MenuModalFormItems({ innerMenuNotPerm }: any) {
+export function MenuModalFormItems({ innerMenuNotPerm, record }: any) {
   return (
     <>
       <ProFormRadio.Group
         name="type"
-        initialValue={1}
         label="菜单类型"
         radioType="button"
         fieldProps={{
           buttonStyle: "solid",
         }}
         width={300}
+        disabled={record.id}
+        initialValue={!record.id ? 1 : record.type}
         options={[
           {
             label: "目录",

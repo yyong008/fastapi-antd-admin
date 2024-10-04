@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.models.system.department import Department
 from app.services.sys.format import format_dept
-
+from app.dal.sys.dept import create_dept, update_dept_by_id, delete_dept_by_ids
 
 def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
     return [
@@ -20,7 +20,7 @@ def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
     ]
 
 
-def get_dept_tree_data_service(page, pageSize, db):
+async def get_dept_tree_data_service(page, pageSize, db):
     try:
         res = db.query(Department).offset(page).limit(pageSize).all()
         total = db.query(Department).count()
@@ -37,30 +37,35 @@ def get_dept_tree_data_service(page, pageSize, db):
             detail="Internal server error",
         )
 
-def get_dept_by_id_service(id, db):
+async def get_dept_by_id_service(id, db):
     try:
         pass
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-def create_dept_service():
+async def create_dept_service(dept, db):
     try:
-        pass
+        dp = Department(**dept)
+        data = await create_dept(dp, db)
+        return format_dept(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-def update_dept_by_id_service():
+async def update_dept_by_id_service(id, dp, db):
     try:
-        pass
+        dp = dp.model_dump(exclude_unset=True)
+        data = await update_dept_by_id(db, id, dp)
+        return format_dept(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-def delete_dept_by_ids_service():
+async def delete_dept_by_ids_service(ids, db):
     try:
-        pass
+        count = await delete_dept_by_ids(ids, db)
+        return count
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

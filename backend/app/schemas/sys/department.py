@@ -1,8 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
-from datetime import datetime
-
-from app.schemas.sys.user import UserResponse
+from typing import Optional
 
 
 class DepartmentBase(BaseModel):
@@ -33,26 +30,5 @@ class DepartmentUpdate(DepartmentBase):
     )
 
 
-class DepartmentInDBBase(DepartmentBase):
-    id: int
-    createdAt: datetime
-    updatedAt: Optional[datetime]
-
-    class Config:
-        from_attributes = True
-
-
-class Department(DepartmentInDBBase):
-    parent: Optional["Department"] = (
-        None  # Use forward reference for self-referential relationship
-    )
-    children: List["Department"] = (
-        []
-    )  # Use forward reference for list of child departments
-    users: List[UserResponse] = (
-        []
-    )  # Use forward reference for list of users in the department
-
-
-class DepartmentInDB(DepartmentInDBBase):
-    pass
+class DepartmentDeleteByIds(BaseModel):
+    ids: list[int]

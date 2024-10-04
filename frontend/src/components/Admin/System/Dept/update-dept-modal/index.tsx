@@ -4,24 +4,27 @@ import { EditOutlined } from "@ant-design/icons";
 import { ModalForm } from "@ant-design/pro-components";
 import { ModalFormItems } from "./modal-form-items";
 import { ResponseStatus } from "@/constants/status";
-import { createDept } from "@/apis/admin/system/dept";
+import { updateDept } from "@/apis/admin/system/dept"
 
-export function CreateDeptModal({ options, trigger, refetch }: any) {
+export function UpdateDeptModal({ options, trigger, record, refetch }: any) {
   const [form] = Form.useForm();
   return (
     <ModalForm
       key={Date.now()}
       preserve={false}
-      title={"创建部门"}
+      title={"修改部门"}
       onOpenChange={(c) => {
-        if (!c) {
+        if (!c || !record.id) {
           return;
         }
+        form.setFieldsValue({
+          ...record,
+        });
       }}
       trigger={
         trigger ?? (
-          <Button type={"primary"} icon={<EditOutlined />}>
-            {"新建"}
+          <Button type={record ? "primary" : "link"} icon={<EditOutlined />}>
+            {record ? "新建" : ""}
           </Button>
         )
       }
@@ -33,18 +36,18 @@ export function CreateDeptModal({ options, trigger, refetch }: any) {
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const result: any = await createDept(values)
-        if (result && result.code === ResponseStatus.S) {
-          message.success(result.message || "修改成功")
-          refetch?.()
+        const result: any = await updateDept(record.id, values)
+        if (result && result?.code === ResponseStatus.S) {
+          message.success(result?.message || "修改成功")
+          refetch()
           form.resetFields()
           return true
         }
-        message.error(result.message || "修改失败")
+        message.error(result?.message || "修改失败")
         return false;
       }}
     >
-      <ModalFormItems options={options} />
+      <ModalFormItems options={options}/>
     </ModalForm>
   );
 }

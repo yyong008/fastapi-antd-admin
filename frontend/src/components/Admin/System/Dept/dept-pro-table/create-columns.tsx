@@ -1,11 +1,11 @@
 import { Button, Space } from "antd";
 
-import { CreateDeptModal } from "../create-dept-modal";
-import { DeleteIt } from "@/components/common/delete-it";
+import { DeleteIt } from "../delete-it";
 import { EditOutlined } from "@ant-design/icons";
+import { UpdateDeptModal } from "../update-dept-modal";
 import { formatDate } from "@/utils/utils";
 
-export const createColumns = () => [
+export const createColumns = ({ refetch, options }) => [
   {
     dataIndex: "name",
     title: "用户名",
@@ -42,14 +42,16 @@ export const createColumns = () => [
     render(_: any, record: any) {
       return (
         <Space>
-          <CreateDeptModal
+          <UpdateDeptModal
+            refetch={refetch}
             record={record}
             key="dept-modal"
+            options={options}
             trigger={<Button type="link" icon={<EditOutlined />} />}
           />
           <DeleteIt
+            refetch={refetch}
             title="确定要删除此部门吗?"
-            fetcher={() => {}}
             record={record}
           />
         </Space>

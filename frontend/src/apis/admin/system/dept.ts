@@ -34,9 +34,9 @@ export const createDept = async (data: any) => {
   }
 };
 
-export const updateDept = async (data: any) => {
+export const updateDept = async (id: number, data: any) => {
   try {
-    const res = await request.put(`/api/admin/system/dept`, data);
+    const res = await request.put(`/api/admin/system/dept/${id}`, data);
     return res;
   } catch (error) {
     console.error(error);

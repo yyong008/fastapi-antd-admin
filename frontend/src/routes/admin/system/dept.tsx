@@ -11,19 +11,27 @@ export const Route = createFileRoute("/admin/system/dept")({
 });
 
 export function DeptRoute() {
+  const [loading, setLoading] = useState(false);
   const [page] = useState({
     page: 1,
     pageSize: 1000,
   });
+  const [options, setOptions] = useState([]);
   const [data, setData] = useState({
     list: [],
     total: 0,
   });
 
   const getData = async () => {
+    setLoading(true);
     const res: any = await getDepts({ ...page });
+    setLoading(false);
     if (res && res.code === 0) {
       setData(res.data);
+      setOptions(res.data.list.map((item: any) => ({
+        label: item.name,
+        value: item.id,
+      })));
     }
   };
 
@@ -38,15 +46,15 @@ export function DeptRoute() {
         headerTitle="部门管理"
         search={false}
         pagination={false}
-        // loading={isLoading}
+        loading={loading}
         options={
           {
-            // reload: refetch,
+            reload: getData,
           }
         }
-        toolBarRender={() => [<CreateDeptModal record={{}} key="dept-modal" />]}
+        toolBarRender={() => [<CreateDeptModal options={options}  refetch={getData} key="dept-modal" />]}
         dataSource={data?.list || []}
-        columns={createColumns()}
+        columns={createColumns({ refetch: getData, options: options })}
       />
     </PageContainer>
   );

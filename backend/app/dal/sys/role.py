@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.models.system.role import Role
 
 
@@ -11,14 +11,16 @@ def get_count(db: Session):
 
 def get_roles_all(db: Session):
     sort_column = Role.createdAt.desc()
-    return db.query(Role).order_by(sort_column).all()
+    data = db.query(Role).order_by(sort_column).options(joinedload(Role.menus)).all()
+    return data
 
 
 def get_role_list(db: Session, page: int = 1, pageSize: int = 10):
     limit = pageSize
     offset = (page - 1) * pageSize
     sort_column = Role.createdAt.desc()
-    return db.query(Role).order_by(sort_column).offset(offset).limit(limit).all()
+    # return db.query(Role).order_by(sort_column).offset(offset).limit(limit).all()
+    return db.query(Role).options(joinedload(Role.menus)).order_by(sort_column).offset(offset).limit(limit).all()
 
 def create_role_category(role, db: Session):
     db.add(role)

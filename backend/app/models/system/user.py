@@ -6,7 +6,7 @@ from sqlalchemy.sql import func
 from app.db.client import Base
 
 user_role_association = Table(
-    "user_role",
+    "sys_user_role",
     Base.metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column(

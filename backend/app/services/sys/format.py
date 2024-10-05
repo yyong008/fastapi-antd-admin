@@ -96,6 +96,8 @@ def format_role(role):
         "createdAt": role.createdAt,
         "updatedAt": role.updatedAt,
     }
+    if hasattr(role, "menus"):
+        item["menus"] = [{"id": menu.id, "name": menu.name} for menu in role.menus]
     return item
 
 def format_user(user):

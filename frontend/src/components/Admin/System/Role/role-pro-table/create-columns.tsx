@@ -1,8 +1,8 @@
-import { CreateRoleModal } from "../create-role-modal";
 import { DeleteIt } from "@/components/common/delete-it";
 import { Link } from "@tanstack/react-router";
 import { Space } from "antd";
 import { StatusType } from "@/components/common/status-type";
+import { UpdateRoleModal } from "../update-role-modal";
 
 export const createColumns = ({ menus, menuRoles }: any) => [
   {
@@ -39,8 +39,7 @@ export const createColumns = ({ menus, menuRoles }: any) => [
     render(_: any, record: any) {
       return (
         <Space>
-          <CreateRoleModal
-            fetcher={() => {}}
+          <UpdateRoleModal
             record={record}
             key="create-role-modal"
             menu={menus}

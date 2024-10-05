@@ -45,7 +45,7 @@ export const createMenu = async (data: any) => {
   }
 }
 
-export const updateMenu = async (id: number, data: any) => {
+export const updateMenuById = async (id: number, data: any) => {
   try {
     const res = await request.put("/api/admin/system/menu/" + id, data);
     return res;

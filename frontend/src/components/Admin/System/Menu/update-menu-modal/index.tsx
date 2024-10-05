@@ -5,7 +5,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { MenuModalFormItems } from "./menu-modal-form-items";
 import { ModalForm } from "@ant-design/pro-components";
 import { ResponseStatus } from "@/constants/status";
-import { updateMenu } from "@/apis/admin/system/menu";
+import { updateMenuById } from "@/apis/admin/system/menu";
 
 type MenuModalProps = {
   trigger?: () => void;
@@ -78,7 +78,7 @@ export default function MenuModalUpdate({
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const result: any = await updateMenu(record.id, values);
+        const result: any = await updateMenuById(record.id, values);
 
         if (result && result.code === ResponseStatus.S) {
           message.success(result.message || "修改成功")

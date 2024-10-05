@@ -5,7 +5,7 @@ from sqlalchemy.sql import func
 from app.db.client import Base
 
 role_menu_association = Table(
-    "role_menu",
+    "sys_menu_role",
     Base.metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column(

@@ -13,7 +13,7 @@ export const Route = createFileRoute("/admin/system/role")({
 });
 
 export function RoleRoute() {
-  const { menuRoles = [] } = {};
+  const [ menuRoles, setMenuRoles ] = useState([]);
   const actionRef = useRef();
 
   const [data, setData] = useState({

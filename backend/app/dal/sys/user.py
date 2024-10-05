@@ -36,7 +36,7 @@ def get_user_by_id(user_id, db: Session):
     return (
         db.query(User)
         .filter(User.id==user_id)
-        .options(joinedload(User.department).load_only(Department.name))
+        .options(joinedload(User.department).load_only(Department.name), joinedload(User.roles) )
         .first()
     )
 

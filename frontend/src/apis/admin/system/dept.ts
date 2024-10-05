@@ -16,6 +16,15 @@ export const getDepts = async (searchParams: TDepts) => {
   }
 };
 
+export const getDeptsListAll = async () => {
+  try {
+    const res = await request.get("/api/admin/system/dept/list/all");
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getDeptById = async (id: number) => {
   try {
     const res = await request.get(`/api/admin/system/dept/${id}`);

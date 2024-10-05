@@ -40,12 +40,11 @@ export function UserModalFormItems(props: UserModalFormItemProps) {
       <ProFormText.Password
         width="md"
         name="password"
-        label="密码f"
-
+        label="密码"
         placeholder="不修改无需填写"
         rules={[
           {
-            required: false,
+            required: true,
             message: "请输入密码",
           },
         ]}
@@ -68,7 +67,7 @@ export function UserModalFormItems(props: UserModalFormItemProps) {
       />
       <ProFormTreeSelect
         width="md"
-        name="dept"
+        name="department_id"
         label="部门"
         request={async () => {
           return depts;

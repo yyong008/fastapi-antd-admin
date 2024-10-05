@@ -5,6 +5,7 @@ from app.db.client import get_db
 
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.services.sys.dept import (
+    get_dept_list_all_service,
     get_dept_tree_data_service,
     get_dept_by_id_service,
     create_dept_service,
@@ -27,6 +28,10 @@ async def get_dept_dept(
     data = await get_dept_tree_data_service(page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
+@router.get("/list/all")
+async def get_dept_dept_list_all(db: Session = Depends(get_db)):
+    data = await get_dept_list_all_service(db)
+    return ResponseSuccessModel(data=data)
 
 @router.get("/{id}", response_model=ResponseModel)
 async def get_dept_dept_by_id(id: int, db: Session = Depends(get_db)):

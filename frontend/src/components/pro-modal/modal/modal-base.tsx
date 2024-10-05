@@ -42,15 +42,7 @@ export function PModal({ reload, ...props }: PModleProps) {
       loading={props.loading}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const result = await props.onFinish(values);
-        if (result.data?.code !== 0) {
-          message.error(result.data?.message);
-          return false;
-        }
-        message.success(result.data?.message);
-        reload?.();
-        form.resetFields();
-        return true;
+        return await props.onFinish(values);
       }}
     >
       {props.children}

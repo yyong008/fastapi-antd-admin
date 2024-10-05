@@ -20,6 +20,23 @@ def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
     ]
 
 
+async def get_dept_list_all_service(db):
+    try:
+        res = db.query(Department).all()
+        total = db.query(Department).count()
+        list = []
+
+        for item in res:
+            list.append(format_dept(item))
+        data = {"list": list, "total": total}
+        return data
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
+        )
+
 async def get_dept_tree_data_service(page, pageSize, db):
     try:
         res = db.query(Department).offset(page).limit(pageSize).all()

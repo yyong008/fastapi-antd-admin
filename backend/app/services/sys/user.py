@@ -9,6 +9,7 @@ from app.constant import NORMAL_USER
 from app.models.system.role import Role
 from app.models.system.user import User
 from app.schemas.sys.user import UserCreate
+from app.utils.token import hash_password
 from .format import format_user
 
 def get_user_list(db: Session):
@@ -40,7 +41,7 @@ def get_user_by_id(user_id: int, db):
 
 def create_user(user: UserCreate, db: Session):
     try:
-        db_user = user_dal.get_user_by_name(user.name)
+        db_user = user_dal.get_user_by_name(user.name, db)
         if db_user and db_user.id:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="User exist"
@@ -48,7 +49,11 @@ def create_user(user: UserCreate, db: Session):
 
         role_ids = [NORMAL_USER]
         roles = db.query(Role).filter(Role.id.in_(role_ids)).all()
-        new_user = User(name=user.name, password=user.password, roles=roles)
+        
+        user_data = user.model_dump(exclude=["roles"])
+        user_data["password"] = hash_password(user.password)
+        new_user = User(**user_data)
+        new_user.roles = roles
 
         db.add(new_user)
         db.commit()
@@ -62,7 +67,7 @@ def create_user(user: UserCreate, db: Session):
 
 
 def update_user_by_id(user_id: int, item, db: Session):
-    user = user_dal.get_user_by_id(user_id)
+    user = user_dal.get_user_by_id(user_id, db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="User not exist"
@@ -84,7 +89,7 @@ def update_user_by_id(user_id: int, item, db: Session):
 def delete_users_by_ids(ids: List[int], db: Session):
     try:
         # 查询要删除的用户
-        users = user_dal.get_users_by_ids(ids)
+        users = user_dal.get_users_by_ids(ids, db)
 
         if not users:
             raise HTTPException(

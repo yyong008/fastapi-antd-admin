@@ -55,7 +55,7 @@ export function UserModalFormItems(props: UserModalFormItemsProps) {
       />
       <ProFormTreeSelect
         width="md"
-        name="dept"
+        name="department_id"
         label="部门"
         request={async () => {
           return depts;

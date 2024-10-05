@@ -106,11 +106,7 @@ def format_user(user):
         "name": user.name,
         "avatar": user.avatar,
         "email": user.email,
-        "role": [role.name for role in user.roles],
-        "department": {
-            "id": None if not user.department else user.department.id,
-            "name": None if not user.department else user.department.name,
-        },
+        "roles": [role.id for role in user.roles],
         "lang": user.lang,
         "phone": user.phone,
         "theme": user.theme,
@@ -119,5 +115,11 @@ def format_user(user):
         "nickname": user.nickname,
         "createdAt": user.createdAt,
         "updatedAt": user.updatedAt,
+        "department_id": user.department_id,
     }
+
+    if user.department_id:
+        item["department"] = {}
+        item["department"]["id"] = user.department.id
+        item["department"]["name"] = user.department.name
     return item

@@ -40,7 +40,7 @@ export const createUserTableColumns = ({
     ellipsis: true,
     align: "center",
     render(_: any, record: any) {
-      return <UserRoleList list={record?.UserRole ?? []} />;
+      return <UserRoleList list={record?.roles ?? []} roles={roles} />;
     },
   },
   {
@@ -130,14 +130,14 @@ export const createUserTableColumns = ({
   },
 ];
 
-function UserRoleList({ list }: any) {
+function UserRoleList({ list, roles }: any) {
   if (list.length === 0) {
     return "-";
   }
   return (
     <div>
       {list.map((_role: any, index: number) => {
-        return <Tag key={index}>{_role.roles.name}</Tag>;
+        return <Tag key={index}>{roles[_role]?.name}</Tag>;
       })}
     </div>
   );

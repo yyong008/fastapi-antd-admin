@@ -48,9 +48,12 @@ export function UserProTable(props: any) {
         }}
         pagination={{
           total: data?.total,
+          current: page || 1,
           pageSize: page.pageSize || 10,
-          onChange(page, pageSize) {
-            setPage({ page, pageSize });
+          onChange(_page, pageSize) {
+            setPage((prev) => {
+              return { ...prev, page: _page, pageSize }
+            });
           },
         }}
       />

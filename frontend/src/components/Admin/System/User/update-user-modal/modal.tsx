@@ -1,5 +1,9 @@
+import { ResponseStatus } from "@/constants/status";
 import { UpdateUserModalUI } from "./modal-ui";
 import { UserModalFormItems } from "./modal-form-items";
+import { message } from "antd";
+import { updateUser } from "@/apis/admin/system/user";
+import { genHashedPassword } from "@/utils/crypto-js";
 
 type UpdateUserModalProps = {
   loading: boolean;
@@ -12,14 +16,14 @@ type UpdateUserModalProps = {
 
 export function UpdateUserModal(props: UpdateUserModalProps) {
   const { loading, reload, depts, roles, record } = props;
-  const [updateUser] = [(...args: any[]): any => {}];
+  console.log("record", record.name, record.roles)
   return (
     <UpdateUserModalUI
       initValue={record}
       loading={loading}
       reload={reload}
       modalProps={{
-        bodyStyle: { maxHeight: "600px", overflowY: "auto" },
+        styles: { maxHeight: "600px", overflowY: "auto" },
       }}
       handleUpdate={async (values: any, form: any) => {
         let avatar = "";
@@ -35,8 +39,17 @@ export function UpdateUserModal(props: UpdateUserModalProps) {
         delete values.file;
         const vals = { ...values, avatar, id: record.id };
         if (vals.email === "") delete vals.email; // no empty string
+        vals.password = genHashedPassword(vals.password);
+        const result: any = await updateUser(record.id ,vals);
+        if (result && result.code === ResponseStatus.S) {
+          form.resetFields();
+          props.reload();
+          message.success(result?.message || "Success");
+          return true;
+        }
 
-        return await updateUser(vals);
+        message.error(result?.message || "Failed");
+        return false;
       }}
       onOpenChange={(c: any, form: any) => {
         if (!c || !record.id) {
@@ -44,7 +57,6 @@ export function UpdateUserModal(props: UpdateUserModalProps) {
         }
         form.setFieldsValue({
           ...record,
-          roles: record?.UserRole?.map((userRole: any) => userRole.roleId),
           dept: record?.department?.id,
         });
       }}

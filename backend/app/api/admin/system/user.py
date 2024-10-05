@@ -1,12 +1,11 @@
 import app.services.sys.user as user_services
 
-from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.client import get_db
 from app.schemas.response import ResponseModel, ResponseSuccessModel
-from app.schemas.sys.user import UserCreate, UserUpdate
+from app.schemas.sys.user import UserCreate, UserDeleteByIds, UserUpdate
 
 router = APIRouter(prefix="/user", tags=["Admin System User"])
 
@@ -55,8 +54,8 @@ def update_user_by_id(user_id: int, item: UserUpdate, db: Session = Depends(get_
     summary="delete by user ids",
     description="delete by user ids",
 )
-def delete_users_by_ids(ids: List[int], db: Session = Depends(get_db)):
-    data = user_services.delete_users_by_ids(ids, db)
+def delete_users_by_ids(ids: UserDeleteByIds, db: Session = Depends(get_db)):
+    data = user_services.delete_users_by_ids(ids.ids, db)
     return ResponseSuccessModel(data=data)
 
 

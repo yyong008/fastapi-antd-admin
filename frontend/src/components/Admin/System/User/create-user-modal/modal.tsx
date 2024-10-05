@@ -1,5 +1,9 @@
 import { CreateUserModalUI } from "./modal-ui";
 import { UserModalFormItems } from "./modal-form-items";
+import { createUser } from "@/apis/admin/system/user";
+import { ResponseStatus } from "@/constants/status";
+import { message } from "antd";
+import { genHashedPassword } from "@/utils/crypto-js"
 
 type CreateUserModalProps = {
   loading?: boolean;
@@ -11,12 +15,11 @@ type CreateUserModalProps = {
 
 export function CreateUserModal(props: CreateUserModalProps) {
   const { loading, depts, roles, ...rest } = props;
-  const [createUser] = [(...args) => {}];
   return (
     <CreateUserModalUI
       {...rest}
       modalProps={{
-        bodyStyle: { maxHeight: "600px", overflowY: "auto" },
+        style: { maxHeight: "600px", overflowY: "auto" },
       }}
       loading={loading || false}
       handleCreate={async (values: any, form: any) => {
@@ -35,7 +38,17 @@ export function CreateUserModal(props: CreateUserModalProps) {
         if (vals.email === "") {
           delete vals.email; // no empty string
         }
-        return await createUser(vals);
+        values.password = genHashedPassword(values.password);
+        const result: any = await createUser(vals);
+        if (result && result.code === ResponseStatus.S) {
+          message.success(result?.message);
+
+          form.resetFields();
+          props.reload();
+          return true
+        }
+        message.error(result?.message);
+        return false
       }}
     >
       <UserModalFormItems depts={depts} roles={roles} />

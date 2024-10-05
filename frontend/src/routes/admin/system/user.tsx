@@ -5,11 +5,15 @@ import { useEffect, useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
 import { UserProTable } from "@/components/Admin/System/User/user-pro-table";
 import { createFileRoute } from "@tanstack/react-router";
-import { getUsers } from "@/apis/user";
+import { getAllRoles } from "@/apis/admin/system/role";
+import { getDeptsListAll } from "@/apis/admin/system/dept";
+import { getUsers } from "@/apis/admin/system/user";
 
 export function UserRoute() {
   const [loading, setLoading] = useState(false);
-  const [page] = useState({
+  const [depts, setDepts] = useState([])
+  const [roles, setRoles] = useState([])
+  const [page, setPage] = useState({
     page: 1,
     pageSize: 10,
   });
@@ -18,6 +22,18 @@ export function UserRoute() {
     total: 0,
   });
 
+  const getDeptData = async () => {
+    const res: any = await getDeptsListAll();
+    if (res && res.code === 0) {
+      setDepts(res.data.list);
+    }
+  }
+  const getRoleData = async () => {
+    const res: any = await getAllRoles();
+    if (res && res.code === 0) {
+      setRoles(res.data.list);
+    }
+  }
   const getData = async () => {
     const res: any = await getUsers({ ...page });
 
@@ -30,18 +46,20 @@ export function UserRoute() {
   useEffect(() => {
     setLoading(true);
     getData();
+    getDeptData()
+    getRoleData()
   }, [page]);
   return (
-    <PageContainer loading={loading}>
+    <PageContainer>
       <UserProTable
         {...{
           data: data ?? [],
-          isLoading: false,
-          refetch: () => {},
-          depts: [],
-          roles: [],
-          page: 1,
-          setPage: () => {},
+          isLoading: loading,
+          refetch: getData,
+          depts,
+          roles,
+          page: page.page || 1,
+          setPage: setPage,
         }}
       />
     </PageContainer>

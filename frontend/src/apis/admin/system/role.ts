@@ -27,7 +27,7 @@ export const createRole = async (data: any) => {
   }
 }
 
-export const updateRole = async (id: number, data: any) => {
+export const updateRoleById = async (id: number, data: any) => {
   try {
     const res = await request.put(`/api/admin/system/role/${id}`, data);
     return res;

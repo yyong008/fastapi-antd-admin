@@ -9,6 +9,7 @@ from app.services.sys.role import (
     delete_role_by_ids_service,
 )
 from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.sys.role import RoleCreate, RoleUpdate, RoleDeleteByIds
 
 router = APIRouter(prefix="/role", tags=["Role"])
 
@@ -26,18 +27,18 @@ def get_role_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=ResponseModel)
-def create_role(role: dict, db: Session = Depends(get_db)):
+def create_role(role: RoleCreate, db: Session = Depends(get_db)):
     data = create_role_service(role, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_role_by_id(id: int, item: dict, db: Session = Depends(get_db)):
+def update_role_by_id(id: int, item: RoleUpdate, db: Session = Depends(get_db)):
     data = update_role_by_id_service(id, item, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_role(ids: list[int], db: Session = Depends(get_db)):
-    data = delete_role_by_ids_service(ids, db)
+def delete_role(ids: RoleDeleteByIds, db: Session = Depends(get_db)):
+    data = delete_role_by_ids_service(ids.ids, db)
     return ResponseSuccessModel(data=data)

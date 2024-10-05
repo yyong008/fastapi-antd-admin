@@ -5,17 +5,17 @@ import { EditOutlined } from "@ant-design/icons";
 import { FormItems } from "./form-items.tsx";
 import { ModalForm } from "@ant-design/pro-components";
 import { ResponseStatus } from "@/constants/status.ts";
-import { updateMenuById } from "@/apis/admin/system/menu";
+import { updateRoleById } from "@/apis/admin/system/role";
 
 type UpdateRoleModalProps = {
   trigger?: React.ReactNode;
   record: any;
   menu: any[];
-  menuRoles: any[];
+  refetch: (...args: any[]) => void;
 };
 
 export function UpdateRoleModal(props: UpdateRoleModalProps) {
-  const { trigger, record, menu, menuRoles } = props;
+  const { trigger, record, menu } = props;
   console.log(props);
   const [form] = Form.useForm();
   const [checkedKeys, setCheckedKeys] = useState<any[]>([]);
@@ -30,7 +30,7 @@ export function UpdateRoleModal(props: UpdateRoleModalProps) {
     } else {
       return [];
     }
-  }, [menuRoles, record]);
+  }, [record]);
 
   useEffect(() => {
     if (record.id) {
@@ -76,9 +76,13 @@ export function UpdateRoleModal(props: UpdateRoleModalProps) {
       }}
       submitTimeout={2000}
       onFinish={async (vals) => {
-        const result: any = await updateMenuById(record.id, vals);
+        if(vals.menus) {
+          vals.menus = vals.menus.map((m: any) => m.id)
+        }
+        const result: any = await updateRoleById(record.id, vals);
         if (result && result.code === ResponseStatus.S) {
           message.success("更新成功");
+          props.refetch?.();
           return true;
         }
         message.error("更新失败");

@@ -13,7 +13,7 @@ export const Route = createFileRoute("/admin/system/role")({
 });
 
 export function RoleRoute() {
-  const [ menuRoles, setMenuRoles ] = useState([]);
+  const [loading, setLoading] = useState(false);
   const actionRef = useRef();
 
   const [data, setData] = useState({
@@ -23,9 +23,10 @@ export function RoleRoute() {
   const [menu, setMenu] = useState([]);
 
   const getData = async () => {
+    setLoading(true);
     const res: any = await getAllRoles();
     const menuRes: any = await getAllMenuList();
-
+    setLoading(false);
     if (res && res.code === 0) {
       setData(res.data);
     }
@@ -51,21 +52,19 @@ export function RoleRoute() {
         actionRef={actionRef}
         rowKey="id"
         search={false}
-        // loading={isLoading}
+        loading={loading}
         dataSource={data?.list || []}
-        columns={createColumns({ menus, menuRoles }) as any}
+        columns={createColumns({ menus, refetch: getData }) as any}
         options={
           {
-            // reload: refetch,
+            reload: getData,
           }
         }
         toolBarRender={() => [
           <CreateRoleModal
             key="create-role-modal"
-            record={{}}
             menu={menus as any}
-            menuRoles={menuRoles}
-            fetcher={() => {}}
+            refetch={getData}
           />,
         ]}
       />

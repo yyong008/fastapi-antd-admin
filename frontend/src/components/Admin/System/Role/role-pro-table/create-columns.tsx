@@ -1,12 +1,12 @@
-import { DeleteIt } from "@/components/common/delete-it";
+import { DeleteIt } from "../delete-it";
 import { Link } from "@tanstack/react-router";
 import { Space } from "antd";
 import { StatusType } from "@/components/common/status-type";
 import { UpdateRoleModal } from "../update-role-modal";
 
-export const createColumns = ({ menus, menuRoles }: any) => [
+export const createColumns = ({ menus, refetch }: any) => [
   {
-    title: "角色名",
+  title: "角色名",
     dataIndex: "name",
   },
   {
@@ -40,14 +40,14 @@ export const createColumns = ({ menus, menuRoles }: any) => [
       return (
         <Space>
           <UpdateRoleModal
+            refetch={refetch}
             record={record}
             key="create-role-modal"
             menu={menus}
-            menuRoles={menuRoles}
           />
           <DeleteIt
             title="确定要删除次角色吗？"
-            fetcher={() => {}}
+            refetch={refetch}
             record={record}
           />
         </Space>

@@ -20,9 +20,12 @@ class RoleBase(BaseModel):
 
 
 class RoleCreate(RoleBase):
-    pass
+    menus: Optional[list[int]] = Field(None, title="Menus", description="The menus associated with the role")
 
 
 class RoleUpdate(RoleBase):
+    menus: Optional[list[int]] = Field(None, title="Menus", description="The menus associated with the role")
     pass
 
+class RoleDeleteByIds(BaseModel):
+    ids: list[int] = Field(..., title="Ids", description="The ids of the roles to be deleted")

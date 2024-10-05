@@ -11,6 +11,8 @@ from app.services.profile.link.link import (
 )
 from app.utils.current_user import get_current_user
 from app.schemas.profile.profile_link import LinkCreate, LinkDeleteByIds, LinkUpdate
+from app.deps.permission import get_user_permissions
+import app.constant.permission as permissions
 
 router = APIRouter(prefix="/link", tags=["Link"])
 
@@ -22,7 +24,13 @@ router = APIRouter(prefix="/link", tags=["Link"])
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_link_by_id(id: int, page: int, pageSize: int, db: Session = Depends(get_db)):
+def get_link_by_id(
+    id: int,
+    page: int,
+    pageSize: int,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_READ)),
+):
     data = get_link_list_by_id_service(id, page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
@@ -32,6 +40,7 @@ def create_link(
     link: LinkCreate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CREATE)),
 ):
     link = link.model_dump(mode="json")
     data = create_link_service(link, current_user.id, db)
@@ -44,6 +53,7 @@ def update_link_by_id(
     link: LinkUpdate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_UPDATE)),
 ):
     link = link.model_dump(mode="json")
     data = update_link_by_id_service(id, link, db)
@@ -51,7 +61,11 @@ def update_link_by_id(
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_link_by_ids(ids: LinkDeleteByIds, db: Session = Depends(get_db)):
+def delete_link_by_ids(
+    ids: LinkDeleteByIds,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_DELETE)),
+):
     ids = ids.model_dump(mode="json")
-    data = delete_link_by_ids_service(ids['ids'], db)
+    data = delete_link_by_ids_service(ids["ids"], db)
     return ResponseSuccessModel(data=data)

@@ -17,44 +17,69 @@ from app.schemas.sys.department import (
     DepartmentUpdate,
     DepartmentDeleteByIds,
 )
+from app.deps.permission import get_user_permissions
+import app.constant.permission as permissions
 
 router = APIRouter(prefix="/dept", tags=["Dept"])
 
 
 @router.get("/")
 async def get_dept_dept(
-    page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)
+    page: int = 1,
+    pageSize: int = 10,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
 ):
     data = await get_dept_tree_data_service(page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
+
 @router.get("/list/all")
-async def get_dept_dept_list_all(db: Session = Depends(get_db)):
+async def get_dept_dept_list_all(
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
+):
     data = await get_dept_list_all_service(db)
     return ResponseSuccessModel(data=data)
 
+
 @router.get("/{id}", response_model=ResponseModel)
-async def get_dept_dept_by_id(id: int, db: Session = Depends(get_db)):
+async def get_dept_dept_by_id(
+    id: int,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
+):
     data = await get_dept_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-async def create_dept(dept: DepartmentCreate, db: Session = Depends(get_db)):
+async def create_dept(
+    dept: DepartmentCreate,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_CREATE)),
+):
     data = await create_dept_service(dept, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
 async def update_dept_by_id(
-    id: int, dept: DepartmentUpdate, db: Session = Depends(get_db)
+    id: int,
+    dept: DepartmentUpdate,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_UPDATE)),
 ):
     data = await update_dept_by_id_service(id, dept, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-async def delete_dept_dept(ids: DepartmentDeleteByIds, db: Session = Depends(get_db)):
+async def delete_dept_dept(
+    ids: DepartmentDeleteByIds,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_DELETE)),
+):
     data = await delete_dept_by_ids_service(ids.ids, db)
     return ResponseSuccessModel(data=data)
 

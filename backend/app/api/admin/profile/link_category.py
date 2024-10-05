@@ -16,18 +16,29 @@ from app.schemas.profile.profile_link_category import (
     LinkCategoryDeleteByIds,
 )
 from app.utils.current_user import get_current_user
+from app.deps.permission import get_user_permissions
+import app.constant.permission as permissions
 
 router = APIRouter(prefix="/link/category", tags=["Link Category"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_link_category(page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)):
+def get_link_category(
+    page: int = 1,
+    pageSize: int = 10,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_READ)),
+):
     data = get_link_category_list_service(page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_link_category_by_id(id: int, db: Session = Depends(get_db)):
+def get_link_category_by_id(
+    id: int,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_READ)),
+):
     data = get_link_category_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
@@ -37,6 +48,7 @@ def create_link_category(
     lc: LinkCategoryCreate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_CREATE)),
 ):
     lc = lc.model_dump()
     data = create_link_category_service(lc, current_user.id, db)
@@ -49,6 +61,7 @@ def update_link_category_by_id(
     lc: LinkCategoryUpdate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_UPDATE)),
 ):
     lc = lc.model_dump()
     data = update_link_category_service(id, lc, current_user.id, db)
@@ -57,7 +70,9 @@ def update_link_category_by_id(
 
 @router.delete("/", response_model=ResponseModel)
 def delete_link_by_ids_category(
-    ids: LinkCategoryDeleteByIds, db: Session = Depends(get_db)
+    ids: LinkCategoryDeleteByIds,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_DELETE)),
 ):
     ids = ids.model_dump()
     data = delete_link_category_by_ids_service(ids["ids"], db)

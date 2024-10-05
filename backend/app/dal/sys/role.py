@@ -14,6 +14,9 @@ def get_roles_all(db: Session):
     data = db.query(Role).order_by(sort_column).options(joinedload(Role.menus)).all()
     return data
 
+def get_role_by_id(role_id: int, db: Session):
+    role = db.query(Role).filter(Role.id == role_id).first()
+    return role
 
 def get_role_list(db: Session, page: int = 1, pageSize: int = 10):
     limit = pageSize

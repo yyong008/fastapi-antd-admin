@@ -15,27 +15,39 @@ from app.schemas.sys.dictionary_entry import (
     DictionaryEntryUpdate,
     DictinonaryEntryByIds,
 )
+from app.deps.permission import get_user_permissions
+import app.constant.permission as permissions
 
 router = APIRouter(prefix="/dict-item", tags=["Dict Item"])
 
 
 @router.get("/", response_model=ResponseModel)
 async def get_dict_item(
-    dictId: int, page: int = 1, pageSize: int = 10, db: Session = Depends(get_db)
+    dictId: int,
+    page: int = 1,
+    pageSize: int = 10,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_READ)),
 ):
     data = await get_dict_item_list_service(dictId, page, pageSize, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-async def get_dict_item_by_id(id: int, db: Session = Depends(get_db)):
+async def get_dict_item_by_id(
+    id: int,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_READ)),
+):
     data = await get_dict_item_by_id_service(id, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
 async def create_dict_item(
-    dict_item: DictionaryEntryCreate, db: Session = Depends(get_db)
+    dict_item: DictionaryEntryCreate,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_CREATE)),
 ):
     data = await create_dict_item_service(dict_item, db)
     return ResponseSuccessModel(data=data)
@@ -43,13 +55,20 @@ async def create_dict_item(
 
 @router.put("/{id}", response_model=ResponseModel)
 async def update_dict_item_by_id(
-    id: int, dict_item: DictionaryEntryUpdate, db: Session = Depends(get_db)
+    id: int,
+    dict_item: DictionaryEntryUpdate,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_UPDATE)),
 ):
     data = await update_dict_item_by_id_service(id, dict_item, db)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-async def delete_dict_item(ids: DictinonaryEntryByIds, db: Session = Depends(get_db)):
+async def delete_dict_item(
+    ids: DictinonaryEntryByIds,
+    db: Session = Depends(get_db),
+    _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_DELETE)),
+):
     data = await delete_dict_item_by_ids_service(ids, db)
     return ResponseSuccessModel(data=data)

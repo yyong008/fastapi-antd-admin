@@ -36,8 +36,8 @@ def get_signin_log_latest_by_user_id(db, user_id):
     
 
 # =====================================CREATE===================================================
-def create_user_signlog(user_signlog, db: Session):
-    sign_log = UserSignLog(user_signlog)
+async def create_user_signlog(sign_log, db: Session):
+    # sign_log = UserSignLog(user_signlog)
     db.add(sign_log)
     db.commit()
     db.refresh(sign_log)

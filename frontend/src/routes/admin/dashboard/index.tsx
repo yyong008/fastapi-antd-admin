@@ -43,7 +43,7 @@ export function DashboardRoute() {
         <ProCard>
           <div className="flex justify-between">
             <LoginIn data={data} userInfo={userInfo} />
-            <SignIn data={data} />
+            <SignIn data={data} refetch={getData} />
           </div>
         </ProCard>
       </ProCard>

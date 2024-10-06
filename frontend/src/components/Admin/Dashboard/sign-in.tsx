@@ -1,30 +1,38 @@
-import * as ic from "@ant-design/icons";
+import { CheckCircleFilled } from "@ant-design/icons";
 
 import { Button, message } from "antd";
 
 import confetti from "canvas-confetti";
 import { useState } from "react";
+import { ResponseStatus } from "@/constants/status";
+import { createSignInLog } from "@/apis/admin/signin";
 
-const { CheckCircleFilled } = ic;
-
-export function SignIn({ data: _data }: any) {
+export function SignIn({ data: _data, refetch }: any) {
   const [data, setData] = useState(_data);
-  const [signIn, signInOther] = [(v) => v, { isLoading: false }];
+  const [loading, setLoading] = useState(false);
+
   const signInHanlder = async () => {
-    const result: any = await signIn({}).unwrap();
-    if (result.code === 0) {
-      setData({
-        ...data,
-        isLogin: true,
+    setLoading(true);
+    const result: any = await createSignInLog();
+    setLoading(false);
+    if (result && result.code === ResponseStatus.S) {
+      setData((p) => {
+        return {
+        ...p,
+        isSignIn: true,
+      }
       });
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
       });
-    } else {
-      message.error(result.message);
+      refetch?.();
+      return true;
     }
+
+    message.error(result.message);
+    return false;
   };
   return (
     <div>
@@ -33,7 +41,7 @@ export function SignIn({ data: _data }: any) {
           onClick={signInHanlder}
           htmlType="submit"
           disabled={data?.isSignIn}
-          loading={signInOther.isLoading}
+          loading={loading}
         >
           签到
         </Button>

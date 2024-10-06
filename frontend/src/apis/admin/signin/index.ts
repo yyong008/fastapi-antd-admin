@@ -1,8 +1,8 @@
 import request from "@/utils/request";
 
-export const signin = async (data: any) => {
+export const createSignInLog = async () => {
   try {
-    const res = await request.post("/auth/signin/", data);
+    const res = await request.post("/api/admin/signin_log/");
     return res;
   } catch (error) {
     console.error(error);

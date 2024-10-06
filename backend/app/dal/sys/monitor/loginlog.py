@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.system.loginlog import Loginlog
-
+from sqlalchemy import desc
 
 # =====================================GET===================================================
 def get_count(db: Session):
@@ -27,7 +27,7 @@ def get_Loginlog_list(db: Session, page: int = 1, pageSize: int = 10):
     return db.query(Loginlog).order_by(sort_column).offset(offset).limit(limit).all()
 
 def get_loginlog_latest_by_user_id(db, user_id):
-    return db.query(Loginlog).filter(Loginlog.userId == user_id).first()
+    return db.query(Loginlog).filter(Loginlog.userId == user_id).order_by(desc(Loginlog.login_at)).first()
     
 # =====================================CREATE===================================================
 def create_loginlog(

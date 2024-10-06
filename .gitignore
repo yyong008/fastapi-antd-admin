@@ -167,3 +167,5 @@ TODO.md
 
 .ruff_cache
 backend/static/upload
+
+docs/.vitepress/cache

@@ -4,12 +4,19 @@ a full stack web framework for antd-admin (WIP)
 
 ## 技术栈
 
-- python 3.10
-- fastapi
-- sqlalchemy
-- uvicorn
-- antd/pro-component/tailwindcss
-- ...
+
+- ⚡ FastAPI
+  - 🧰SQLAlchemy
+  - 💾PostgreSQL
+  - 🤖Uvicorn
+  - 🔍Pydantic
+- 🌐React
+  - 💯TypeScript、Vite、Hooks and other modern features
+  - 🎨antd/pro-component/tailwindcss
+  - 🎯@tanstack/router
+- 🔒 Secure 
+  - 🔑 JWT token authentication.
+
 
 ##  install and run 
 

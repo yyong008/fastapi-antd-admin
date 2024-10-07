@@ -2,32 +2,19 @@ from fastapi import HTTPException, status
 
 from sqlalchemy.exc import SQLAlchemyError
 
-
+from sqlalchemy.ext.asyncio import AsyncSession 
 from app.models.system.department import Department
-from app.services.sys.format import format_dept
-from app.dal.sys.dept import create_dept, update_dept_by_id, delete_dept_by_ids
+from app.services.sys._format import format_dept, build_dept_list_to_tree
+import app.dal.sys.dept as dept_dals
 
-def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
-    return [
-        {
-            **item,
-            "children": build_dept_list_to_tree(
-                items, item["id"]
-            ),  # Recursively build child tree
-        }
-        for item in items
-        if item.get("parent_department_id") == parent_id
-    ]
-
-
-async def get_dept_list_all_service(db):
+async def get_dept_list_all_service(db: AsyncSession):
+    """
+    获取所有部门列表
+    """
     try:
-        res = db.query(Department).all()
-        total = db.query(Department).count()
-        list = []
-
-        for item in res:
-            list.append(format_dept(item))
+        res = await dept_dals.get_dept_list(db)
+        total = await dept_dals.get_dept_count(db)
+        list = [format_dept(item) for item in res]
         data = {"list": list, "total": total}
         return data
     except SQLAlchemyError as e:
@@ -37,10 +24,13 @@ async def get_dept_list_all_service(db):
             detail="Internal server error",
         )
 
-async def get_dept_tree_data_service(page, pageSize, db):
+async def get_dept_tree_data_service(db, page, pageSize):
+    """
+    获取部门树形结构
+    """
     try:
-        res = db.query(Department).offset(page).limit(pageSize).all()
-        total = db.query(Department).count()
+        res = await dept_dals.get_dept_all(db)
+        total = await dept_dals.get_dept_count(db)
         list = []
 
         for item in res:
@@ -54,34 +44,46 @@ async def get_dept_tree_data_service(page, pageSize, db):
             detail="Internal server error",
         )
 
-async def get_dept_by_id_service(id, db):
+async def get_dept_by_id_service(db: AsyncSession, id):
+    """
+    根据id获取部门
+    """
     try:
         pass
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-async def create_dept_service(dept, db):
+async def create_dept_service(db: AsyncSession, dept):
+    """
+    创建部门
+    """
     try:
         dp = Department(**dept)
-        data = await create_dept(dp, db)
+        data = await dept_dals.create_dept(db, dp)
         return format_dept(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-async def update_dept_by_id_service(id, dp, db):
+async def update_dept_by_id_service(db: AsyncSession, id, dp):
+    """
+    更新部门
+    """
     try:
         dp = dp.model_dump(exclude_unset=True)
-        data = await update_dept_by_id(db, id, dp)
+        data = await dept_dals.update_dept_by_id(db, id, dp)
         return format_dept(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-async def delete_dept_by_ids_service(ids, db):
+async def delete_dept_by_ids_service(db: AsyncSession, ids):
+    """
+    根据id删除部门
+    """
     try:
-        count = await delete_dept_by_ids(ids, db)
+        count = await dept_dals.delete_dept_by_ids(db, ids)
         return count
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

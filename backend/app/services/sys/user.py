@@ -1,8 +1,7 @@
-import app.dal.sys.user as user_dal
+import app.dal.sys.user as user_dals
 
 from typing import List
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.constant import NORMAL_USER
@@ -10,18 +9,17 @@ from app.models.system.role import Role
 from app.models.system.user import User
 from app.schemas.sys.user import UserCreate
 from app.utils.token import hash_password
-from .format import format_user
+from ._format import format_user
+from sqlalchemy.ext.asyncio import AsyncSession 
 
-def get_user_list(db: Session):
+async def get_user_list(db: AsyncSession):
     try:
-        count = user_dal.get_count(db)
-        users = user_dal.get_user_all(db)
-
+        count = await user_dals.get_count(db)
+        users = await user_dals.get_user_all(db)
         user_list = []
         for user in users:
             item = format_user(user)
             user_list.append(item)
-
         data = {"total": count, "list": user_list}
         return data
     except SQLAlchemyError as e:
@@ -29,9 +27,9 @@ def get_user_list(db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_user_by_id(user_id: int, db):
+async def get_user_by_id(db, user_id: int):
     try:
-        user = user_dal.get_user_by_id(user_id, db)
+        user = await user_dals.get_user_by_id(db, user_id)
         item = format_user(user)
         return item
     except Exception as e:
@@ -39,9 +37,9 @@ def get_user_by_id(user_id: int, db):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_user(user: UserCreate, db: Session):
+async def create_user(user: UserCreate, db: AsyncSession):
     try:
-        db_user = user_dal.get_user_by_name(user.name, db)
+        db_user = await user_dals.get_user_by_name(db, user.name)
         if db_user and db_user.id:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="User exist"
@@ -49,7 +47,7 @@ def create_user(user: UserCreate, db: Session):
 
         role_ids = [NORMAL_USER]
         roles = db.query(Role).filter(Role.id.in_(role_ids)).all()
-        
+
         user_data = user.model_dump(exclude=["roles"])
         user_data["password"] = hash_password(user.password)
         new_user = User(**user_data)
@@ -66,8 +64,8 @@ def create_user(user: UserCreate, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_user_by_id(user_id: int, item, db: Session):
-    user = user_dal.get_user_by_id(user_id, db)
+async def update_user_by_id(user_id: int, item, db: AsyncSession):
+    user = await user_dals.get_user_by_id(db, user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="User not exist"
@@ -86,30 +84,20 @@ def update_user_by_id(user_id: int, item, db: Session):
         raise HTTPException(status_code=400, detail="update failed")
 
 
-def delete_users_by_ids(ids: List[int], db: Session):
+async def delete_users_by_ids(ids: List[int], db: AsyncSession):
     try:
-        # 查询要删除的用户
-        users = user_dal.get_users_by_ids(ids, db)
-
-        if not users:
-            raise HTTPException(
-                status_code=404, detail="No users found for the given IDs"
-            )
-
-        # 遍历删除用户
-        for user in users:
-            db.delete(user)
-
-        db.commit()
-        return {}
+        count = await user_dals.get_count_by_ids(db, ids)
+        if count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        return count
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_user_by_id(user_id: int, db: Session):
+async def delete_user_by_id(user_id: int, db: AsyncSession):
     try:
-        user = user_dal.get_user_by_id(user_id, db)
+        user = await user_dals.get_user_by_id(db, user_id)
         if user is None:
             raise HTTPException(status_code=404, detail="User not found")
 

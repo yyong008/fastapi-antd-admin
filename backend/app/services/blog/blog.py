@@ -1,27 +1,17 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from app.dal.blog.blog import (
-    get_blog_by_id,
-    get_blog_count,
-    get_blog_list,
-    delete_blog_by_ids,
-    create_blog,
-    update_blog_by_id,
-)
-from app.services.blog.format import format_blog
+import app.dal.blog.blog as b_dals
+from ._format import format_blog
 from app.models.blog import Blog
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-def get_blog_list_service(categoryId, tagId, page, pageSize, db: Session):
+async def get_blog_list_service(db: AsyncSession, categoryId, tagId, page, pageSize):
     try:
-        count = get_blog_count(db)
-        blogs = get_blog_list(db, categoryId, tagId, page, pageSize)
+        count = await b_dals.get_blog_count(db)
+        blogs = await b_dals.get_blog_list(db, categoryId, tagId, page, pageSize)
 
-        blog_list = []
-        for blog in blogs:
-            item = format_blog(blog)
-            blog_list.append(item)
+        blog_list = [format_blog(blog) for blog in blogs]
 
         data = {"total": count, "list": blog_list}
         return data
@@ -30,9 +20,9 @@ def get_blog_list_service(categoryId, tagId, page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_blog_by_id_service(id, db: Session):
+async def get_blog_by_id_service(db: AsyncSession, id):
     try:
-        blog = get_blog_by_id(id, db)
+        blog = await b_dals.get_blog_by_id(db, id)
         if blog is None:
             raise HTTPException(status_code=404, detail="Blog not found")
         return format_blog(blog)
@@ -41,36 +31,42 @@ def get_blog_by_id_service(id, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_blog_service(id, current_user_id, blog, db: Session):
+async def update_blog_service(db: AsyncSession, id, current_user_id, blog):
     try:
-        blog_in_db = get_blog_by_id(id, db)
+        blog_in_db = await b_dals.get_blog_by_id(db, id)
         if blog_in_db is None:
             raise HTTPException(status_code=404, detail="Blog not found")
-        
+
         for key, value in blog.items():
             setattr(blog_in_db, key, value)
         blog_in_db.user_id = current_user_id
-        data = update_blog_by_id(db, blog_in_db, id)
+        data = await b_dals.update_blog_by_id(db, blog_in_db, id)
         return format_blog(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_blog_service(blog, current_user_id, db: Session):
+async def create_blog_service(db: AsyncSession, blog, current_user_id):
     try:
-        blog['user_id'] = current_user_id
+        blog["user_id"] = current_user_id
         blog = Blog(**blog)
-        data = create_blog(blog, db)
+        data = await b_dals.create_blog(db, blog)
         return format_blog(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_blog_by_ids_service(ids, db: Session):
+async def delete_blog_by_ids_service(
+    db: AsyncSession,
+    ids,
+):
     try:
-        data = delete_blog_by_ids(ids, db)
+        data = await b_dals.delete_blog_by_ids(
+            db,
+            ids,
+        )
         return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

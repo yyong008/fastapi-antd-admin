@@ -124,5 +124,6 @@ TOOLS_STORAGE_LIST = "tools:storage:list"
 TOOLS_STORAGE_READ = "tools:storage:read"
 TOLLS_STORAGE_CREATE = "tools:storage:create"
 TOOLS_STORAGE_UPLOAD = "tools:storage:upload"
+TOOLS_STORAGE_UPDATE = "tools:storage:update"
 TOOLS_STORAGE_DELETE = "tools:storage:delete"
 

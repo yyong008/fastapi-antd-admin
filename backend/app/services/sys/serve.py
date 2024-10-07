@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession 
 
-def get_serve_list(page, pageSize, db: Session):
+async def get_serve_list(page, pageSize, db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -11,7 +11,7 @@ def get_serve_list(page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_serve_by_id(serve_id: int, db):
+async def get_serve_by_id(db, serve_id: int):
     try:
         pass
     except SQLAlchemyError as e:
@@ -19,7 +19,7 @@ def get_serve_by_id(serve_id: int, db):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_serve(user, db: Session):
+async def create_serve(user, db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -27,7 +27,7 @@ def create_serve(user, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_serve_by_id(serve_id: int, item, db: Session):
+async def update_serve_by_id(serve_id: int, item, db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -35,7 +35,7 @@ def update_serve_by_id(serve_id: int, item, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_serve_by_ids(ids: List[int], db: Session):
+async def delete_serve_by_ids(ids: List[int], db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -43,7 +43,7 @@ def delete_serve_by_ids(ids: List[int], db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_serve_by_id(serve_id: int, db: Session):
+async def delete_serve_by_id(serve_id: int, db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:

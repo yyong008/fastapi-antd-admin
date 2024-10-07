@@ -1,28 +1,18 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.dal.profile.link.link import (
-    create_link_category,
-    get_link_count_by_category_id,
-    get_links_by_category_id,
-    get_link_by_id,
-    delete_link_by_ids,
-    update_link_by_id,
-)
-from app.services.profile.link.format import format_link
+import app.dal.profile.link.link as lk_dals 
+from app.services.profile.link._format import format_link
 from app.models.profile.link import Link
 
 
-def get_link_list_by_id_service(category_id, page, pageSize, db: Session):
+async def get_link_list_by_id_service(db: AsyncSession, category_id, page, pageSize):
     try:
-        count = get_link_count_by_category_id(category_id, db)
-        links = get_links_by_category_id(category_id, page, pageSize, db)
+        count = await lk_dals.get_link_count_by_category_id(db, category_id)
+        links = await lk_dals.get_links_by_category_id(db, category_id, page, pageSize)
 
-        link_list = []
-        for link in links:
-            item = format_link(link)
-            link_list.append(item)
+        link_list = [format_link(link) for link in links]
 
         data = {"total": count, "list": link_list}
         return data
@@ -31,45 +21,45 @@ def get_link_list_by_id_service(category_id, page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_link_list_by_ids_service(ids, db: Session):
+async def get_link_list_by_ids_service(db: AsyncSession, ids):
     try:
-        links = get_links_by_category_id(ids, db)
+        links = await lk_dals.get_links_by_category_id(db, ids)
         return links
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail="Oops, we encountered an error")
 
 
-def update_link_by_id_service(id, link, db: Session):
+async def update_link_by_id_service(db: AsyncSession, id, link):
     try:
-        o_data = get_link_by_id(id, db)
+        o_data = await lk_dals.get_link_by_id(db, id)
         if not o_data:
             raise HTTPException(status_code=400, detail="Oops, we encountered an error")
         o_data.name = link["name"]
         o_data.url = link["url"]
         o_data.category_id = link["category_id"]
-        data = update_link_by_id(id, o_data, db)
+        data = await lk_dals.update_link_by_id(db, id, o_data)
         return format_link(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail="Oops, we encountered an error")
 
 
-def delete_link_by_ids_service(ids, db: Session):
+async def delete_link_by_ids_service(db: AsyncSession, ids):
     try:
-        data = delete_link_by_ids(ids, db)
+        data = await lk_dals.delete_link_by_ids(db, ids)
         return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail="Oops, we encountered an error")
 
 
-def create_link_service(link, user_id, db: Session):
+async def create_link_service(db: AsyncSession,link, user_id):
     try:
         del link['user_id']
         lk = Link(**link)
         # lk.user_id = user_id
-        data = create_link_category(lk, db)
+        data = await lk_dals.create_link_category(db, lk)
         return format_link(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

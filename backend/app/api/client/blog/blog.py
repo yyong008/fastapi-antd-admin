@@ -10,18 +10,21 @@ router = APIRouter(tags=["Client Blog Main"])
 
 
 @router.get("/{id}")
-def get_blog_by_id(id: int,  db: Session = Depends(get_db),):
-    data = get_blog_by_id_service(id, db)
+async def get_blog_by_id(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    data = await get_blog_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/", response_model=ResponseModel)
-def get_blogs(
+async def get_blogs(
     page: int = Query(1, description="当前页码"),
     pageSize: int = Query(10, description="每页条数"),
     categoryId: Optional[int] = Query(None, description="按分类 ID 搜索"),
     tagId: Optional[int] = Query(None, description="按标签 ID 搜索"),
     db: Session = Depends(get_db),
 ):
-    data = get_blog_list_service(categoryId, tagId, page, pageSize, db)
+    data = await get_blog_list_service(db, categoryId, tagId, page, pageSize)
     return ResponseSuccessModel(data=data)

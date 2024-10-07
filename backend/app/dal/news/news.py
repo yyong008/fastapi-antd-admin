@@ -1,73 +1,191 @@
-from sqlalchemy.orm import Session
+from sqlalchemy import func
 from app.models.news import News
-from fastapi import HTTPException
+from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession
+import app.db.base as base_crud
 
 
 # =====================================GET===================================================
-def get_news_count(category_id, db: Session):
-    if category_id:
-        count = get_news_by_category_id(category_id, db)
-        return count
+async def get_news_by_category_id(db: AsyncSession, category_id: int):
+    """
+    获取值制定 分类的新闻数量
 
-    count = db.query(News).count()
+    Args:
+        db (AsyncSession): 数据库连接
+        category_id (int): 分类id
+
+    Returns:
+        int: 新闻数量
+    """
+    stmt = select(func.count(News.id)).filter(News.news_id == category_id)
+    result = await db.execute(stmt)
+    count = result.scalar()
     return count
 
 
-def get_news_by_category_id(category_id, db: Session):
-    return db.query(News).filter(News.news_id == category_id).count()
+async def get_news_count_by_category_id(db: AsyncSession, category_id: int):
+    """
+    获取值制定 分类的新闻数量
+
+    Args:
+        db (AsyncSession): 数据库连接
+        category_id (int): 分类id
+
+    Returns:
+        int: 新闻数量
+    """
+    if category_id:
+        count = await get_news_by_category_id(db, category_id)
+        return count
+
+    count = await get_news_all_count(db)
+    return count
 
 
-def get_news_all(db: Session):
+async def get_news_all_count(db: AsyncSession):
+    """
+    获取所有新闻数量
+
+    Args:
+        db (AsyncSession): 数据库连接
+
+    Returns:
+        int: 新闻数量
+    """
+    count = await base_crud.get_count(db, News)
+    return count
+
+
+async def get_news_all(db: AsyncSession):
+    """
+    获取所有新闻
+
+    Args:
+        db (AsyncSession): 数据库连接
+
+    Returns:
+        list: 新闻列表
+    """
     sort_column = News.createdAt.desc()
-    return db.query(News).order_by(sort_column).all()
+    data = await base_crud.get_all(db, News, order_by=sort_column)
+    return data
 
 
-def get_news_list(
-    db: Session, page: int = 1, pageSize: int = 10, category_id: int = None
+async def get_news_list(
+    db: AsyncSession, page: int = 1, pageSize: int = 10, category_id: int = None
 ):
-    limit = pageSize
-    offset = (page - 1) * pageSize
+    """
+    获取新闻列表
 
+    Args:
+        db (AsyncSession): 数据库连接
+        page (int, optional): 页码. Defaults to 1.
+        pageSize (int, optional): 每页数量. Defaults to 10.
+        category_id (int, optional): 分类id. Defaults to None.
+
+    Returns:
+        list: 新闻列表
+    """
     if category_id:
-        return get_news_list_by_category_id(category_id, limit, offset, db)
-    return db.query(News).offset(offset).limit(limit).all()
-
-
-def get_news_list_by_category_id(category_id: int, limit, offset, db: Session):
-    return (
-        db.query(News)
-        .filter(News.news_id == category_id)
-        .offset(offset)
-        .limit(limit)
-        .all()
-    )
-
-
-def get_news_by_id(id, db):
-    return db.query(News).filter(News.id == id).first()
-
-
-def create_news(news, db: Session):
-    new_news = News(**news)
-    db.add(new_news)
-    db.commit()
-    db.refresh(new_news)
-    return new_news
-
-
-def update_news(id, news, current_user_id, db):
-    count = db.query(News).filter(News.id == id).update(news)
-    db.commit()
-    return count
-
-
-def delete_news_by_ids(ids, db):
-    try:
-        count = (
-            db.query(News).filter(News.id.in_(ids)).delete(synchronize_session=False)
+        data = await base_crud.get_list(
+            db,
+            News,
+            order_by=None,
+            filter=News.news_id == category_id,
+            page=page,
+            pageSize=pageSize,
         )
-        db.commit()
+        return data
+    data = await base_crud.get_all(db, News, order_by=None)
+    return data
 
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+
+async def get_news_list_by_category_id(
+    db: AsyncSession, category_id: int, page: int, pageSize: int
+):
+    """
+    获取值制定 分类的新闻列表
+
+    Args:
+        db (AsyncSession): 数据库连接
+        category_id (int): 分类id
+        page (int): 页码
+        pageSize (int): 每页数量
+
+    Returns:
+        list: 新闻列表
+    """
+    data = await base_crud.get_list(
+        db,
+        News,
+        order_by=None,
+        filter=News.news_id == category_id,
+        page=page,
+        pageSize=pageSize,
+    )
+    return data
+
+
+async def get_news_by_id(db: AsyncSession, id: int):
+    """
+    获取值制定 id 的新闻
+
+    Args:
+        db (AsyncSession): 数据库连接
+        id (int): 新闻id
+
+    Returns:
+        News: 新闻
+    """
+    data = await base_crud.get_by_id(db, News, id)
+    return data
+
+
+# =====================================CREATE===================================================
+async def create_news(db: AsyncSession, news: dict):
+    """
+    创建新闻
+
+    Args:
+        db (AsyncSession): 数据库连接
+        news (dict): 新闻数据
+
+    Returns:
+        News: 新闻
+    """
+    data = await base_crud.create(db, News, news)
+    return data
+
+
+# =====================================UPDATE===================================================
+async def update_news(db: AsyncSession, id: int, news: dict, current_user_id: int):
+    """
+    更新新闻
+
+    Args:
+        db (AsyncSession): 数据库连接
+        id (int): 新闻id
+        news (dict): 新闻数据
+        current_user_id (int): 当前用户id
+
+    Returns:
+        News: 新闻
+    """
+    data = await base_crud.update_by_id(db, News, id, news)
+    return data
+
+
+# =====================================DELETE===================================================
+async def delete_news_by_ids(db: AsyncSession, ids: list[int]):
+    """
+    批量删除新闻
+
+    Args:
+        db (AsyncSession): 数据库连接
+        ids (list[int]): 新闻id列表
+
+    Returns:
+        int: 删除数量
+    """
+    count = await base_crud.delete_by_ids(db, News, ids)
+    return count

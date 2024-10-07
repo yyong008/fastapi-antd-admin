@@ -1,16 +1,16 @@
 # TODO: register
 
 from fastapi import BackgroundTasks, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
-import app.dal.sys.user as user_dal
+import app.dal.sys.user as user_dals
 from app.services.sys.loginlog import create_loginlog_by_userId_name
 import app.utils.token as token_utils
 
 
-def register_service(request, form_data, db: Session, background_tasks: BackgroundTasks):
+async def register_service(db: AsyncSession, request, form_data, background_tasks: BackgroundTasks):
     pass
-    # existing_user = user_dal.get_user_by_name(form_data.username, db)
+    # existing_user = user_dal.get_user_by_name(db, form_data.username)
 
     # if not existing_user:
     #     raise HTTPException(

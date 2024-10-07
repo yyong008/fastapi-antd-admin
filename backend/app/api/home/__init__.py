@@ -4,5 +4,5 @@ router = APIRouter(tags=["Home"])
 
 
 @router.get("/")
-def home():
+async def home():
     return {"Hello World"}

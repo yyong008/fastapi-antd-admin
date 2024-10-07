@@ -17,30 +17,30 @@ router = APIRouter(prefix="/changelog", tags=["Admin Docs ChangeLog"])
 
 
 @router.get("/", response_model=ResponseModel)
-def docs_change_log(
+async def docs_change_log(
     page: int,
     pageSize: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_READ)),
 ):
-    data = get_user_list_service(page, pageSize, db)
+    data = await get_user_list_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_docs_change_log(
+async def create_docs_change_log(
     changelog: ChangeLogCreate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_CREATE)),
 ):
     changelog = changelog.model_dump()
-    data = create_change_log_service(changelog, current_user.id, db)
+    data = await create_change_log_service(db, changelog, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_docs_change_log(
+async def update_docs_change_log(
     id: int,
     changelog: ChangeLogUpdate,
     current_user=Depends(get_current_user),
@@ -48,15 +48,15 @@ def update_docs_change_log(
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_UPDATE)),
 ):
     changelog = changelog.model_dump()
-    data = update_change_log_service(id, changelog, current_user.id, db)
+    data = await update_change_log_service(db, id, changelog, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_by_ids_docs_change_log(
+async def delete_by_ids_docs_change_log(
     ids: list[int],
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_DELETE)),
 ):
-    data = delete_change_log_by_ids_service(ids, db)
+    data = await delete_change_log_by_ids_service(db, ids)
     return ResponseSuccessModel(data=data)

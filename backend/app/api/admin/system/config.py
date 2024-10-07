@@ -17,51 +17,51 @@ router = APIRouter(prefix="/config", tags=["Admin System Config"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_config_list(
+async def get_config_list(
     page: int,
     pageSize: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_READ)),
 ):
-    data = get_config_list_service(page, pageSize, db)
+    data = await get_config_list_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_config_by_id(
+async def get_config_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_READ)),
 ):
-    data = get_config_by_id_service(id, db)
+    data = await get_config_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_config(
+async def create_config(
     config: dict,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_CREATE)),
 ):
-    data = create_config_service(config, db)
+    data = await create_config_service(db, config)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_config_by_id(
+async def update_config_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_UPDATE)),
 ):
-    data = update_config_by_id_service(id, db)
+    data = await update_config_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_config(
+async def delete_config(
     ids: list,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_DELETE)),
 ):
-    data = delete_config_by_ids_service(ids, db)
+    data = await delete_config_by_ids_service(db, ids)
     return ResponseSuccessModel(data=data)

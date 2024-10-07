@@ -28,7 +28,7 @@ async def get_dict(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_READ)),
 ):
-    data = await get_dict_lists_service(page, pageSize, db)
+    data = await get_dict_lists_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
@@ -38,7 +38,7 @@ async def get_dict_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_READ)),
 ):
-    data = await get_dict_by_id_service(id, db)
+    data = await get_dict_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
@@ -48,7 +48,7 @@ async def create_dict(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_CREATE)),
 ):
-    data = await create_dict_service(dict, db)
+    data = await create_dict_service(db, dict)
     return ResponseSuccessModel(data=data)
 
 
@@ -59,7 +59,7 @@ async def update_dict_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_UPDATE)),
 ):
-    data = await update_dict_by_id_service(id, dict, db)
+    data = await update_dict_by_id_service(db, id, dict)
     return ResponseSuccessModel(data=data)
 
 
@@ -69,5 +69,5 @@ async def delete_dict(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_DELETE)),
 ):
-    data = await delete_dict_by_ids_service(ids.ids, db)
+    data = await delete_dict_by_ids_service(db, ids.ids)
     return ResponseSuccessModel(data=data)

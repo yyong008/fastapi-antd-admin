@@ -30,7 +30,7 @@ async def get_dept_dept(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
 ):
-    data = await get_dept_tree_data_service(page, pageSize, db)
+    data = await get_dept_tree_data_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
@@ -49,7 +49,7 @@ async def get_dept_dept_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
 ):
-    data = await get_dept_by_id_service(id, db)
+    data = await get_dept_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
@@ -59,7 +59,7 @@ async def create_dept(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_CREATE)),
 ):
-    data = await create_dept_service(dept, db)
+    data = await create_dept_service(db, dept)
     return ResponseSuccessModel(data=data)
 
 
@@ -70,7 +70,7 @@ async def update_dept_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_UPDATE)),
 ):
-    data = await update_dept_by_id_service(id, dept, db)
+    data = await update_dept_by_id_service(db, id, dept)
     return ResponseSuccessModel(data=data)
 
 
@@ -80,7 +80,7 @@ async def delete_dept_dept(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_DELETE)),
 ):
-    data = await delete_dept_by_ids_service(ids.ids, db)
+    data = await delete_dept_by_ids_service(db, ids.ids)
     return ResponseSuccessModel(data=data)
 
 

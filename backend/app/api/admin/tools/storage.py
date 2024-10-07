@@ -36,7 +36,7 @@ async def storage_upload(
     file: UploadFile,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
-    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
+    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_UPLOAD)),
 ):
     if not allowed_file(file.filename):
         raise HTTPException(
@@ -61,7 +61,7 @@ async def storage_upload(
         "size": file.size,
         "type": file.content_type,
     }
-    await create_tools_storage_service(file_info, db)
+    await create_tools_storage_service(db, file_info)
     return ResponseSuccessModel(
         data={
             "filename": file.filename,
@@ -70,52 +70,52 @@ async def storage_upload(
 
 
 @router.get("/", response_model=ResponseModel)
-def get_storage_list(
+async def get_storage_list(
     page: int = Query(1, description="当前页码"),
     pageSize: int = Query(10, description="每页条数"),
     db: Session = Depends(get_db),
-    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
+    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_LIST)),
 ):
-    data = get_tools_storage_list_service(page, pageSize, db)
+    data = await get_tools_storage_list_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_storage_by_id(
+async def get_storage_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
 ):
-    data = get_tools_storage_by_id_service(id, db)
+    data = await get_tools_storage_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_storage(
+async def create_storage(
     storage: dict,
     db: Session = Depends(get_db),
-    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
+    _: bool = Depends(get_user_permissions(permissions.TOLLS_STORAGE_CREATE)),
 ):
-    data = create_tools_storage_service(storage, db)
+    data = await create_tools_storage_service(db, storage)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_storage_by_id(
+async def update_storage_by_id(
     id: int,
     storage: dict,
     db: Session = Depends(get_db),
-    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
+    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_UPLOAD)),
 ):
-    data = update_tools_storage_by_id_service(id, storage, db)
+    data = await update_tools_storage_by_id_service(db, id, storage)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_storage(
+async def delete_storage(
     ids: list[int],
     db: Session = Depends(get_db),
-    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
+    _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_DELETE)),
 ):
-    data = delete_tools_storage_by_ids_service(ids, db)
+    data = await delete_tools_storage_by_ids_service(db, ids)
     return ResponseSuccessModel(data=data)

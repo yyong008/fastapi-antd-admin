@@ -1,18 +1,16 @@
 from typing import List
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-
-from app.dal.tools.storage import create_storage, get_storage_by_id, get_storage_count, get_storage_list
+from sqlalchemy.ext.asyncio import AsyncSession 
+import app.dal.tools.storage as st_dals
 from app.models.tools.storage import Storage
+from ._format import format_tools_storage
 
-from .format import format_tools_storage
 
-
-def get_tools_storage_list_service(page, paegSize, db: Session):
+async def get_tools_storage_list_service(db: AsyncSession, page, paegSize):
     try:
-        count = get_storage_count(db)
-        storages = get_storage_list(db, page, paegSize)
+        count = await st_dals.get_storage_count(db)
+        storages = await st_dals.get_storage_list(db, page, paegSize)
 
         storage_list = [format_tools_storage(st) for st in storages]
 
@@ -23,9 +21,9 @@ def get_tools_storage_list_service(page, paegSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_tools_storage_by_id_service(user_id: int, db):
+async def get_tools_storage_by_id_service(db: AsyncSession, user_id: int):
     try:
-        user = get_storage_by_id(user_id, db)
+        user = await st_dals.get_storage_by_id(db, user_id)
         item = format_tools_storage(user)
         return item
     except Exception as e:
@@ -33,18 +31,16 @@ def get_tools_storage_by_id_service(user_id: int, db):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def create_tools_storage_service(file_info, db: Session):
+async def create_tools_storage_service(db: AsyncSession, file_info):
     try:
         file_info = Storage(**file_info)
-        storage = await create_storage(file_info, db)
+        storage = await st_dals.create_storage(db, file_info)
         return format_tools_storage(storage)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-
-
-def update_tools_storage_by_id_service(user_id: int, item, db: Session):
+async def update_tools_storage_by_id_service(db: AsyncSession, user_id: int, item):
     try:
         pass
     except SQLAlchemyError as e:
@@ -53,7 +49,7 @@ def update_tools_storage_by_id_service(user_id: int, item, db: Session):
 
 
 
-def delete_tools_storage_by_ids_service(ids: List[int], db: Session):
+async def delete_tools_storage_by_ids_service(db: AsyncSession, ids: List[int]):
     try:
         pass
     except SQLAlchemyError as e:

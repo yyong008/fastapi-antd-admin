@@ -1,3 +1,6 @@
+from app.utils.bleach import clean_html
+
+
 def format_news_category(news_category):
     item = {
         "id": news_category.id,
@@ -32,3 +35,12 @@ def format_news_by_id(news):
         "userId": news.user_id,
         "categoryId": news.news_id
     }
+
+def format_news_from_old_news(current_user_id, news):
+    older_news = news
+    news['content'] = clean_html(news['content'])
+    news["news_id"] = older_news["categoryId"]
+    news["user_id"] = current_user_id
+    news["viewCount"] = 0
+    del news["categoryId"]
+    return news

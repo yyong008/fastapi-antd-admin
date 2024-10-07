@@ -1,13 +1,13 @@
-from fastapi import BackgroundTasks, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import BackgroundTasks, HTTPException, Request, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
-import app.dal.sys.user as user_dal
+import app.dal.sys.user as user_dals
 from app.services.sys.loginlog import create_loginlog_by_userId_name
 import app.utils.token as token_utils
 
 
-def login(request, form_data, db: Session, background_tasks: BackgroundTasks):
-    existing_user = user_dal.get_user_by_name(form_data.username, db)
+async def refresh_service(db: AsyncSession, request: Request, form_data, background_tasks: BackgroundTasks):
+    existing_user = await user_dals.get_user_by_name(db, form_data.username)
 
     if not existing_user:
         raise HTTPException(

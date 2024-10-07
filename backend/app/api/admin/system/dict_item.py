@@ -29,7 +29,7 @@ async def get_dict_item(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_READ)),
 ):
-    data = await get_dict_item_list_service(dictId, page, pageSize, db)
+    data = await get_dict_item_list_service(db, dictId, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
@@ -39,7 +39,7 @@ async def get_dict_item_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_READ)),
 ):
-    data = await get_dict_item_by_id_service(id, db)
+    data = await get_dict_item_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
@@ -49,7 +49,7 @@ async def create_dict_item(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_CREATE)),
 ):
-    data = await create_dict_item_service(dict_item, db)
+    data = await create_dict_item_service(db, dict_item)
     return ResponseSuccessModel(data=data)
 
 
@@ -60,7 +60,7 @@ async def update_dict_item_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_UPDATE)),
 ):
-    data = await update_dict_item_by_id_service(id, dict_item, db)
+    data = await update_dict_item_by_id_service(db, id, dict_item)
     return ResponseSuccessModel(data=data)
 
 
@@ -70,5 +70,5 @@ async def delete_dict_item(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_DELETE)),
 ):
-    data = await delete_dict_item_by_ids_service(ids, db)
+    data = await delete_dict_item_by_ids_service(db, ids)
     return ResponseSuccessModel(data=data)

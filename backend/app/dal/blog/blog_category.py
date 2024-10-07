@@ -1,45 +1,44 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from app.models.blog import BlogCategory
-
+from sqlalchemy.ext.asyncio import AsyncSession 
+import app.db.base as base_crud
 
 # =====================================GET===================================================
-def get_blog_category_count(db: Session):
-    count = db.query(BlogCategory).count()
+async def get_blog_category_count(db: AsyncSession):
+    count = await base_crud.get_count(db, BlogCategory)
     return count
 
 
-def get_blog_category_all(db: Session):
-    sort_column = BlogCategory.createdAt.desc()
-    return db.query(BlogCategory).order_by(sort_column).all()
+async def get_blog_category_all(db: AsyncSession):
+    order_by = BlogCategory.createdAt.desc()
+    data = await base_crud.get_all(db, BlogCategory, order_by=order_by)
+    return data
 
 
-def get_blog_category_list(db: Session, page: int = 1, pageSize: int = 10):
-    limit = pageSize
-    offset = (page - 1) * pageSize
-    return (
-        db.query(BlogCategory).offset(offset).limit(limit).all()
-    )
+async def get_blog_category_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
+    data= await base_crud.get_list(db, BlogCategory, page=page, pageSize=pageSize)
+    return data
 
-def get_blog_category_by_id(id: int, db: Session):
+async def get_blog_category_by_id(db: AsyncSession, id: int):
+    # filter = BlogCategory.id == id
+    # data = await base_crud.get(db, BlogCategory, filter=filter)
     return db.query(BlogCategory).filter(BlogCategory.id == id).first()
 
 # =====================================CREATE===================================================
-def create_blog_category(bc, db: Session):
+async def create_blog_category(db: AsyncSession, bc):
     db.add(bc)
     db.commit()
     db.refresh(bc)
     return bc
 
 # =====================================UPDATE===================================================
-def update_blog_category_by_id(bc_id: int, bc, db: Session):
-    # db.query(BlogCategory).filter(BlogCategory.id == bc_id).update(bc)
+async def update_blog_category_by_id(db: AsyncSession, bc_id: int, bc):
     db.commit()
     db.refresh(bc)
     return bc
 
 # =====================================DELETE===================================================
-def delete_news_by_ids(ids, db):
+async def delete_news_by_ids(db: AsyncSession, ids):
     try:
         count = (
             db.query(BlogCategory).filter(BlogCategory.id.in_(ids)).delete(synchronize_session=False)

@@ -15,21 +15,21 @@ router = APIRouter(prefix="/account", tags=["Account"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_account_by_current_user(
+async def get_account_by_current_user(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_ACCOUNT_READ)),
 ):
-    data = get_profile_account_service(current_user.id, db)
+    data = await get_profile_account_service(db, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_account_by_id(
+async def update_account_by_id(
     id: int,
     account: dict = Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_ACCOUNT_UPDATE)),
 ):
-    data = update_profile_account_service(id, account, db)
+    data = await update_profile_account_service(db, id, account)
     return ResponseSuccessModel(data=data)

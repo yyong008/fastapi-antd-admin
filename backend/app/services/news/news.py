@@ -1,22 +1,23 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession 
 
-from app.dal.news.news import create_news, get_news_by_id, get_news_count, get_news_list, update_news, delete_news_by_ids
-from app.services.news.format import format_news, format_news_by_id
+import app.dal.news.news as news_dals
+import app.services.news._format as f_n
 from app.utils.bleach import clean_html
 
 
-def get_news_list_service(category_id, page, pageSize, db: Session):
+async def get_news_list_service(
+    db: AsyncSession,
+    category_id: int,
+    page: int,
+    pageSize: int,
+):
     try:
-        count = get_news_count(category_id, db)
-        news = get_news_list(db, page, pageSize, category_id)
+        count = await news_dals.get_news_count_by_category_id(db, category_id)
+        news = await news_dals.get_news_list(db, page, pageSize, category_id)
 
-        news_list = []
-        for n in news:
-            item = format_news(n)
-            news_list.append(item)
-
+        news_list = [f_n.format_news(n) for n in news]
         data = {"total": count, "list": news_list}
         return data
     except SQLAlchemyError as e:
@@ -24,52 +25,59 @@ def get_news_list_service(category_id, page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_client_news_list_service(page, pageSize, db: Session):
+async def get_client_news_list_service(db: AsyncSession, page: int, pageSize: int):
     category_id = 1
     try:
-        count = get_news_count(category_id, db)
-        news = get_news_list(db, page, pageSize, category_id)
+        total = await news_dals.get_news_count_by_category_id(db, category_id)
+        news = await news_dals.get_news_list(db, page, pageSize, category_id)
 
-        news_list = []
-        for n in news:
-            item = format_news(n)
-            news_list.append(item)
-
-        data = {"total": count, "list": news_list}
+        news_list = [f_n.format_news(n) for n in news]
+        data = {"total": total, "list": news_list}
         return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_news_by_id_service(id, db):
-    news = get_news_by_id(id, db)
-    data = format_news_by_id(news)
-    return data
+async def get_news_by_id_service(db: AsyncSession, id: int):
+    try:
+        news = await news_dals.get_news_by_id(db, id)
+        data = f_n.format_news_by_id(news)
+        return data
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
-def create_news_service(news, current_user_id, db):
-    format_news_data = format_news_from_old_news(current_user_id, news)
-    format_news_data['content'] = clean_html(format_news_data['content'])
-    data = create_news(format_news_data, db)
-    return format_news(data)
 
-def update_news_service(id, news, current_user_id, db):
-    format_news_data = format_news_from_old_news(current_user_id, news)
-    count = update_news(id, format_news_data, current_user_id, db)
-    if count == 0:
-        raise HTTPException(status_code=400, detail="Update failed")
-    data = get_news_by_id(id, db)
-    return format_news(data)
+async def create_news_service(db: AsyncSession, news: dict, current_user_id: int):
+    try:
+        format_news_data = f_n.format_news_from_old_news(current_user_id, news)
+        format_news_data["content"] = clean_html(format_news_data["content"])
+        data = await news_dals.create_news(db, format_news_data)
+        return f_n.format_news(data)
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
 
-def delete_news_by_ids_service(ids, db):
-    count = delete_news_by_ids(ids, db)
-    return count
 
-def format_news_from_old_news(current_user_id, news):
-    older_news = news
-    news['content'] = clean_html(news['content'])
-    news["news_id"] = older_news["categoryId"] # TODO: database need change news_id to categoryId
-    news["user_id"] = current_user_id
-    news["viewCount"] = 0
-    del news["categoryId"]
-    return news
+async def update_news_service(
+    db: AsyncSession, id: int, news: dict, current_user_id: int
+):
+    try:
+        format_news_data = f_n.format_news_from_old_news(current_user_id, news)
+        count = await news_dals.update_news(db, id, format_news_data, current_user_id)
+        if count == 0:
+            raise HTTPException(status_code=400, detail="Update failed")
+        data = await news_dals.get_news_by_id(db, id)
+        return f_n.format_news(data)
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
+
+async def delete_news_by_ids_service(db: AsyncSession, ids: list[int]):
+    try:
+        count = await news_dals.delete_news_by_ids(db, ids)
+        return count
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")

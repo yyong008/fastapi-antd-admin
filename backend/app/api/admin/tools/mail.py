@@ -24,66 +24,66 @@ router = APIRouter(prefix="/mail", tags=["Mail"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_mail(
+async def get_mail(
     page: int,
     pageSize: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_EMAIL_READ)),
 ):
-    data = get_mail_list_service(page, pageSize, db)
+    data = await get_mail_list_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_mail_by_id(
+async def get_mail_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_EMAIL_READ)),
 ):
-    data = get_mail_by_id_service(id, db)
+    data = await get_mail_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_mail(
+async def create_mail(
     mail: MailCreateSchema,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_EMAIL_CREATE)),
 ):
     mail = mail.model_dump()
-    data = create_mail_service(mail, db)
+    data = await create_mail_service(db, mail)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_mail_by_id(
+async def update_mail_by_id(
     id: int,
     mail: MailUpdateSchema,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_EMAIL_UPDATE)),
 ):
     mail = mail.model_dump()
-    data = update_mail_by_id_service(id, mail, db)
+    data = await update_mail_by_id_service(db, id, mail)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_mail(
+async def delete_mail(
     ids: MailDeleteByIdsSchema,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_EMAIL_DELETE)),
 ):
     ids = ids.model_dump()
-    data = delete_mail_by_ids_service(ids["ids"], db)
+    data = await delete_mail_by_ids_service(db, ids["ids"])
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/send", response_model=ResponseModel)
-def send_mail(
+async def send_mail(
     mail: SendEmailSchema,
     background_tasks: BackgroundTasks,
     _: bool = Depends(get_user_permissions(permissions.TOOLS_EMAIL_SEND)),
 ):
     mail = mail.model_dump()
-    data = send_mail_service(mail, background_tasks)
+    data = await send_mail_service(mail, background_tasks)
     return ResponseSuccessModel(data=data)

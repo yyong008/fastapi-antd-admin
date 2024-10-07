@@ -17,50 +17,50 @@ router = APIRouter(prefix="/role", tags=["Role"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_all_roles(
+async def get_all_roles(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_READ)),
 ):
-    data = get_all_role_service(db)
+    data = await get_all_role_service(db)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}")
-def get_role_by_id(
+async def get_role_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_READ)),
 ):
-    data = get_role_by_id_service(id, db)
+    data = await get_role_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_role(
+async def create_role(
     role: RoleCreate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_CREATE)),
 ):
-    data = create_role_service(role, db)
+    data = await create_role_service(db, role)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_role_by_id(
+async def update_role_by_id(
     id: int,
     item: RoleUpdate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_UPDATE)),
 ):
-    data = update_role_by_id_service(id, item, db)
+    data = await update_role_by_id_service(db, id, item)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_role(
+async def delete_role(
     ids: RoleDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_DELETE)),
 ):
-    data = delete_role_by_ids_service(ids.ids, db)
+    data = await delete_role_by_ids_service(db, ids.ids)
     return ResponseSuccessModel(data=data)

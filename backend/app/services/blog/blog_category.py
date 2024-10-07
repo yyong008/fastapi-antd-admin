@@ -1,28 +1,17 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from app.models.blog import BlogCategory
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dal.blog.blog_category import (
-    delete_news_by_ids,
-    get_blog_category_by_id,
-    get_blog_category_count,
-    get_blog_category_list,
-    create_blog_category,
-    update_blog_category_by_id,
-)
-from app.services.blog.format import format_blog_category
+import app.dal.blog.blog_category as bc_dals
+from ._format import format_blog_category
 
-
-def get_blog_category_list_service(page, pageSize, db: Session):
+async def get_blog_category_list_service(db: AsyncSession, page: int, pageSize: int):
     try:
-        count = get_blog_category_count(db)
-        blog_category = get_blog_category_list(db, page, pageSize)
+        count = await bc_dals.get_blog_category_count(db)
+        blog_category = await bc_dals.get_blog_category_list(db, page, pageSize)
 
-        category_list = []
-        for c in blog_category:
-            item = format_blog_category(c)
-            category_list.append(item)
+        category_list = [format_blog_category(bc) for bc in blog_category]
 
         data = {"total": count, "list": category_list}
         return data
@@ -31,45 +20,47 @@ def get_blog_category_list_service(page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_blog_category_by_id_service(id, db: Session):
+async def get_blog_category_by_id_service(db: AsyncSession, id: int):
     try:
-        data = get_blog_category_by_id(id, db)
+        data = await bc_dals.get_blog_category_by_id(db, id)
         return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_blog_category_by_id_service(id, bc, current_user_id, db: Session):
+async def update_blog_category_by_id_service(
+    db: AsyncSession, id: int, bc, current_user_id: int
+):
     try:
-        bc_in_db = get_blog_category_by_id(id, db)
+        bc_in_db = await bc_dals.get_blog_category_by_id(db, id)
         if bc_in_db is None:
             raise HTTPException(status_code=400, detail="Blog category not found")
-        bc_in_db.description = bc['description']
-        bc_in_db.name = bc['name']
+        bc_in_db.description = bc["description"]
+        bc_in_db.name = bc["name"]
         bc_in_db.user_id = current_user_id
 
-        data = update_blog_category_by_id(id, bc_in_db, db)
-        return  format_blog_category(data)
-    except SQLAlchemyError as e:
-        print(f"Oops, we encountered an error: {e}")
-        raise HTTPException(status_code=400, detail=f"{e}")
-
-
-def create_blog_category_service(bc, current_user_id, db: Session):
-    try:
-        bc['user_id'] = current_user_id
-        blog_category = BlogCategory(**bc)
-        data = create_blog_category(blog_category, db)
+        data = await bc_dals.update_blog_category_by_id(db, id, bc_in_db)
         return format_blog_category(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_blog_category_by_ids_service(ids, db: Session):
+async def create_blog_category_service(db: AsyncSession, bc, current_user_id):
     try:
-        data = delete_news_by_ids(ids, db)
+        bc["user_id"] = current_user_id
+        blog_category = BlogCategory(**bc)
+        data = await bc_dals.create_blog_category(db, blog_category)
+        return format_blog_category(data)
+    except SQLAlchemyError as e:
+        print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
+
+
+async def delete_blog_category_by_ids_service(db: AsyncSession, ids):
+    try:
+        data = await bc_dals.delete_news_by_ids(db, ids)
         return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

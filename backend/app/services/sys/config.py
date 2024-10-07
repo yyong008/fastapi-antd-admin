@@ -1,8 +1,10 @@
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession 
 
+# TODO:
 
-def get_config_list_service():
+async def get_config_list_service(db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -10,7 +12,7 @@ def get_config_list_service():
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_config_by_id_service():
+async def get_config_by_id_service(db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -18,7 +20,7 @@ def get_config_by_id_service():
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_config_service():
+async def create_config_service(db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -26,7 +28,7 @@ def create_config_service():
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_config_by_id_service():
+async def update_config_by_id_service(db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -34,7 +36,7 @@ def update_config_by_id_service():
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_config_by_ids_service():
+async def delete_config_by_ids_service(db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:
@@ -42,7 +44,7 @@ def delete_config_by_ids_service():
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_config_by_id_service():
+async def delete_config_by_id_service(db: AsyncSession):
     try:
         pass
     except SQLAlchemyError as e:

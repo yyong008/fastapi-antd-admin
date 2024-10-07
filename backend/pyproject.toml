@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.10"
 fastapi = "^0.114.0"
 uvicorn = "^0.30.6"
-sqlalchemy = "^2.0.34"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.35"}
 psycopg2 = "^2.9.9"
 prometheus-client = "^0.20.0"
 python-multipart = "^0.0.9"
@@ -22,6 +22,8 @@ chardet = "^5.2.0"
 psutil = "^6.0.0"
 bleach = "^6.1.0"
 fastapi-mail = "^1.4.1"
+asyncpg = "^0.29.0"
+alembic = "^1.13.3"
 
 
 [tool.poetry.group.dev.dependencies]

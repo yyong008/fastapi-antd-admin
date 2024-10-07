@@ -3,13 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 from app.db.client import get_db
-from app.services.blog.blog import (
-    get_blog_by_id_service,
-    get_blog_list_service,
-    create_blog_service,
-    update_blog_service,
-    delete_blog_by_ids_service,
-)
+import app.services.blog.blog as bg_services
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.schemas.blog.blog import BlogCreate, BlogUpdate, BlogDeleteByIds
 from app.utils.current_user import get_current_user
@@ -20,17 +14,17 @@ router = APIRouter(tags=["Admin Blog Main"])
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_blog_by_id(
+async def get_blog_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.BLOG_READ)),
 ):
-    data = get_blog_by_id_service(id, db)
+    data = await bg_services.get_blog_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/", response_model=ResponseModel)
-def get_blogs(
+async def get_blogs(
     page: int = Query(1, description="当前页码"),
     pageSize: int = Query(10, description="每页条数"),
     categoryId: Optional[int] = Query(None, description="按分类 ID 搜索"),
@@ -38,24 +32,24 @@ def get_blogs(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.BLOG_READ)),
 ):
-    data = get_blog_list_service(categoryId, tagId, page, pageSize, db)
+    data = await bg_services.get_blog_list_service(db, categoryId, tagId, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_blog(
+async def create_blog(
     blog: BlogCreate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.BLOG_CATEGORY_UPDATE)),
 ):
     blog = blog.model_dump()
-    data = create_blog_service(blog, current_user.id, db)
+    data = await bg_services.create_blog_service(db, blog, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_blog(
+async def update_blog(
     id: int,
     blog: BlogUpdate,
     current_user=Depends(get_current_user),
@@ -63,15 +57,15 @@ def update_blog(
     _: bool = Depends(get_user_permissions(permissions.BLOG_UPDATE)),
 ):
     blog = blog.model_dump()
-    data = update_blog_service(id, current_user.id, blog, db)
+    data = await bg_services.update_blog_service(db, id, current_user.id, blog)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_blog_by_ids(
+async def delete_blog_by_ids(
     ids: BlogDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.BLOG_DELETE)),
 ):
-    data = delete_blog_by_ids_service(ids, db)
+    data = await bg_services.delete_blog_by_ids_service(db, ids)
     return ResponseSuccessModel(data=data)

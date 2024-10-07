@@ -12,22 +12,22 @@ router = APIRouter(prefix="/login-log")
 
 
 @router.get("/", response_model=ResponseModel)
-def get_loginlog_list(
+async def get_loginlog_list(
     page: int = 1,
     pageSize: int = 10,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MONITOR_LOGIN_LOG_LIST)),
 ):
-    data = loginlog_services.get_loginlog_list(page, pageSize, db)
+    data = await loginlog_services.get_loginlog_list(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_loginlog(
+async def create_loginlog(
     request: Request,
     loginlog: LoginlogCreateUpdateSchema,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MONITOR_LOGIN_LOG_CREATE)),
 ):
-    data = loginlog_services.create_loginlog(request, db, userId="", name="")
+    data = await loginlog_services.create_loginlog(db,request,  userId="", name="")
     return ResponseSuccessModel(data=data)

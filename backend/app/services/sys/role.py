@@ -1,27 +1,22 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import SQLAlchemyError
-
-from app.dal.sys.role import delete_role_by_ids, get_roles_all,get_count, create_role, update_role_by_id
+from sqlalchemy.ext.asyncio import AsyncSession 
+import app.dal.sys.role as role_dals
 from app.models.system.role import Role
 from app.models.system.menu import Menu
 
-from .format import format_role
+from ._format import format_role
 
-
-
-def get_role_list(page, pageSize, db: Session):
+async def get_role_list(page, pageSize, db: AsyncSession):
     pass
 
-def get_all_role_service(db: Session):
+async def get_all_role_service(db: AsyncSession):
     try:
-        count = get_count(db)
-        roles_list_all = get_roles_all(db)
+        count = await role_dals.get_count(db)
+        roles_list_all = await role_dals.get_roles_all(db)
 
-        user_list = []
-        for role in roles_list_all:
-            item = format_role(role)
-            user_list.append(item)
+        user_list = [format_role(role) for role in roles_list_all]
 
         data = {"total": count, "list": user_list}
         return data
@@ -29,14 +24,14 @@ def get_all_role_service(db: Session):
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-def get_role_by_id_service(role_id: int, db):
+async def get_role_by_id_service(db: AsyncSession, role_id: int):
     try:
         pass
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-def create_role_service(role, db: Session):
+async def create_role_service(role, db: AsyncSession):
     try:
         menu_ids = role.menus if role.menus else []
         menus = []
@@ -47,14 +42,14 @@ def create_role_service(role, db: Session):
         no_menu_role = role.model_dump()
         del no_menu_role['menus']
         new_role = Role(**no_menu_role, menus=menus)
-        new_role = create_role(new_role, db)
+        new_role = await role_dals.create_role(db, new_role)
         return format_role(new_role)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_role_by_id_service(role_id: int, role, db: Session):
+async def update_role_by_id_service(db: AsyncSession, role_id: int, role):
     try:
         role_db = db.query(Role).options(joinedload(Role.menus)).filter(Role.id == role_id).first()
         if not role_db:
@@ -68,16 +63,16 @@ def update_role_by_id_service(role_id: int, role, db: Session):
         for key, value in role.model_dump().items():
             if value is not None and key != "menus":
                 setattr(role_db, key, value)
-        data = update_role_by_id(db, role_id, role_db)
+        data = await role_dals.update_role_by_id(db, role_id, role_db)
         return format_role(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_role_by_ids_service(ids, db: Session):
+async def delete_role_by_ids_service(db: AsyncSession, ids: list[int]):
     try:
-        count = delete_role_by_ids(ids, db)
+        count = await role_dals.delete_role_by_ids(db, ids)
         return count
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

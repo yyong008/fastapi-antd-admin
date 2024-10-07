@@ -19,41 +19,41 @@ router = APIRouter(tags=["News Main"])
 
 
 @router.get("/{id}")
-def get_news_by_id(
+async def get_news_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_READ)),
 ):
-    data = get_news_by_id_service(id, db)
+    data = await get_news_by_id_service(db, id)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/", response_model=ResponseModel)
-def get_news(
+async def get_news(
     category_id: int,
     page: int,
     pageSize: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_READ)),
 ):
-    data = get_news_list_service(category_id, page, pageSize, db)
+    data = await get_news_list_service(db, category_id, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.post("/", response_model=ResponseModel)
-def create_news(
+async def create_news(
     data: NewsCreate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_CREATE)),
 ):
     news = data.model_dump()
-    data = create_news_service(news, current_user.id, db)
+    data = await create_news_service(db, news, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_news(
+async def update_news(
     id: int,
     data: NewsUpdate,
     current_user=Depends(get_current_user),
@@ -61,15 +61,15 @@ def update_news(
     _: bool = Depends(get_user_permissions(permissions.NEWS_UPDATE)),
 ):
     news = data.model_dump()
-    data = update_news_service(id, news, current_user.id, db)
+    data = await update_news_service(db, id, news, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_news_by_ids(
+async def delete_news_by_ids(
     ids: List[int],
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_DELETE)),
 ):
-    data = delete_news_by_ids(ids, db)
+    data = await delete_news_by_ids(db, ids)
     return ResponseSuccessModel(data=data)

@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession 
 
-def get_user_role_list(page: int, pageSize: int, db: Session):
+async def get_user_role_list(db: AsyncSession, page: int, pageSize: int):
     try:
         pass
     except SQLAlchemyError as e:
@@ -11,7 +11,7 @@ def get_user_role_list(page: int, pageSize: int, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_user_role_by_id(user_role_id: int, db):
+async def get_user_role_by_id(db: AsyncSession, user_role_id: int):
     try:
         pass
     except SQLAlchemyError as e:
@@ -19,7 +19,7 @@ def get_user_role_by_id(user_role_id: int, db):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_user_role(user_role, db: Session):
+async def create_user_role(db: AsyncSession, user_role):
     try:
         pass
     except SQLAlchemyError as e:
@@ -27,7 +27,7 @@ def create_user_role(user_role, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_user_role_by_id(user_role_id: int, item, db: Session):
+async def update_user_role_by_id(db: AsyncSession, user_role_id: int, item):
     try:
         pass
     except SQLAlchemyError as e:
@@ -35,7 +35,7 @@ def update_user_role_by_id(user_role_id: int, item, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_user_role_by_ids(ids: List[int], db: Session):
+async def delete_user_role_by_ids(db: AsyncSession, ids: List[int]):
     try:
         pass
     except SQLAlchemyError as e:

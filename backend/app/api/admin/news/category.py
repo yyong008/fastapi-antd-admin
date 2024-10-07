@@ -22,18 +22,18 @@ router = APIRouter(prefix="/category", tags=["News Category"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_news_category(
+async def get_news_category(
     page: int,
     pageSize: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_READ)),
 ):
-    data = get_news_category_list_service(page, pageSize, db)
+    data = await get_news_category_list_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
 @router.get("/{id}", response_model=ResponseModel)
-def get_news_category_by_id(
+async def get_news_category_by_id(
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_READ)),
 ):
     data = {}
@@ -41,19 +41,19 @@ def get_news_category_by_id(
 
 
 @router.post("/", response_model=ResponseModel)
-def create_news_category(
+async def create_news_category(
     category: NewsCategoryCreate,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_CREATE)),
 ):
     category_json_data = category.model_dump()
-    data = create_news_category_service(category_json_data, current_user.id, db)
+    data = await create_news_category_service(db, category_json_data, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.put("/{id}", response_model=ResponseModel)
-def update_news_category_by_id(
+async def update_news_category_by_id(
     id: int,
     category: NewsCategoryUpdate,
     current_user=Depends(get_current_user),
@@ -61,15 +61,15 @@ def update_news_category_by_id(
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_UPDATE)),
 ):
     category_json_data = category.model_dump()
-    data = update_news_category_service(id, category_json_data, current_user.id, db)
+    data = await update_news_category_service(db, id, category_json_data, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
 @router.delete("/", response_model=ResponseModel)
-def delete_news_category(
+async def delete_news_category(
     ids_data: NewsCategoryDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_DELETE)),
 ):
-    data = delete_news_category_by_ids_service(ids_data.ids, db)
+    data = await delete_news_category_by_ids_service(db, ids_data.ids)
     return ResponseSuccessModel(data=data)

@@ -1,26 +1,18 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession 
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.dal.sys.dict_item import (
-    get_dictionary_entry_count,
-    get_dictionary_entry_list,
-    create_dict_item,
-    update_dict_item_by_id,
-)
-from app.services.sys.format import format_dict_item
+import app.dal.sys.dict_item as di_dals
+from app.services.sys._format import format_dict_item
 from app.models.system.dictionary import DictionaryEntry
 
 
-async def get_dict_item_list_service(id, page, pageSize, db: Session):
+async def get_dict_item_list_service(db: AsyncSession, id, page, pageSize):
     try:
-        count = await get_dictionary_entry_count(id, db)
-        users = await get_dictionary_entry_list(id, db, page, pageSize)
+        count = await di_dals.get_dictionary_entry_count(db, id)
+        users = await di_dals.get_dictionary_entry_list(db, id, page, pageSize)
 
-        dict_item_list = []
-        for user in users:
-            item = format_dict_item(user)
-            dict_item_list.append(item)
+        dict_item_list = [format_dict_item(user) for user in users]
 
         data = {"total": count, "list": dict_item_list}
         return data
@@ -29,7 +21,7 @@ async def get_dict_item_list_service(id, page, pageSize, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def get_dict_item_by_id_service(id, db: Session):
+async def get_dict_item_by_id_service(db: AsyncSession, id):
     try:
         pass
     except SQLAlchemyError as e:
@@ -37,27 +29,27 @@ async def get_dict_item_by_id_service(id, db: Session):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def create_dict_item_service(dict_item, db):
+async def create_dict_item_service(db: AsyncSession, dict_item):
     try:
         data = DictionaryEntry(**dict_item.model_dump())
-        di = create_dict_item(data, db)
+        di = await di_dals.create_dict_item(db, data)
         return format_dict_item(di)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def update_dict_item_by_id_service(id, dict_item, db):
+async def update_dict_item_by_id_service(db: AsyncSession, id: int, dict_item):
     try:
         dt = dict_item.model_dump(exclude_unset=True)
-        di = await update_dict_item_by_id(db, id, dt)
+        di = await di_dals.update_dict_item_by_id(db, id, dt)
         return format_dict_item(di)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def delete_dict_item_by_ids_service():
+async def delete_dict_item_by_ids_service(db: AsyncSession, ids: list[int]):
     try:
         pass
     except SQLAlchemyError as e:

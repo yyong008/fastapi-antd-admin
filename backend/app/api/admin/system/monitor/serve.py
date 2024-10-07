@@ -8,6 +8,6 @@ router = APIRouter(prefix="/serve")
 
 
 @router.get("/", response_model=ResponseModel)
-def get_serve(_: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_READ))):
+async def get_serve(_: bool = Depends(get_user_permissions(permissions.SYSTE_CONFIG_READ))):
     system_info = get_system_info()
     return ResponseSuccessModel(data=system_info)

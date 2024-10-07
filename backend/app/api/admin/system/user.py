@@ -1,7 +1,7 @@
 import app.services.sys.user as user_services
 
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.client import get_db
 from app.schemas.response import ResponseModel, ResponseSuccessModel
@@ -15,8 +15,8 @@ router = APIRouter(prefix="/user", tags=["Admin System User"])
 @router.get(
     "/", response_model=ResponseModel, summary="get all user", description="All user"
 )
-def get_user(db: Session = Depends(get_db)):
-    data = user_services.get_user_list(db)
+async def get_user(db: AsyncSession = Depends(get_db)):
+    data = await user_services.get_user_list(db)
     return ResponseSuccessModel(data=data)
 
 
@@ -26,24 +26,24 @@ def get_user(db: Session = Depends(get_db)):
     summary="get user by id",
     description="get user by id",
 )
-def get_user_by_id(
+async def get_user_by_id(
     user_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_USER_READ)),
 ):
-    data = user_services.get_user_by_id(user_id, db)
+    data = await user_services.get_user_by_id(db, user_id)
     return ResponseSuccessModel(data=data)
 
 
 @router.post(
     "/", response_model=ResponseModel, summary="get all user", description="All user"
 )
-def create_user(
+async def create_user(
     user: UserCreate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_USER_CREATE)),
 ):
-    data = user_services.create_user(user, db)
+    data = await user_services.create_user(db, user)
     return ResponseSuccessModel(data=data)
 
 
@@ -53,13 +53,13 @@ def create_user(
     summary="get all user",
     description="All user",
 )
-def update_user_by_id(
+async def update_user_by_id(
     user_id: int,
     item: UserUpdate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_USER_UPDATE)),
 ):
-    data = user_services.update_user_by_id(user_id, item, db)
+    data = await user_services.update_user_by_id(db, user_id, item)
     return ResponseSuccessModel(data=data)
 
 
@@ -69,12 +69,12 @@ def update_user_by_id(
     summary="delete by user ids",
     description="delete by user ids",
 )
-def delete_users_by_ids(
+async def delete_users_by_ids(
     ids: UserDeleteByIds,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_USER_DELETE)),
 ):
-    data = user_services.delete_users_by_ids(ids.ids, db)
+    data = await user_services.delete_users_by_ids(db, ids.ids)
     return ResponseSuccessModel(data=data)
 
 
@@ -84,10 +84,10 @@ def delete_users_by_ids(
     summary="delete by user_id",
     description="delete by user_id",
 )
-def delete_user_by_id(
+async def delete_user_by_id(
     user_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_USER_DELETE)),
 ):
-    data = user_services.delete_user_by_id(user_id, db)
+    data = await user_services.delete_user_by_id(db, user_id)
     return ResponseSuccessModel(data=data)

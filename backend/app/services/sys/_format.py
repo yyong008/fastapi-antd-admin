@@ -1,4 +1,31 @@
+
+def format_login_list(loginlogs):
+    """
+    格式化登录日志列表
+    """
+    list = [format_loginlog(loginlog) for loginlog in loginlogs]
+    return list
+
+
+def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
+    """
+    部门列表->数型结构
+    """
+    return [
+        {
+            **item,
+            "children": build_dept_list_to_tree(
+                items, item["id"]
+            ),  # Recursively build child tree
+        }
+        for item in items
+        if item.get("parent_department_id") == parent_id
+    ]
+
 def format_dept(item):
+    """
+    格式化部门
+    """
     return {
         "id": item.id,
         "name": item.name,
@@ -11,6 +38,9 @@ def format_dept(item):
 
 
 def format_dict_item(dict_item):
+    """
+    格式化字典条目
+    """
     item = {
         "id": dict_item.id,
         "key": dict_item.key,
@@ -25,6 +55,10 @@ def format_dict_item(dict_item):
 
 
 def format_dict(dict):
+    """
+
+    格式化字典
+    """
     item = {
         "id": dict.id,
         "name": dict.name,
@@ -39,6 +73,9 @@ def format_dict(dict):
 
 
 def format_loginlog(log):
+    """
+    格式化登录日志
+    """
     item = {
         "id": log.id,
         "name": log.name,
@@ -53,6 +90,9 @@ def format_loginlog(log):
 
 
 def format_menu(m):
+    """
+    格式化菜单
+    """
     return {
         "id": m.id,
         "name": m.name,
@@ -75,6 +115,9 @@ def format_menu(m):
 
 
 def format_menu_tree(menu):
+    """
+    格式化菜单
+    """
     return {
         **menu,
         "name": menu["name"],
@@ -87,6 +130,9 @@ def format_menu_tree(menu):
     }
 
 def format_role(role):
+    """
+    格式化角色
+    """
     item = {
         "id": role.id,
         "name": role.name,
@@ -101,6 +147,10 @@ def format_role(role):
     return item
 
 def format_user(user):
+    """
+
+    格式化用户
+    """
     item = {
         "id": user.id,
         "name": user.name,
@@ -117,6 +167,8 @@ def format_user(user):
         "updatedAt": user.updatedAt,
         "department_id": user.department_id,
     }
+
+
 
     if user.department_id:
         item["department"] = {}

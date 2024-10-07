@@ -9,6 +9,6 @@ router = APIRouter(tags=["userinfo"])
 
 
 @router.get("/userinfo", response_model=ResponseModel)
-def get_userinfo(current_user: dict = Depends(get_current_user), db = Depends(get_db)):
-    data = get_user_info(current_user.id, db)
+async def get_userinfo(current_user: dict = Depends(get_current_user), db = Depends(get_db)):
+    data = await get_user_info(db, current_user.id)
     return ResponseSuccessModel(data=data)

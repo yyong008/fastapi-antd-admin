@@ -8,7 +8,19 @@ class ResponseModel(BaseModel):
     message: Optional[str] = None
 
 
+
 class ResponseSuccessModel(ResponseModel):
     code: Optional[int] = 0
     data: Optional[Any] = {}
     message: Optional[str] = "success"
+
+class RM(BaseModel):
+    code: Optional[int] = None
+    data: Optional[Any] = None
+    message: Optional[str] = None
+
+class RMS(RM):
+    code: Optional[int] = 0
+    data: Optional[Any] = {}
+    message: Optional[str] = "success"
+

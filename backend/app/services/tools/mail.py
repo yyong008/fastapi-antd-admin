@@ -1,26 +1,25 @@
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
-from app.services.tools.format import format_tools_mail
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
-from app.dal.tools.mail import create_mail_category, get_mail_count, get_mail_list, update_mail_by_id, delete_mail_by_ids, get_mail_by_id
+from app.services.tools._format import format_tools_mail
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType # type: ignore
+import app.dal.tools.mail as mail_dals
 from app.models.tools.mail import Mail
+from sqlalchemy.ext.asyncio import AsyncSession 
 
-def get_mail_list_service(page, pageSize, db):
+async def get_mail_list_service(db: AsyncSession, page, pageSize):
     try:
-        total = get_mail_count(db)
-        data = get_mail_list(db, page, pageSize)
-        new_data = []
-        for mail in data:
-            new_data.append(format_tools_mail(mail))
+        total = await mail_dals.get_mail_count(db)
+        data = await mail_dals.get_mail_list(db, page, pageSize)
+        new_data = [format_tools_mail(mail) for mail in data]
         return { "total": total, "list": new_data }
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def get_mail_by_id_service(id, db):
+async def get_mail_by_id_service(db: AsyncSession, id: int):
     try:
-        data = get_mail_by_id(db, id)
+        data = await mail_dals.get_mail_by_id(db, id)
         if not data:
             raise HTTPException(status_code=404, detail="Mail not found")
         return format_tools_mail(data)
@@ -29,7 +28,7 @@ def get_mail_by_id_service(id, db):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def create_mail_service(mail, db):
+async def create_mail_service(db: AsyncSession, mail):
     try:
         mail['from_'] = mail['user']
         mail['to_'] = mail['to']
@@ -37,38 +36,38 @@ def create_mail_service(mail, db):
         del mail['to']
         del mail['password']
         ml = Mail(**mail)
-        ml_in_db = create_mail_category(ml, db)
+        ml_in_db = await mail_dals.create_mail_category(db, ml)
         return format_tools_mail(ml_in_db)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def update_mail_by_id_service(id, mail, db):
+async def update_mail_by_id_service(db: AsyncSession, id, mail):
     try:
-      ml = get_mail_by_id(db, id)
+      ml = await mail_dals.get_mail_by_id(db, id)
       if not ml:
           raise HTTPException(status_code=404, detail="Mail not found")
       for key, value in mail.items():
           if value is not None:
               setattr(ml, key, value)
-      new_ml = update_mail_by_id(db, id, ml)
+      new_ml = await mail_dals.update_mail_by_id(db, id, ml)
       return format_tools_mail(new_ml)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def delete_mail_by_ids_service(ids, db):
+async def delete_mail_by_ids_service(db: AsyncSession, ids: list[int]):
     try:
-        count = delete_mail_by_ids(ids, db)
+        count = await mail_dals.delete_mail_by_ids(db, ids)
         return count
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-def send_mail_service(mail, background_tasks):
+async def send_mail_service(mail, background_tasks):
     conf = ConnectionConfig(
         MAIL_USERNAME=mail['user'],
         MAIL_PASSWORD=mail['password'],

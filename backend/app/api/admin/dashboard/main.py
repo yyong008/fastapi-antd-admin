@@ -12,10 +12,10 @@ router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 
 @router.get("/", response_model=ResponseModel)
-def get_dict(
+async def get_dashboard_data(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DASHBOAR_READ)),
 ):
-    data = get_dashboard_data_service(current_user.id, db)
+    data = await get_dashboard_data_service(db, current_user.id)
     return ResponseSuccessModel(data=data)

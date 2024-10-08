@@ -29,29 +29,23 @@ async def create_news_category_service(db: AsyncSession, news_category, user_id)
             "description": news_category["description"],
             "user_id": user_id,
         }
-        nc = nc_dals.create_news_category(db, nc)
+        nc = await nc_dals.create_news_category(db, nc)
 
         return format_news_category(nc)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 
 async def update_news_category_service(db: AsyncSession, id: int, news_category, user_id):
     try:
-        nc = await nc_dals.get_news_category_by_id(db, id)
-        if not nc:
-            raise HTTPException(
-                status_code=400, detail="News category not already exists"
-            )
-
-        nc.name = news_category["name"]
-        nc.description = news_category["description"]
-        nc.user_id = user_id
-        nc = await nc_dals.update_news_category_by_id(db, id, nc.model_dump())
+        news_category["user_id"] = user_id
+        nc = await nc_dals.update_news_category_by_id(db, id, news_category)
 
         return format_news_category(nc)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")
 
 
 async def delete_news_category_by_ids_service(db: AsyncSession, ids: list[int]):
@@ -62,3 +56,4 @@ async def delete_news_category_by_ids_service(db: AsyncSession, ids: list[int]):
         return count
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
+        raise HTTPException(status_code=400, detail=f"{e}")

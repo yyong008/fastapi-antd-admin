@@ -2,12 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.client import get_db
-from app.services.news.news_category import (
-    create_news_category_service,
-    delete_news_category_by_ids_service,
-    get_news_category_list_service,
-    update_news_category_service,
-)
+import app.services.news.news_category as nc_services
 from app.schemas.response import ResponseModel, ResponseSuccessModel
 from app.schemas.news.news_category import (
     NewsCategoryCreate,
@@ -28,7 +23,7 @@ async def get_news_category(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_READ)),
 ):
-    data = await get_news_category_list_service(db, page, pageSize)
+    data = await nc_services.get_news_category_list_service(db, page, pageSize)
     return ResponseSuccessModel(data=data)
 
 
@@ -48,7 +43,7 @@ async def create_news_category(
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_CREATE)),
 ):
     category_json_data = category.model_dump()
-    data = await create_news_category_service(db, category_json_data, current_user.id)
+    data = await nc_services.create_news_category_service(db, category_json_data, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
@@ -61,7 +56,7 @@ async def update_news_category_by_id(
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_UPDATE)),
 ):
     category_json_data = category.model_dump()
-    data = await update_news_category_service(db, id, category_json_data, current_user.id)
+    data = await nc_services.update_news_category_service(db, id, category_json_data, current_user.id)
     return ResponseSuccessModel(data=data)
 
 
@@ -71,5 +66,5 @@ async def delete_news_category(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_CATEGORY_DELETE)),
 ):
-    data = await delete_news_category_by_ids_service(db, ids_data.ids)
+    data = await nc_services.delete_news_category_by_ids_service(db, ids_data.ids)
     return ResponseSuccessModel(data=data)

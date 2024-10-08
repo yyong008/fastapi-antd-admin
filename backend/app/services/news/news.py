@@ -42,6 +42,9 @@ async def get_client_news_list_service(db: AsyncSession, page: int, pageSize: in
 async def get_news_by_id_service(db: AsyncSession, id: int):
     try:
         news = await news_dals.get_news_by_id(db, id)
+        news.viewCount = news.viewCount + 1
+        await db.commit()
+        await db.refresh(news)
         data = f_n.format_news_by_id(news)
         return data
     except SQLAlchemyError as e:

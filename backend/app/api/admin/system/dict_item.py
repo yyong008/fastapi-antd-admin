@@ -2,19 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.schemas.response import RM, RMS
-from app.services.sys.dict_item import (
-    get_dict_item_list_service,
-    get_dict_item_by_id_service,
-    create_dict_item_service,
-    update_dict_item_by_id_service,
-    delete_dict_item_by_ids_service,
-)
+import app.services.sys.dict_item as di_services
 from app.db.client import get_db
-from app.schemas.sys.dictionary_entry import (
-    DictionaryEntryCreate,
-    DictionaryEntryUpdate,
-    DictinonaryEntryByIds,
-)
+import app.schemas.sys.dictionary_entry as di_schemas
 from app.deps.permission import get_user_permissions
 import app.constant.permission as permissions
 
@@ -29,7 +19,7 @@ async def get_dict_item(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_READ)),
 ):
-    data = await get_dict_item_list_service(db, dictId, page, pageSize)
+    data = await di_services.get_dict_item_list_service(db, dictId, page, pageSize)
     return RMS(data=data)
 
 
@@ -39,36 +29,36 @@ async def get_dict_item_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_READ)),
 ):
-    data = await get_dict_item_by_id_service(db, id)
+    data = await di_services.get_dict_item_by_id_service(db, id)
     return RMS(data=data)
 
 
 @router.post("/", response_model=RM)
 async def create_dict_item(
-    dict_item: DictionaryEntryCreate,
+    dict_item: di_schemas.DictionaryEntryCreate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_CREATE)),
 ):
-    data = await create_dict_item_service(db, dict_item)
+    data = await di_services.create_dict_item_service(db, dict_item)
     return RMS(data=data)
 
 
 @router.put("/{id}", response_model=RM)
 async def update_dict_item_by_id(
     id: int,
-    dict_item: DictionaryEntryUpdate,
+    dict_item: di_schemas.DictionaryEntryUpdate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_UPDATE)),
 ):
-    data = await update_dict_item_by_id_service(db, id, dict_item)
+    data = await di_services.update_dict_item_by_id_service(db, id, dict_item)
     return RMS(data=data)
 
 
 @router.delete("/", response_model=RM)
 async def delete_dict_item(
-    ids: DictinonaryEntryByIds,
+    ids: di_schemas.DictinonaryEntryByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_ITEM_DELETE)),
 ):
-    data = await delete_dict_item_by_ids_service(db, ids)
+    data = await di_services.delete_dict_item_by_ids_service(db, ids)
     return RMS(data=data)

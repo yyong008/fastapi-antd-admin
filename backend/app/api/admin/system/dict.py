@@ -3,18 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.db.client import get_db
 from app.schemas.response import RM, RMS
-from app.schemas.sys.dictionary import (
-    DictionaryDeleteByIds,
-    DictionaryCreate,
-    DictionaryUpdate,
-)
-from app.services.sys.dict import (
-    get_dict_lists_service,
-    get_dict_by_id_service,
-    create_dict_service,
-    update_dict_by_id_service,
-    delete_dict_by_ids_service,
-)
+import app.schemas.sys.dictionary as d_schemas
+import app.services.sys.dict as d_services
 from app.deps.permission import get_user_permissions
 import app.constant.permission as permissions
 
@@ -28,7 +18,7 @@ async def get_dict(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_READ)),
 ):
-    data = await get_dict_lists_service(db, page, pageSize)
+    data = await d_services.get_dict_lists_service(db, page, pageSize)
     return RMS(data=data)
 
 
@@ -38,36 +28,36 @@ async def get_dict_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_READ)),
 ):
-    data = await get_dict_by_id_service(db, id)
+    data = await d_services.get_dict_by_id_service(db, id)
     return RMS(data=data)
 
 
 @router.post("/")
 async def create_dict(
-    dict: DictionaryCreate,
+    dict: d_schemas.DictionaryCreate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_CREATE)),
 ):
-    data = await create_dict_service(db, dict)
+    data = await d_services.create_dict_service(db, dict)
     return RMS(data=data)
 
 
 @router.put("/{id}")
 async def update_dict_by_id(
     id: int,
-    dict: DictionaryUpdate,
+    dict: d_schemas.DictionaryUpdate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_UPDATE)),
 ):
-    data = await update_dict_by_id_service(db, id, dict)
+    data = await d_services.update_dict_by_id_service(db, id, dict)
     return RMS(data=data)
 
 
 @router.delete("/")
 async def delete_dict(
-    ids: DictionaryDeleteByIds,
+    ids: d_schemas.DictionaryDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DICT_DELETE)),
 ):
-    data = await delete_dict_by_ids_service(db, ids.ids)
+    data = await d_services.delete_dict_by_ids_service(db, ids.ids)
     return RMS(data=data)

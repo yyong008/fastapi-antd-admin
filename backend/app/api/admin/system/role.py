@@ -1,13 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.client import get_db
-from app.services.sys.role import (
-    get_all_role_service,
-    get_role_by_id_service,
-    create_role_service,
-    update_role_by_id_service,
-    delete_role_by_ids_service,
-)
+import app.services.sys.role as r_services
 from app.schemas.response import RM, RMS
 from app.schemas.sys.role import RoleCreate, RoleUpdate, RoleDeleteByIds
 from app.deps.permission import get_user_permissions
@@ -21,7 +15,7 @@ async def get_all_roles(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_READ)),
 ):
-    data = await get_all_role_service(db)
+    data = await r_services.get_all_role_service(db)
     return RMS(data=data)
 
 
@@ -31,7 +25,7 @@ async def get_role_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_READ)),
 ):
-    data = await get_role_by_id_service(db, id)
+    data = await r_services.get_role_by_id_service(db, id)
     return RMS(data=data)
 
 
@@ -41,7 +35,7 @@ async def create_role(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_CREATE)),
 ):
-    data = await create_role_service(db, role)
+    data = await r_services.create_role_service(db, role)
     return RMS(data=data)
 
 
@@ -52,7 +46,7 @@ async def update_role_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_UPDATE)),
 ):
-    data = await update_role_by_id_service(db, id, item)
+    data = await r_services.update_role_by_id_service(db, id, item)
     return RMS(data=data)
 
 
@@ -62,5 +56,5 @@ async def delete_role(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_DELETE)),
 ):
-    data = await delete_role_by_ids_service(db, ids.ids)
+    data = await r_services.delete_role_by_ids_service(db, ids.ids)
     return RMS(data=data)

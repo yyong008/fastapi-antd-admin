@@ -6,13 +6,7 @@ from fastapi import UploadFile
 
 from app.db.client import get_db
 from app.schemas.response import RM, RMS
-from app.services.tools.storage import (
-    get_tools_storage_list_service,
-    get_tools_storage_by_id_service,
-    create_tools_storage_service,
-    update_tools_storage_by_id_service,
-    delete_tools_storage_by_ids_service,
-)
+import app.services.tools.storage as storage_services
 from app.constant import STORAGE_MAX_SIZE, STORAGE_ALLOWED_EXTENSIONS
 from app.utils.current_user import get_current_user
 from app.deps.permission import get_user_permissions
@@ -61,7 +55,7 @@ async def storage_upload(
         "size": file.size,
         "type": file.content_type,
     }
-    await create_tools_storage_service(db, file_info)
+    await storage_services.create_tools_storage_service(db, file_info)
     return RMS(
         data={
             "filename": file.filename,
@@ -76,7 +70,7 @@ async def get_storage_list(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_LIST)),
 ):
-    data = await get_tools_storage_list_service(db, page, pageSize)
+    data = await storage_services.get_tools_storage_list_service(db, page, pageSize)
     return RMS(data=data)
 
 
@@ -86,7 +80,7 @@ async def get_storage_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
 ):
-    data = await get_tools_storage_by_id_service(db, id)
+    data = await storage_services.get_tools_storage_by_id_service(db, id)
     return RMS(data=data)
 
 
@@ -96,7 +90,7 @@ async def create_storage(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOLLS_STORAGE_CREATE)),
 ):
-    data = await create_tools_storage_service(db, storage)
+    data = await storage_services.create_tools_storage_service(db, storage)
     return RMS(data=data)
 
 
@@ -107,7 +101,7 @@ async def update_storage_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_UPLOAD)),
 ):
-    data = await update_tools_storage_by_id_service(db, id, storage)
+    data = await storage_services.update_tools_storage_by_id_service(db, id, storage)
     return RMS(data=data)
 
 
@@ -117,5 +111,5 @@ async def delete_storage(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_DELETE)),
 ):
-    data = await delete_tools_storage_by_ids_service(db, ids)
+    data = await storage_services.delete_tools_storage_by_ids_service(db, ids)
     return RMS(data=data)

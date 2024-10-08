@@ -2,15 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.schemas.response import RM, RMS
-from app.services.sys.menu import (
-    get_all_menu_service,
-    get_menu_tree_no_permission_service,
-    get_menu_tree_service,
-    get_menu_by_id_service,
-    create_menu_service,
-    update_menu_by_id_service,
-    delete_menu_by_ids_service,
-)
+import app.services.sys.menu as menu_services
 from app.db.client import get_db
 from app.schemas.sys.menu import MenuCreate, MenuDeleteByIds, MenuUpdate
 from app.deps.permission import get_user_permissions
@@ -24,7 +16,7 @@ async def get_menu(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_READ)),
 ):
-    data = await get_all_menu_service(db)
+    data = await menu_services.get_all_menu_service(db)
     return RMS(data=data)
 
 
@@ -33,7 +25,7 @@ async def get_menu_tree(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_READ)),
 ):
-    data = await get_menu_tree_service(db)
+    data = await menu_services.get_menu_tree_service(db)
     return RMS(data=data)
 
 
@@ -42,7 +34,7 @@ async def get_menu_tree_no_permission(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_READ)),
 ):
-    data = await get_menu_tree_no_permission_service(db)
+    data = await menu_services.get_menu_tree_no_permission_service(db)
     return RMS(data=data)
 
 
@@ -52,7 +44,7 @@ async def get_menu_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_READ)),
 ):
-    data = await get_menu_by_id_service(db, id)
+    data = await menu_services.get_menu_by_id_service(db, id)
     return RMS(data=data)
 
 
@@ -63,7 +55,7 @@ async def create_menu(
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_CREATE)),
 ):
     menu = menu.model_dump()
-    data = await create_menu_service(db, menu)
+    data = await menu_services.create_menu_service(db, menu)
     return RMS(data=data)
 
 
@@ -74,7 +66,7 @@ async def update_menu_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_UPDATE)),
 ):
-    data = await update_menu_by_id_service(db, id, menu)
+    data = await menu_services.update_menu_by_id_service(db, id, menu)
     return RMS(data=data)
 
 
@@ -84,5 +76,5 @@ async def delete_menu(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_MENU_DELETE)),
 ):
-    data = await delete_menu_by_ids_service(db, ids.ids)
+    data = await menu_services.delete_menu_by_ids_service(db, ids.ids)
     return RMS(data=data)

@@ -2,10 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.client import get_db
-from app.services.profile.account import (
-    get_profile_account_service,
-    update_profile_account_service,
-)
+import app.services.profile.account as at_services
 from app.schemas.response import RM, RMS
 from app.utils.current_user import get_current_user
 from app.deps.permission import get_user_permissions
@@ -20,7 +17,7 @@ async def get_account_by_current_user(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_ACCOUNT_READ)),
 ):
-    data = await get_profile_account_service(db, current_user.id)
+    data = await at_services.get_profile_account_service(db, current_user.id)
     return RMS(data=data)
 
 
@@ -31,5 +28,5 @@ async def update_account_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_ACCOUNT_UPDATE)),
 ):
-    data = await update_profile_account_service(db, id, account)
+    data = await at_services.update_profile_account_service(db, id, account)
     return RMS(data=data)

@@ -39,12 +39,13 @@ async def get_client_news_list_service(db: AsyncSession, page: int, pageSize: in
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def get_news_by_id_service(db: AsyncSession, id: int):
+async def get_news_by_id_service(db: AsyncSession, id: int, is_client: bool = False):
     try:
         news = await news_dals.get_news_by_id(db, id)
-        news.viewCount = news.viewCount + 1
-        await db.commit()
-        await db.refresh(news)
+        if is_client:
+            news.viewCount = news.viewCount + 1
+            await db.commit()
+            await db.refresh(news)
         data = f_n.format_news_by_id(news)
         return data
     except SQLAlchemyError as e:

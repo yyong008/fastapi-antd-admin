@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.client import get_db
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 import app.services.profile.link.category  as lc_services
 from app.schemas.profile.profile_link_category import (
     LinkCategoryCreate,
@@ -16,7 +16,7 @@ import app.constant.permission as permissions
 router = APIRouter(prefix="/link/category", tags=["Link Category"])
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def get_link_category(
     page: int = 1,
     pageSize: int = 10,
@@ -24,20 +24,20 @@ async def get_link_category(
     _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_READ)),
 ):
     data = await lc_services.get_link_category_list_service(db, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.get("/{id}", response_model=ResponseModel)
+@router.get("/{id}", response_model=RM)
 async def get_link_category_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_READ)),
 ):
     data = await lc_services.get_link_category_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_link_category(
     lc: LinkCategoryCreate,
     current_user=Depends(get_current_user),
@@ -46,10 +46,10 @@ async def create_link_category(
 ):
     lc = lc.model_dump()
     data = await lc_services.create_link_category_service(db, lc, current_user.id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_link_category_by_id(
     id: int,
     lc: LinkCategoryUpdate,
@@ -59,10 +59,10 @@ async def update_link_category_by_id(
 ):
     lc = lc.model_dump()
     data = await lc_services.update_link_category_service(db, id, lc, current_user.id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_link_by_ids_category(
     ids: LinkCategoryDeleteByIds,
     db: Session = Depends(get_db),
@@ -70,4 +70,4 @@ async def delete_link_by_ids_category(
 ):
     ids = ids.model_dump()
     data = await lc_services.delete_link_category_by_ids_service(db, ids["ids"])
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

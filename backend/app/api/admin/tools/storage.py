@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi import UploadFile
 
 from app.db.client import get_db
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 from app.services.tools.storage import (
     get_tools_storage_list_service,
     get_tools_storage_by_id_service,
@@ -62,14 +62,14 @@ async def storage_upload(
         "type": file.content_type,
     }
     await create_tools_storage_service(db, file_info)
-    return ResponseSuccessModel(
+    return RMS(
         data={
             "filename": file.filename,
         }
     )
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def get_storage_list(
     page: int = Query(1, description="当前页码"),
     pageSize: int = Query(10, description="每页条数"),
@@ -77,30 +77,30 @@ async def get_storage_list(
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_LIST)),
 ):
     data = await get_tools_storage_list_service(db, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.get("/{id}", response_model=ResponseModel)
+@router.get("/{id}", response_model=RM)
 async def get_storage_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_READ)),
 ):
     data = await get_tools_storage_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_storage(
     storage: dict,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOLLS_STORAGE_CREATE)),
 ):
     data = await create_tools_storage_service(db, storage)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_storage_by_id(
     id: int,
     storage: dict,
@@ -108,14 +108,14 @@ async def update_storage_by_id(
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_UPLOAD)),
 ):
     data = await update_tools_storage_by_id_service(db, id, storage)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_storage(
     ids: list[int],
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.TOOLS_STORAGE_DELETE)),
 ):
     data = await delete_tools_storage_by_ids_service(db, ids)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

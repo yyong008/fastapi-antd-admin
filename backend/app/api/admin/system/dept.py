@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.client import get_db
 
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 from app.services.sys.dept import (
     get_dept_list_all_service,
     get_dept_tree_data_service,
@@ -31,7 +31,7 @@ async def get_dept_dept(
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
 ):
     data = await get_dept_tree_data_service(db, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
 @router.get("/list/all")
@@ -40,30 +40,30 @@ async def get_dept_dept_list_all(
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
 ):
     data = await get_dept_list_all_service(db)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.get("/{id}", response_model=ResponseModel)
+@router.get("/{id}", response_model=RM)
 async def get_dept_dept_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_READ)),
 ):
     data = await get_dept_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_dept(
     dept: DepartmentCreate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_CREATE)),
 ):
     data = await create_dept_service(db, dept)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_dept_by_id(
     id: int,
     dept: DepartmentUpdate,
@@ -71,17 +71,17 @@ async def update_dept_by_id(
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_UPDATE)),
 ):
     data = await update_dept_by_id_service(db, id, dept)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_dept_dept(
     ids: DepartmentDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_DEPT_DELETE)),
 ):
     data = await delete_dept_by_ids_service(db, ids.ids)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
 def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:

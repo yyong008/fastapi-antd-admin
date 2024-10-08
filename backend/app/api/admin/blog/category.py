@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.client import get_db
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 from app.deps.permission import get_user_permissions
 from app.utils.current_user import get_current_user
 
@@ -12,7 +12,7 @@ import app.constant.permission as permissions
 router = APIRouter(prefix="/category", tags=["Admin Blog Category"])
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def get_blog_category(
     page: int,
     pageSize: int,
@@ -20,20 +20,20 @@ async def get_blog_category(
     _: bool = Depends(get_user_permissions(permissions.BLOG_CATEGORY_READ)),
 ):
     data = await bcs.get_blog_category_list_service(db, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.get("/{id}", response_model=ResponseModel)
+@router.get("/{id}", response_model=RM)
 async def get_blog_category_by_id(
     id: int,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.BLOG_CATEGORY_READ)),
 ):
     data = await bcs.get_blog_category_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_blog_category(
     bc: bcm.BlogCategoryCreate,
     current_user=Depends(get_current_user),
@@ -42,10 +42,10 @@ async def create_blog_category(
 ):
     bc = bc.model_dump()
     data = await bcs.create_blog_category_service(db, bc, current_user.id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_blog_category_by_id(
     id: int,
     bc: bcm.BlogCategoryUpdate,
@@ -55,14 +55,14 @@ async def update_blog_category_by_id(
 ):
     bc = bc.model_dump()
     data = await bcs.update_blog_category_by_id_service(db, id, bc, current_user.id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_blog_category(
     ids: bcm.BlogCategoryDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.BLOG_CATEGORY_DELETE)),
 ):
     data = await bcs.delete_blog_category_by_ids_service(db, ids.ids)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

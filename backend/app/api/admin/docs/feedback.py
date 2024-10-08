@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.client import get_db
-from app.schemas.response import ResponseSuccessModel, ResponseModel
+from app.schemas.response import RMS, RM
 from app.services.docs.feedback import (
     get_feedback_list_service,
     create_feedback_service,
@@ -16,7 +16,7 @@ from app.deps.permission import get_user_permissions
 router = APIRouter(prefix="/feedback", tags=["Admin Docs Feedback"])
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def docs_feedback(
     page: int,
     pageSize: int,
@@ -24,10 +24,10 @@ async def docs_feedback(
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_LIST)),
 ):
     data = await get_feedback_list_service(db, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def post_docs_feedback(
     feedback: FeedBack,
     current_user=Depends(get_current_user),
@@ -36,10 +36,10 @@ async def post_docs_feedback(
 ):
     feedback = feedback.model_dump()
     data = await create_feedback_service(db, feedback, current_user.id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_docs_feedback(
     id: int,
     feedback: FeedBack,
@@ -48,14 +48,14 @@ async def update_docs_feedback(
 ):
     feedback = feedback.model_dump()
     data = await update_feedback_service(db, id, feedback)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_by_ids_docs_feedback(
     ids: FeedBackDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_DELETE)),
 ):
     data = await delete_feedback_by_ids_service(db, ids)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

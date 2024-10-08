@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.client import get_db
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 from app.services.profile.link.link import (
     get_link_list_by_id_service,
     create_link_service,
@@ -17,13 +17,7 @@ import app.constant.permission as permissions
 router = APIRouter(prefix="/link", tags=["Link"])
 
 
-# @router.get("/", response_model=ResponseModel)
-# async def get_link(id: int, page: int, pageSize: int, db: Session = Depends(get_db)):
-#     data = {}
-#     return ResponseSuccessModel(data=data)
-
-
-@router.get("/{id}", response_model=ResponseModel)
+@router.get("/{id}", response_model=RM)
 async def get_link_by_id(
     id: int,
     page: int,
@@ -32,10 +26,10 @@ async def get_link_by_id(
     _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_LIST)),
 ):
     data = await get_link_list_by_id_service(db, id, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_link(
     link: LinkCreate,
     current_user=Depends(get_current_user),
@@ -44,10 +38,10 @@ async def create_link(
 ):
     link = link.model_dump(mode="json")
     data = await create_link_service(db, link, current_user.id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_link_by_id(
     id: int,
     link: LinkUpdate,
@@ -57,10 +51,10 @@ async def update_link_by_id(
 ):
     link = link.model_dump(mode="json")
     data = await update_link_by_id_service(db, id, link)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_link_by_ids(
     ids: LinkDeleteByIds,
     db: Session = Depends(get_db),
@@ -68,4 +62,4 @@ async def delete_link_by_ids(
 ):
     ids = ids.model_dump(mode="json")
     data = await delete_link_by_ids_service(db, ids["ids"])
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

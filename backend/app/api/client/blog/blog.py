@@ -4,7 +4,7 @@ from typing import Optional
 
 from app.db.client import get_db
 from app.services.blog.blog import get_blog_by_id_service, get_blog_list_service
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 
 router = APIRouter(tags=["Client Blog Main"])
 
@@ -15,10 +15,10 @@ async def get_blog_by_id(
     db: Session = Depends(get_db),
 ):
     data = await get_blog_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def get_blogs(
     page: int = Query(1, description="当前页码"),
     pageSize: int = Query(10, description="每页条数"),
@@ -27,4 +27,4 @@ async def get_blogs(
     db: Session = Depends(get_db),
 ):
     data = await get_blog_list_service(db, categoryId, tagId, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

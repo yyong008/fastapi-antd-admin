@@ -2,14 +2,9 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 from app.db.client import get_db
-from app.services.news.news import (
-    create_news_service,
-    get_news_by_id_service,
-    get_news_list_service,
-    update_news_service,
-)
+import app.services.news.news as ns
 from app.schemas.news.news import NewsCreate, NewsUpdate
 from app.utils.current_user import get_current_user
 from app.deps.permission import get_user_permissions
@@ -24,11 +19,11 @@ async def get_news_by_id(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_READ)),
 ):
-    data = await get_news_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    data = await ns.get_news_by_id_service(db, id)
+    return RMS(data=data)
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def get_news(
     category_id: int,
     page: int,
@@ -36,11 +31,11 @@ async def get_news(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_READ)),
 ):
-    data = await get_news_list_service(db, category_id, page, pageSize)
-    return ResponseSuccessModel(data=data)
+    data = await ns.get_news_list_service(db, category_id, page, pageSize)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_news(
     data: NewsCreate,
     current_user=Depends(get_current_user),
@@ -48,11 +43,11 @@ async def create_news(
     _: bool = Depends(get_user_permissions(permissions.NEWS_CREATE)),
 ):
     news = data.model_dump()
-    data = await create_news_service(db, news, current_user.id)
-    return ResponseSuccessModel(data=data)
+    data = await ns.create_news_service(db, news, current_user.id)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_news(
     id: int,
     data: NewsUpdate,
@@ -61,15 +56,15 @@ async def update_news(
     _: bool = Depends(get_user_permissions(permissions.NEWS_UPDATE)),
 ):
     news = data.model_dump()
-    data = await update_news_service(db, id, news, current_user.id)
-    return ResponseSuccessModel(data=data)
+    data = await ns.update_news_service(db, id, news, current_user.id)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_news_by_ids(
     ids: List[int],
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.NEWS_DELETE)),
 ):
-    data = await delete_news_by_ids(db, ids)
-    return ResponseSuccessModel(data=data)
+    data = await ns.delete_news_by_ids_service(db, ids)
+    return RMS(data=data)

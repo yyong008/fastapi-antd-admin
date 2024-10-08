@@ -8,7 +8,7 @@ from app.services.sys.role import (
     update_role_by_id_service,
     delete_role_by_ids_service,
 )
-from app.schemas.response import ResponseModel, ResponseSuccessModel
+from app.schemas.response import RM, RMS
 from app.schemas.sys.role import RoleCreate, RoleUpdate, RoleDeleteByIds
 from app.deps.permission import get_user_permissions
 import app.constant.permission as permissions
@@ -16,13 +16,13 @@ import app.constant.permission as permissions
 router = APIRouter(prefix="/role", tags=["Role"])
 
 
-@router.get("/", response_model=ResponseModel)
+@router.get("/", response_model=RM)
 async def get_all_roles(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_READ)),
 ):
     data = await get_all_role_service(db)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
 @router.get("/{id}")
@@ -32,20 +32,20 @@ async def get_role_by_id(
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_READ)),
 ):
     data = await get_role_by_id_service(db, id)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.post("/", response_model=ResponseModel)
+@router.post("/", response_model=RM)
 async def create_role(
     role: RoleCreate,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_CREATE)),
 ):
     data = await create_role_service(db, role)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.put("/{id}", response_model=ResponseModel)
+@router.put("/{id}", response_model=RM)
 async def update_role_by_id(
     id: int,
     item: RoleUpdate,
@@ -53,14 +53,14 @@ async def update_role_by_id(
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_UPDATE)),
 ):
     data = await update_role_by_id_service(db, id, item)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)
 
 
-@router.delete("/", response_model=ResponseModel)
+@router.delete("/", response_model=RM)
 async def delete_role(
     ids: RoleDeleteByIds,
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.SYSTEM_ROLE_DELETE)),
 ):
     data = await delete_role_by_ids_service(db, ids.ids)
-    return ResponseSuccessModel(data=data)
+    return RMS(data=data)

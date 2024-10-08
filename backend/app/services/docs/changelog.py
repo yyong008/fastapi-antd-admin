@@ -7,7 +7,10 @@ from ._format import format_changelog
 from app.models.docs.changelog import ChangeLog
 
 
-async def get_user_list_service(db: AsyncSession, page: int, pageSize: int):
+async def get_changelog_list_service(db: AsyncSession, page: int, pageSize: int):
+    """
+    获取更新列表
+    """
     try:
         count = await cl_dals.get_changelog_count(db)
         changelogs = await cl_dals.get_changelog_list(db, page, pageSize)
@@ -22,6 +25,9 @@ async def get_user_list_service(db: AsyncSession, page: int, pageSize: int):
 
 
 async def change_log_by_id_service(db: AsyncSession, id: int):
+    """
+    根据id获取更新
+    """
     try:
         changelog = await cl_dals.get_changelog_by_id(db, id)
         return format_changelog(changelog)
@@ -31,6 +37,9 @@ async def change_log_by_id_service(db: AsyncSession, id: int):
 
 
 async def create_change_log_service(db: AsyncSession, changelog, current_user_id):
+    """
+    创建更新
+    """
     try:
         del changelog["user_id"]
         changelog["userId"] = current_user_id
@@ -43,6 +52,9 @@ async def create_change_log_service(db: AsyncSession, changelog, current_user_id
 
 
 async def update_change_log_service(db: AsyncSession, id, changelog, current_user_id):
+    """
+    更新更新
+    """
     try:
         changelog_in_db = await cl_dals.get_changelog_by_id(db, id)
 
@@ -64,6 +76,9 @@ async def update_change_log_service(db: AsyncSession, id, changelog, current_use
 
 
 async def delete_change_log_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据ids删除更新
+    """
     try:
         count = await cl_dals.delete_changelog_by_ids(db, ids)
         return count

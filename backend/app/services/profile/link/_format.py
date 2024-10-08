@@ -1,5 +1,8 @@
 
 def format_category(category):
+    """
+    格式化 profile link category
+    """
     item = {
         "id": category.id,
         "name": category.name,
@@ -8,6 +11,9 @@ def format_category(category):
     return item
 
 def format_link(link):
+    """
+    格式化 profile link
+    """
     item = {
         "id": link.id,
         "name": link.name,

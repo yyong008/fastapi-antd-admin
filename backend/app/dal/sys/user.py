@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from app.models.system.department import Department
 from app.models.system.user import User
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
 
@@ -13,7 +13,9 @@ async def get_user_by_name(db: AsyncSession, name: str):
 
 
 async def get_user_by_email(email: str, db: AsyncSession):
-    return db.query(User).filter(User.email == email).first()
+    # return db.query(User).filter(User.email == email).first()
+    data = await base_crud.get_by_email(db, User, email)
+    return data
 
 
 async def get_users(db: AsyncSession, skip: int = 0, limit: int = 10):
@@ -58,18 +60,16 @@ async def get_users_by_ids(ids, db: AsyncSession):
 
 # =====================================CREATE===================================================
 async def create_user(db: AsyncSession, name: str, email: str, hashed_password: str):
-    user = User(name=name, email=email, hashed_password=hashed_password)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+    obj_in = {"name": name, "email": email, "hashed_password": hashed_password}
+    data = await base_crud.create(db, User, obj_in=obj_in)
+    return data
 
 
 # =====================================DELETE===================================================
-async def delete_user(db: AsyncSession, user_id: int):
-    user = db.query(User).filter(User.id == user_id).first()
-    if user:
-        db.delete(user)
-        db.commit()
-        return user
-    return None
+async def delete_user_by_id(db: AsyncSession, user_id: int):
+    data = await base_crud.delete_by_id(db, User, user_id)
+    return data
+
+async def delete_users_by_ids(db: AsyncSession, ids: list[int]):
+    data = await base_crud.delete_by_ids(db, User, ids)
+    return data

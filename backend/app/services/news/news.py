@@ -13,6 +13,9 @@ async def get_news_list_service(
     page: int,
     pageSize: int,
 ):
+    """
+    更具 category_id 获取新闻列表
+    """
     try:
         count = await news_dals.get_news_count_by_category_id(db, category_id)
         news = await news_dals.get_news_list(db, page, pageSize, category_id)
@@ -26,6 +29,9 @@ async def get_news_list_service(
 
 
 async def get_client_news_list_service(db: AsyncSession, page: int, pageSize: int):
+    """
+    获取客户端新闻列表
+    """
     category_id = 1
     try:
         total = await news_dals.get_news_count_by_category_id(db, category_id)
@@ -40,6 +46,9 @@ async def get_client_news_list_service(db: AsyncSession, page: int, pageSize: in
 
 
 async def get_news_by_id_service(db: AsyncSession, id: int, is_client: bool = False):
+    """
+    根据获取新闻详情
+    """
     try:
         news = await news_dals.get_news_by_id(db, id)
         if is_client:
@@ -54,6 +63,9 @@ async def get_news_by_id_service(db: AsyncSession, id: int, is_client: bool = Fa
 
 
 async def create_news_service(db: AsyncSession, news: dict, current_user_id: int):
+    """
+    创建新闻
+    """
     try:
         format_news_data = f_n.format_news_from_old_news(current_user_id, news)
         format_news_data["content"] = clean_html(format_news_data["content"])
@@ -66,6 +78,9 @@ async def create_news_service(db: AsyncSession, news: dict, current_user_id: int
 async def update_news_service(
     db: AsyncSession, id: int, news: dict, current_user_id: int
 ):
+    """
+    更新新闻
+    """
     try:
         format_news_data = f_n.format_news_from_old_news(current_user_id, news)
         count = await news_dals.update_news(db, id, format_news_data, current_user_id)
@@ -79,6 +94,9 @@ async def update_news_service(
 
 
 async def delete_news_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据id删除新闻
+    """
     try:
         count = await news_dals.delete_news_by_ids(db, ids)
         return count

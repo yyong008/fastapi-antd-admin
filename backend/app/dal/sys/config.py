@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from app.models.system.config import Config
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
@@ -24,36 +23,25 @@ async def get_config_all(db: AsyncSession):
 
 
 async def get_config_by_id(db: AsyncSession, config_id):
-    return db.query(Config).filter_by(id=config_id).first()
+    data = await base_crud.get_by_id(db, Config, config_id)
+    return data
 
 
 async def get_configs_by_ids(db: AsyncSession, ids):
-    return db.query(Config).filter(Config.id.in_(ids)).all()
+    data = await base_crud.get_by_ids(db, Config, ids)
+    return data
 
 
 async def create_config_category(db: AsyncSession, config):
-    db.add(config)
-    db.commit()
-    db.refresh(config)
-    return config
+    data = await base_crud.create(db, config)
+    return data
 
 
 async def update_config_by_id(db: AsyncSession, config_id: int, config: Config):
-    db.query(Config).filter(Config.id == config_id).update(config)
-    db.commit()
-    db.refresh(config)
-    return config
+    data = await base_crud.update_by_id(db, Config, config_id, config)
+    return data
 
 
 async def delete_config_by_ids(db: AsyncSession, ids: list[int]):
-    try:
-        count = (
-            db.query(Config)
-            .filter(Config.id.in_(ids))
-            .delete(synchronize_session=False)
-        )
-        db.commit()
-
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db, Config, ids)
+    return data

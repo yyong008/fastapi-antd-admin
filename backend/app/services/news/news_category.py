@@ -6,6 +6,9 @@ import app.dal.news.news_category as nc_dals
 from ._format import format_news_category
 
 async def get_news_category_list_service(db: AsyncSession, page, pageSize):
+    """
+    获取新闻分类列表
+    """
     try:
         count = await nc_dals.get_news_category_count(db)
         news_category = await nc_dals.get_news_category_list(db, page, pageSize)
@@ -19,6 +22,9 @@ async def get_news_category_list_service(db: AsyncSession, page, pageSize):
 
 
 async def create_news_category_service(db: AsyncSession, news_category, user_id):
+    """
+    创建新闻分类
+    """
     try:
         nc = await nc_dals.get_news_category_by_name(db, news_category["name"])
         if nc:
@@ -38,6 +44,9 @@ async def create_news_category_service(db: AsyncSession, news_category, user_id)
 
 
 async def update_news_category_service(db: AsyncSession, id: int, news_category, user_id):
+    """
+     更新新闻分类
+     """
     try:
         news_category["user_id"] = user_id
         nc = await nc_dals.update_news_category_by_id(db, id, news_category)
@@ -49,6 +58,9 @@ async def update_news_category_service(db: AsyncSession, id: int, news_category,
 
 
 async def delete_news_category_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+     删除新闻分类
+     """
     try:
         count = await nc_dals.delete_news_category_by_ids(db, ids)
         if count == 0:

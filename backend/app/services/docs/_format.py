@@ -1,4 +1,7 @@
 def format_changelog(changelog):
+    """
+    格式化更新
+    """
     item = {
         "id": changelog.id,
         "userId": changelog.userId,
@@ -13,6 +16,7 @@ def format_changelog(changelog):
     return item
 
 def format_feedback(feedback):
+    """格式化反馈"""
     item = {
         "id": feedback.id,
         "userId": feedback.userId,

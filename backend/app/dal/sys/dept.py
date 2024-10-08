@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from app.models.system.department import Department
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
@@ -25,30 +24,14 @@ async def get_dept_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
 
 
 async def create_dept(dept, db: AsyncSession):
-    db.add(dept)
-    db.commit()
-    db.refresh(dept)
-    return dept
-
+    data = await base_crud.create(db, Department, dept)
+    return data
 
 async def update_dept_by_id(db: AsyncSession, dept_id: int, dept: Department):
-    db.query(Department).filter(Department.id == dept_id).update(dept)
-    db.commit()
-    dept = db.query(Department).filter(Department.id == dept_id).first()
-    db.refresh(dept)
-    return dept
+    data = await base_crud.update_by_id(db, Department, dept_id, dept)
+    return data
 
 
 async def delete_dept_by_ids(db: AsyncSession, ids: list[int]):
-    try:
-        count = (
-            db.query(Department)
-            .filter(Department.id.in_(ids))
-            .delete(synchronize_session=False)
-        )
-
-        db.commit()
-
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db, Department, ids)
+    return data

@@ -35,8 +35,8 @@ async def get_user_today_is_sign_in_by_id(db: AsyncSession, user_id):
 
 
 async def get_signin_log_latest_by_user_id(db: AsyncSession, user_id: int):
-    return db.query(UserSignLog).filter(UserSignLog.userId == user_id).first()
-    
+    filter = UserSignLog.userId == user_id
+    return await base_crud.get_by_filters(db, UserSignLog, filter)
 
 # =====================================CREATE===================================================
 async def create_user_signlog(db: AsyncSession, sign_log):

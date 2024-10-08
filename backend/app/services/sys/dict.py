@@ -8,7 +8,10 @@ from app.models.system.dictionary import Dictionary
 from app.schemas.sys.dictionary import DictionaryCreate, DictionaryUpdate
 
 
-async def get_dict_lists_service(db: AsyncSession, page: int, pageSize: int):
+async def get_dict_lists_service(db: AsyncSession, page: int = 1, pageSize: int = 10):
+    """
+    获取字典列表
+    """
     try:
         count = await dt_dals.get_dictionary_count(db)
         users = await dt_dals.get_dictionary_list(db, page, pageSize)
@@ -22,14 +25,21 @@ async def get_dict_lists_service(db: AsyncSession, page: int, pageSize: int):
 
 
 async def get_dict_by_id_service(db: AsyncSession):
+    """
+    通过 id 获取列表
+    """
     try:
-        pass
+        data = await dt_dals.get_dict_by_id(db, id)
+        return format_dict(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
 async def create_dict_service(db: AsyncSession, dt: DictionaryCreate):
+    """
+     创建字典
+     """
     try:
         dt = dt.model_dump()
         dt = Dictionary(**dt)
@@ -41,6 +51,9 @@ async def create_dict_service(db: AsyncSession, dt: DictionaryCreate):
 
 
 async def update_dict_by_id_service(db: AsyncSession, id: int, dt: DictionaryUpdate):
+    """
+     更新字典
+    """
     try:
         dt = dt.model_dump(exclude_unset=True)
         data = await dt_dals.update_dict_by_id(db, id, dt)
@@ -51,6 +64,9 @@ async def update_dict_by_id_service(db: AsyncSession, id: int, dt: DictionaryUpd
 
 
 async def delete_dict_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+     删除字典
+    """
     try:
         count = await dt_dals.delete_dict_by_ids(db, ids)
         return count

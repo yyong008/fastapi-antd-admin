@@ -7,7 +7,10 @@ from app.services.profile.link._format import format_link
 from app.models.profile.link import Link
 
 
-async def get_link_list_by_id_service(db: AsyncSession, category_id, page, pageSize):
+async def get_link_list_by_id_service(db: AsyncSession, category_id: int, page: int, pageSize: int):
+    """
+    根据 category_id 获取链接列表
+    """
     try:
         count = await lk_dals.get_link_count_by_category_id(db, category_id)
         links = await lk_dals.get_links_by_category_id(db, category_id, page, pageSize)
@@ -22,6 +25,9 @@ async def get_link_list_by_id_service(db: AsyncSession, category_id, page, pageS
 
 
 async def get_link_list_by_ids_service(db: AsyncSession, ids):
+    """
+    根据 ids 获取链接列表
+    """
     try:
         links = await lk_dals.get_links_by_category_id(db, ids)
         return links
@@ -30,7 +36,10 @@ async def get_link_list_by_ids_service(db: AsyncSession, ids):
         raise HTTPException(status_code=400, detail="Oops, we encountered an error")
 
 
-async def update_link_by_id_service(db: AsyncSession, id, link):
+async def update_link_by_id_service(db: AsyncSession, id: int, link):
+    """
+    根据 id 更新链接
+    """
     try:
         o_data = await lk_dals.get_link_by_id(db, id)
         if not o_data:
@@ -45,7 +54,10 @@ async def update_link_by_id_service(db: AsyncSession, id, link):
         raise HTTPException(status_code=400, detail="Oops, we encountered an error")
 
 
-async def delete_link_by_ids_service(db: AsyncSession, ids):
+async def delete_link_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据 ids 删除链接
+    """
     try:
         data = await lk_dals.delete_link_by_ids(db, ids)
         return data
@@ -54,11 +66,13 @@ async def delete_link_by_ids_service(db: AsyncSession, ids):
         raise HTTPException(status_code=400, detail="Oops, we encountered an error")
 
 
-async def create_link_service(db: AsyncSession,link, user_id):
+async def create_link_service(db: AsyncSession,link,):
+    """
+    创建链接
+    """
     try:
         del link['user_id']
         lk = Link(**link)
-        # lk.user_id = user_id
         data = await lk_dals.create_link_category(db, lk)
         return format_link(data)
     except SQLAlchemyError as e:

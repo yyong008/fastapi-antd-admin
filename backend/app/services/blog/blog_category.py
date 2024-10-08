@@ -7,6 +7,9 @@ import app.dal.blog.blog_category as bc_dals
 from ._format import format_blog_category
 
 async def get_blog_category_list_service(db: AsyncSession, page: int, pageSize: int):
+    """
+    获取博客分类列表
+    """
     try:
         count = await bc_dals.get_blog_category_count(db)
         blog_category = await bc_dals.get_blog_category_list(db, page, pageSize)
@@ -21,6 +24,9 @@ async def get_blog_category_list_service(db: AsyncSession, page: int, pageSize: 
 
 
 async def get_blog_category_by_id_service(db: AsyncSession, id: int):
+    """
+    根据博客分类id获取博客分类
+    """
     try:
         data = await bc_dals.get_blog_category_by_id(db, id)
         return data
@@ -32,6 +38,9 @@ async def get_blog_category_by_id_service(db: AsyncSession, id: int):
 async def update_blog_category_by_id_service(
     db: AsyncSession, id: int, bc, current_user_id: int
 ):
+    """
+    根据博客分类id更新博客分类
+    """
     try:
         bc_in_db = await bc_dals.get_blog_category_by_id(db, id)
         if bc_in_db is None:
@@ -48,6 +57,9 @@ async def update_blog_category_by_id_service(
 
 
 async def create_blog_category_service(db: AsyncSession, bc, current_user_id):
+    """
+    创建博客分类
+    """
     try:
         bc["user_id"] = current_user_id
         blog_category = BlogCategory(**bc)
@@ -59,6 +71,9 @@ async def create_blog_category_service(db: AsyncSession, bc, current_user_id):
 
 
 async def delete_blog_category_by_ids_service(db: AsyncSession, ids):
+    """
+    根据博客分类id删除博客分类
+    """
     try:
         data = await bc_dals.delete_news_by_ids(db, ids)
         return data

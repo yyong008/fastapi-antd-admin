@@ -1,4 +1,5 @@
 def format_blog_category(blog_category):
+    """格式化博客分类"""
     item = {
         "id": blog_category.id,
         "name": blog_category.name,
@@ -8,6 +9,7 @@ def format_blog_category(blog_category):
 
 
 def format_blog(blog):
+    """格式化博客"""
     item = {
         "id": blog.id,
         "title": blog.title,
@@ -23,6 +25,7 @@ def format_blog(blog):
 
 
 def format_blog_tag(blog_tag):
+    """格式化博客标签"""
     item = {
         "id": blog_tag.id,
         "name": blog_tag.name,

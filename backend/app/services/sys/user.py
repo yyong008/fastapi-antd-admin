@@ -7,12 +7,14 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.constant import NORMAL_USER
 from app.models.system.role import Role
 from app.models.system.user import User
-from app.schemas.sys.user import UserCreate
 from app.utils.token import hash_password
 from ._format import format_user
 from sqlalchemy.ext.asyncio import AsyncSession 
 
 async def get_user_list(db: AsyncSession):
+    """
+    获取用户列表
+    """
     try:
         count = await user_dals.get_count(db)
         users = await user_dals.get_user_all(db)
@@ -27,9 +29,12 @@ async def get_user_list(db: AsyncSession):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def get_user_by_id(db, user_id: int):
+async def get_user_by_id(db: AsyncSession, id: int):
+    """
+    根据id获取用户
+    """
     try:
-        user = await user_dals.get_user_by_id(db, user_id)
+        user = await user_dals.get_user_by_id(db, id)
         item = format_user(user)
         return item
     except Exception as e:
@@ -37,7 +42,10 @@ async def get_user_by_id(db, user_id: int):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def create_user(user: UserCreate, db: AsyncSession):
+async def create_user(db: AsyncSession, user):
+    """
+    创建用户
+    """
     try:
         db_user = await user_dals.get_user_by_name(db, user.name)
         if db_user and db_user.id:
@@ -65,6 +73,9 @@ async def create_user(user: UserCreate, db: AsyncSession):
 
 
 async def update_user_by_id(user_id: int, item, db: AsyncSession):
+    """
+    根据id更新用户
+    """
     user = await user_dals.get_user_by_id(db, user_id)
     if not user:
         raise HTTPException(
@@ -85,26 +96,26 @@ async def update_user_by_id(user_id: int, item, db: AsyncSession):
 
 
 async def delete_users_by_ids(ids: List[int], db: AsyncSession):
+    """
+    根据ids删除用户
+    """
     try:
-        count = await user_dals.get_count_by_ids(db, ids)
-        if count == 0:
+        data = await user_dals.delete_user(db, ids)
+        if data == 0:
             raise HTTPException(status_code=404, detail="User not found")
-        return count
+        return data
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def delete_user_by_id(user_id: int, db: AsyncSession):
+async def delete_user_by_id( db: AsyncSession, id: int):
+    """
+    根据id删除用户
+    """
     try:
-        user = await user_dals.get_user_by_id(db, user_id)
-        if user is None:
-            raise HTTPException(status_code=404, detail="User not found")
-
-        db.delete(user)
-        db.commit()
-
-        return user
+        data = await user_dals.delete_user_by_id(db, id)
+        return data
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=f"{e}")

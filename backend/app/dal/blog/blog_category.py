@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from app.models.blog import BlogCategory
 from sqlalchemy.ext.asyncio import AsyncSession 
 import app.db.base as base_crud
@@ -26,25 +25,15 @@ async def get_blog_category_by_id(db: AsyncSession, id: int):
 
 # =====================================CREATE===================================================
 async def create_blog_category(db: AsyncSession, bc):
-    db.add(bc)
-    db.commit()
-    db.refresh(bc)
-    return bc
+    data = await base_crud.create(db, bc)
+    return data
 
 # =====================================UPDATE===================================================
 async def update_blog_category_by_id(db: AsyncSession, bc_id: int, bc):
-    db.commit()
-    db.refresh(bc)
-    return bc
+    data = await base_crud.update_by_id(db, bc_id, bc)
+    return data
 
 # =====================================DELETE===================================================
 async def delete_news_by_ids(db: AsyncSession, ids):
-    try:
-        count = (
-            db.query(BlogCategory).filter(BlogCategory.id.in_(ids)).delete(synchronize_session=False)
-        )
-        db.commit()
-
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db,  BlogCategory, ids)
+    return data

@@ -22,6 +22,41 @@ def build_dept_list_to_tree(items: list, parent_id: int = None) -> list:
         if item.get("parent_department_id") == parent_id
     ]
 
+
+def format_menu_all_list(menu_raw):
+    """
+    格式化菜单列表
+    """
+    menu = []
+    for m in menu_raw:
+        menu.append(format_menu(m))
+    return menu
+
+
+def build_menu_tree_raw(menu_data, parent_id=None):
+    """
+    构建菜单树
+    """
+    result = []
+
+    for menu in menu_data:
+        if menu["parent_menu_id"] == parent_id:
+            menu_item = format_menu_tree(menu)
+
+            children = build_menu_tree_raw(menu_data, menu["id"])
+            if children:
+                menu_item["children"] = children
+
+            result.append(menu_item)
+
+    def sort_key(x):
+        order_no = x.get("order_no", float("inf"))  # 处理 None 为一个很大的值
+        return order_no if order_no is not None else float("inf")
+
+    result.sort(key=sort_key)
+
+    return result
+
 def format_dept(item):
     """
     格式化部门
@@ -148,7 +183,6 @@ def format_role(role):
 
 def format_user(user):
     """
-
     格式化用户
     """
     item = {
@@ -167,8 +201,6 @@ def format_user(user):
         "updatedAt": user.updatedAt,
         "department_id": user.department_id,
     }
-
-
 
     if user.department_id:
         item["department"] = {}

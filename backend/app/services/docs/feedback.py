@@ -8,6 +8,9 @@ from app.models.docs.feedback import FeedBack
 
 
 async def get_feedback_list_service(db: AsyncSession, page, pageSize):
+    """
+    获取反馈列表
+    """
     try:
         count = await fb_dals.get_feedback_count(db)
         feedbacks = await fb_dals.get_feedback_list(db, page, pageSize)
@@ -21,6 +24,9 @@ async def get_feedback_list_service(db: AsyncSession, page, pageSize):
 
 
 async def create_feedback_service(db: AsyncSession, feedback, current_user_id):
+    """
+    创建反馈
+    """
     try:
         del feedback['user_id']
         feedback['userId'] = current_user_id
@@ -33,6 +39,9 @@ async def create_feedback_service(db: AsyncSession, feedback, current_user_id):
 
 
 async def delete_feedback_by_ids_service(db: AsyncSession, ids):
+    """
+    删除反馈
+    """
     try:
         data = await delete_feedback_by_ids_service(db, ids)
         return format_feedback(data)
@@ -42,6 +51,9 @@ async def delete_feedback_by_ids_service(db: AsyncSession, ids):
 
 
 async def update_feedback_service(db: AsyncSession, id, name, email, content):
+    """
+    更新反馈
+    """
     try:
         o_data = await fb_dals.get_feedback_by_id(db, id)
         if o_data is None:

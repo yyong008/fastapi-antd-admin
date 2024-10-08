@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from app.models.profile.link import Link
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
@@ -54,30 +53,17 @@ async def get_links_by_category_id(db: AsyncSession,category_id, page, pageSize,
         pageSize=pageSize,
     )
     return data
-    # return db.query(Link).filter(Link.category_id == category_id).offset(skip).limit(limit).all()
 
 
 async def create_link_category(db: AsyncSession, link, ):
-    db.add(link)
-    db.commit()
-    db.refresh(link)
-    return link
+    data = await base_crud.create(db=db, model=Link, obj_in=link)
+    return data
 
 
 async def update_link_by_id(db: AsyncSession, blog_id: int, link: Link):
-    # db.query(Link).filter(Link.id == blog_id).update(link)
-    db.commit()
-    db.refresh(link)
-    return link
-
+    data = await base_crud.update_by_id(db=db, model=Link, id=blog_id, new_data=link)
+    return data
 
 async def delete_link_by_ids(db: AsyncSession, ids):
-    try:
-        count = (
-            db.query(Link).filter(Link.id.in_(ids)).delete(synchronize_session=False)
-        )
-        db.commit()
-
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db=db, model=Link, ids=ids)
+    return data

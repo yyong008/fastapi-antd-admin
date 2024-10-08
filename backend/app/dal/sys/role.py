@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from sqlalchemy.orm import selectinload
 from app.models.system.role import Role
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -57,13 +56,5 @@ async def update_role_by_id(db: AsyncSession, role_id: int, role: Role):
 
 # =====================================DELETE===================================================
 async def delete_role_by_ids(db: AsyncSession, ids: list[int]):
-    try:
-        count = (
-            db.query(Role).filter(Role.id.in_(ids)).delete(synchronize_session=False)
-        )
-        db.commit()
-        if count == 0:
-            raise HTTPException(status_code=400, detail="No data found")
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db, Role, ids)
+    return data

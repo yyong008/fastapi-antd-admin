@@ -1,4 +1,7 @@
 def format_tools_storage(storage):
+    """
+    格式化存储信息
+    """
     item = {
         "id": storage.id,
         "createdAt": storage.createdAt,
@@ -15,6 +18,9 @@ def format_tools_storage(storage):
 
 
 def format_tools_mail(mail):
+    """
+    格式化邮件信息
+    """
     item = {
         "id": mail.id,
         "name": mail.name,

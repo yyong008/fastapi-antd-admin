@@ -8,6 +8,9 @@ from app.models.profile.link import LinkCategory
 
 
 async def get_link_category_list_service(db: AsyncSession, page, pageSize):
+    """
+    获取所有分类
+    """
     try:
         count = await lc_dals.get_link_category_count(db)
         categories = await lc_dals.get_link_category_list(db, page, pageSize)
@@ -25,6 +28,9 @@ async def get_link_category_list_service(db: AsyncSession, page, pageSize):
 
 
 async def get_link_category_by_id_service(db: AsyncSession, id):
+    """
+    根据 id 获取分类
+    """
     try:
         data = await lc_dals.get_link_category_by_id(db, id)
         item = format_category(data)
@@ -35,6 +41,9 @@ async def get_link_category_by_id_service(db: AsyncSession, id):
 
 
 async def create_link_category_service(db: AsyncSession, link_category, user_id):
+    """
+    创建分类
+    """
     try:
         lc = LinkCategory(**link_category)
         lc.user_id = user_id
@@ -46,6 +55,9 @@ async def create_link_category_service(db: AsyncSession, link_category, user_id)
 
 
 async def update_link_category_service(db: AsyncSession, id, link_category, user_id):
+    """
+    根据 id 更新分类
+    """
     try:
         o_data = await lc_dals.get_link_category_by_id(db, id)
         if o_data is None:
@@ -61,7 +73,10 @@ async def update_link_category_service(db: AsyncSession, id, link_category, user
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def delete_link_category_by_ids_service(db: AsyncSession, ids):
+async def delete_link_category_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据 ids 删除分类
+    """
     try:
         data = await lc_dals.delete_link_category_by_ids(db, ids)
         return data

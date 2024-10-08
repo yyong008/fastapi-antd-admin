@@ -1,5 +1,3 @@
-from fastapi import HTTPException
-
 from app.models.tools.storage import Storage
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
@@ -20,29 +18,15 @@ async def get_storage_by_id(db: AsyncSession, id):
     return db.query(Storage).filter_by(Storage.id == id).all()
 
 
-async def create_storage(db: AsyncSession, storage):
-    db.add(storage)
-    db.commit()
-    db.refresh(storage)
-    return storage
-
+async def create_storage(db: AsyncSession, storage: dict):
+    data = await base_crud.create(db=db, model=Storage, obj_in=storage)
+    return data
 
 async def update_storage_by_id(db: AsyncSession, storage_id: int, storage: Storage):
-    db.query(Storage).filter(Storage.id == storage_id).update(storage)
-    db.commit()
-    db.refresh(storage)
-    return storage
+    data = await base_crud.update_by_id(db=db, model=Storage, id=storage_id, new_data=storage)
+    return data
 
 
 async def delete_storage_by_ids(db: AsyncSession, ids: list[int]):
-    try:
-        count = (
-            db.query(Storage)
-            .filter(Storage.id.in_(ids))
-            .delete(synchronize_session=False)
-        )
-        db.commit()
-
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db=db, model=Storage, ids=ids)
+    return data

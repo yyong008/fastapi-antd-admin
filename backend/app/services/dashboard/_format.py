@@ -1,4 +1,5 @@
 def format_user_loginlog(log):
+    """格式化用户登录日志"""
     return {
         "id": log.id,
         "address": log.address,

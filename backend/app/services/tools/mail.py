@@ -6,7 +6,10 @@ import app.dal.tools.mail as mail_dals
 from app.models.tools.mail import Mail
 from sqlalchemy.ext.asyncio import AsyncSession 
 
-async def get_mail_list_service(db: AsyncSession, page, pageSize):
+async def get_mail_list_service(db: AsyncSession, page: int =1, pageSize: int = 10):
+    """
+    获取邮件列表
+    """
     try:
         total = await mail_dals.get_mail_count(db)
         data = await mail_dals.get_mail_list(db, page, pageSize)
@@ -18,6 +21,9 @@ async def get_mail_list_service(db: AsyncSession, page, pageSize):
 
 
 async def get_mail_by_id_service(db: AsyncSession, id: int):
+    """
+    根据 id 获取邮件
+    """
     try:
         data = await mail_dals.get_mail_by_id(db, id)
         if not data:
@@ -29,6 +35,9 @@ async def get_mail_by_id_service(db: AsyncSession, id: int):
 
 
 async def create_mail_service(db: AsyncSession, mail):
+    """
+    创建邮件
+    """
     try:
         mail['from_'] = mail['user']
         mail['to_'] = mail['to']
@@ -43,7 +52,10 @@ async def create_mail_service(db: AsyncSession, mail):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def update_mail_by_id_service(db: AsyncSession, id, mail):
+async def update_mail_by_id_service(db: AsyncSession, id: int, mail):
+    """
+    根据 id 更新邮件
+    """
     try:
       ml = await mail_dals.get_mail_by_id(db, id)
       if not ml:
@@ -59,6 +71,9 @@ async def update_mail_by_id_service(db: AsyncSession, id, mail):
 
 
 async def delete_mail_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据 ids 删除邮件
+    """
     try:
         count = await mail_dals.delete_mail_by_ids(db, ids)
         return count
@@ -68,6 +83,9 @@ async def delete_mail_by_ids_service(db: AsyncSession, ids: list[int]):
 
 
 async def send_mail_service(mail, background_tasks):
+    """
+    发送邮件
+    """
     conf = ConnectionConfig(
         MAIL_USERNAME=mail['user'],
         MAIL_PASSWORD=mail['password'],

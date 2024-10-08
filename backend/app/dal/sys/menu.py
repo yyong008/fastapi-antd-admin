@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from app.models.system.menu import Menu
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
@@ -15,6 +14,9 @@ async def get_menu_all(db: AsyncSession):
     data = await base_crud.get_all(db, Menu, order_by=order_by)
     return data
 
+async def get_menu_by_id(db: AsyncSession, id: int):
+    data = await base_crud.get_by_id(db, Menu, id)
+    return data
 
 async def get_menu_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
     filter = None
@@ -48,12 +50,5 @@ async def update_menu_by_id(db: AsyncSession, menu_id: int, menu: Menu):
 
 
 async def delete_menu_by_ids(db: AsyncSession, ids: list[int]):
-    try:
-        count = (
-            db.query(Menu).filter(Menu.id.in_(ids)).delete(synchronize_session=False)
-        )
-        db.commit()
-
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db, Menu, ids)
+    return data

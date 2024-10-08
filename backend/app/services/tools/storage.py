@@ -7,7 +7,16 @@ from app.models.tools.storage import Storage
 from ._format import format_tools_storage
 
 
-async def get_tools_storage_list_service(db: AsyncSession, page, paegSize):
+async def get_tools_storage_list_service(db: AsyncSession, page: int = 1, paegSize: int = 10):
+    """
+    获取存储列表
+    Args
+        db: AsyncSession
+        page: int
+        pageSize: int
+    Returns
+        data: dict
+    """
     try:
         count = await st_dals.get_storage_count(db)
         storages = await st_dals.get_storage_list(db, page, paegSize)
@@ -21,10 +30,13 @@ async def get_tools_storage_list_service(db: AsyncSession, page, paegSize):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def get_tools_storage_by_id_service(db: AsyncSession, user_id: int):
+async def get_tools_storage_by_id_service(db: AsyncSession, id: int):
+    """
+    通过 id 获取存储详情
+    """
     try:
-        user = await st_dals.get_storage_by_id(db, user_id)
-        item = format_tools_storage(user)
+        storage = await st_dals.get_storage_by_id(db, id)
+        item = format_tools_storage(storage)
         return item
     except Exception as e:
         print(f"Oops, we encountered an error: {e}")
@@ -32,6 +44,9 @@ async def get_tools_storage_by_id_service(db: AsyncSession, user_id: int):
 
 
 async def create_tools_storage_service(db: AsyncSession, file_info):
+    """
+    创建存储
+    """
     try:
         file_info = Storage(**file_info)
         storage = await st_dals.create_storage(db, file_info)
@@ -40,9 +55,13 @@ async def create_tools_storage_service(db: AsyncSession, file_info):
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-async def update_tools_storage_by_id_service(db: AsyncSession, user_id: int, item):
+async def update_tools_storage_by_id_service(db: AsyncSession, id: int, item):
+    """
+    更新存储
+    """
     try:
-        pass
+        data = await st_dals.update_storage_by_id(db, id, item)
+        return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
@@ -50,8 +69,12 @@ async def update_tools_storage_by_id_service(db: AsyncSession, user_id: int, ite
 
 
 async def delete_tools_storage_by_ids_service(db: AsyncSession, ids: List[int]):
+    """
+    批量删除存储
+    """
     try:
-        pass
+        data = await st_dals.delete_storage_by_ids(db, ids)
+        return data
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")

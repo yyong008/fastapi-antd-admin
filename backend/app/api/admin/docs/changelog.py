@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.db.client import get_db
 from app.schemas.response import RMS, RM
 from app.services.docs.changelog import (
-    get_user_list_service,
+    get_changelog_list_service,
     create_change_log_service,
     update_change_log_service,
     delete_change_log_by_ids_service,
@@ -23,7 +23,7 @@ async def docs_change_log(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_READ)),
 ):
-    data = await get_user_list_service(db, page, pageSize)
+    data = await get_changelog_list_service(db, page, pageSize)
     return RMS(data=data)
 
 

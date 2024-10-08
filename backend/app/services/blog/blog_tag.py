@@ -8,6 +8,9 @@ from app.models.blog import BlogTag
 
 
 async def get_blog_tag_list_service(db: AsyncSession, page: int, pageSize: int):
+    """
+    获取博客标签列表
+    """
     try:
         count = await bt_dals.get_blog_tag_count(db)
         blog_tag = await bt_dals.get_blog_tag_list(db, page, pageSize)
@@ -21,6 +24,9 @@ async def get_blog_tag_list_service(db: AsyncSession, page: int, pageSize: int):
 
 
 async def update_blog_tag_by_id_service(db: AsyncSession, id: int, bt, current_user_id: int):
+    """
+    更新博客标签
+    """
     try:
         bc_in_db = await bt_dals.get_blog_tag_by_id(db, id)
         if bc_in_db is None:
@@ -36,6 +42,9 @@ async def update_blog_tag_by_id_service(db: AsyncSession, id: int, bt, current_u
 
 
 async def create_blog_tag_service(db: AsyncSession, bt, current_user_id):
+    """
+    创建博客标签
+    """
     try:
         bt["user_id"] = current_user_id
         bt = BlogTag(**bt)
@@ -47,6 +56,9 @@ async def create_blog_tag_service(db: AsyncSession, bt, current_user_id):
 
 
 async def delete_blog_tag_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据 ids 删除博客标签
+    """
     try:
         data = await bt_dals.delete_blog_tag_by_ids(db, ids)
         return data

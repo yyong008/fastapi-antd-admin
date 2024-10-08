@@ -7,6 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def get_blog_list_service(db: AsyncSession, categoryId, tagId, page, pageSize):
+    """
+    获取博客列表
+    """
     try:
         count = await b_dals.get_blog_count(db)
         blogs = await b_dals.get_blog_list(db, categoryId, tagId, page, pageSize)
@@ -21,6 +24,9 @@ async def get_blog_list_service(db: AsyncSession, categoryId, tagId, page, pageS
 
 
 async def get_blog_by_id_service(db: AsyncSession, id):
+    """
+    根据id获取博客
+    """
     try:
         blog = await b_dals.get_blog_by_id(db, id)
         if blog is None:
@@ -32,6 +38,9 @@ async def get_blog_by_id_service(db: AsyncSession, id):
 
 
 async def update_blog_service(db: AsyncSession, id, current_user_id, blog):
+    """
+    更新博客
+    """
     try:
         blog_in_db = await b_dals.get_blog_by_id(db, id)
         if blog_in_db is None:
@@ -48,6 +57,9 @@ async def update_blog_service(db: AsyncSession, id, current_user_id, blog):
 
 
 async def create_blog_service(db: AsyncSession, blog, current_user_id):
+    """
+    创建博客
+    """
     try:
         blog["user_id"] = current_user_id
         blog = Blog(**blog)
@@ -62,6 +74,9 @@ async def delete_blog_by_ids_service(
     db: AsyncSession,
     ids,
 ):
+    """
+    根据ids删除博客
+    """
     try:
         data = await b_dals.delete_blog_by_ids(
             db,

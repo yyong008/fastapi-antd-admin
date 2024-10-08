@@ -8,10 +8,10 @@ from app.models.system.menu import Menu
 
 from ._format import format_role
 
-async def get_role_list(page, pageSize, db: AsyncSession):
-    pass
-
 async def get_all_role_service(db: AsyncSession):
+    """
+    获取所有角色
+    """
     try:
         count = await role_dals.get_count(db)
         roles_list_all = await role_dals.get_roles_all(db)
@@ -25,18 +25,26 @@ async def get_all_role_service(db: AsyncSession):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 async def get_role_by_id_service(db: AsyncSession, role_id: int):
+    """
+    根据id获取角色
+    """
     try:
-        pass
+        data = await role_dals.get_role_by_id(db, role_id)
+        return format_role(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")
         raise HTTPException(status_code=400, detail=f"{e}")
 
-async def create_role_service(role, db: AsyncSession):
+async def create_role_service(db: AsyncSession, role):
+    """
+    创建角色
+    """
     try:
         menu_ids = role.menus if role.menus else []
         menus = []
         if menu_ids:
             menus = db.query(Menu).filter(Menu.id.in_(menu_ids)).all()
+            menus = await role_dals.get_roles_all(db)
             if not menus or len(menus) != len(menu_ids):
                 raise HTTPException(status_code=400, detail="有些菜单不存在")
         no_menu_role = role.model_dump()
@@ -50,6 +58,9 @@ async def create_role_service(role, db: AsyncSession):
 
 
 async def update_role_by_id_service(db: AsyncSession, role_id: int, role):
+    """
+    更新角色
+    """
     try:
         role_db = db.query(Role).options(joinedload(Role.menus)).filter(Role.id == role_id).first()
         if not role_db:
@@ -71,6 +82,9 @@ async def update_role_by_id_service(db: AsyncSession, role_id: int, role):
 
 
 async def delete_role_by_ids_service(db: AsyncSession, ids: list[int]):
+    """
+    根据ids删除角色
+    """
     try:
         count = await role_dals.delete_role_by_ids(db, ids)
         return count

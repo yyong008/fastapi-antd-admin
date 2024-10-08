@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from app.models.tools.mail import Mail
 from sqlalchemy.ext.asyncio import AsyncSession
 import app.db.base as base_crud
@@ -17,7 +16,8 @@ async def get_mail_all(db: AsyncSession):
 
 
 async def get_mail_by_id(db: AsyncSession, mail_id: int):
-    return db.query(Mail).filter(Mail.id == mail_id).first()
+    data = await base_crud.get_by_id(db=db, model=Mail, id=mail_id)
+    return data
 
 
 async def get_mail_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
@@ -37,24 +37,15 @@ async def get_mail_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
 
 
 async def create_mail_category(db: AsyncSession, mail):
-    db.add(mail)
-    db.commit()
-    db.refresh(mail)
-    return mail
+    data = await base_crud.create(db=db, model=Mail, obj_in=mail)
+    return data
 
 
 async def update_mail_by_id(db: AsyncSession, mail_id: int, mail: Mail):
-    db.commit()
-    db.refresh(mail)
-    return mail
+    data = await base_crud.update_by_id(db=db, model=Mail, id=mail_id, new_data=mail)
+    return data
 
 
 async def delete_mail_by_ids(db: AsyncSession, ids: list[int]):
-    try:
-        count = (
-            db.query(Mail).filter(Mail.id.in_(ids)).delete(synchronize_session=False)
-        )
-        db.commit()
-        return count
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    data = await base_crud.delete_by_ids(db=db, model=Mail, ids=ids)
+    return data

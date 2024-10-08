@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     SERVER_HOST: str
     SERVER_PORT: int
     DATABASE_URL: str
+    DATABASE_URL_SYNC: str
     PRESENTATION_MODE: int
     DEBUG: bool
     SECRET_KEY: str

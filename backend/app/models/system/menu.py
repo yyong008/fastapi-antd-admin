@@ -46,10 +46,10 @@ class Menu(Base):
     permission = Column(String, nullable=True)  # 权限标识
     isLink = Column(Integer, nullable=True)  # 是否外链
     order_no = Column(Integer, nullable=True)  # 排序号
-    createdAt = Column(
+    created_t = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )  # 创建时间
-    updatedAt = Column(
+    updated_t = Column(
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )  # 更新时间
 

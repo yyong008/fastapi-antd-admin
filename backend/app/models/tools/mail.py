@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String, func
 
 from app.db.client import Base
 
@@ -19,3 +19,6 @@ class Mail(Base):
     content = Column(String, nullable=True)
     html = Column(String, nullable=True)
     text = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
+    

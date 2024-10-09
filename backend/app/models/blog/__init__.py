@@ -42,5 +42,6 @@ class BlogTag(Base):
     name = Column(String, unique=True, nullable=False)
     description = Column(String, nullable=True)
     user_id = Column(Integer, nullable=False)  # 可能需要 ForeignKey 具体看你的需求
-
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
     blogs = relationship("Blog", back_populates="tags")

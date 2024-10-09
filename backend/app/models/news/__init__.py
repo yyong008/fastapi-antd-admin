@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 
 from app.db.client import Base
@@ -18,7 +18,8 @@ class News(Base):
         Integer, ForeignKey("news_category.id"), nullable=False
     )  # 外键，指向 NewsCategory
     user_id = Column(Integer, nullable=False)  # 上传用户，可能需要外键根据需求
-
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
     news = relationship("NewsCategory", back_populates="news")  # 反向关系
 
 
@@ -29,5 +30,6 @@ class NewsCategory(Base):
     name = Column(String, unique=True, nullable=False)
     description = Column(String, nullable=True)
     user_id = Column(Integer, nullable=False)  # 上传用户，可能需要外键根据需求
-
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
     news = relationship("News", back_populates="news")  # 反向关系

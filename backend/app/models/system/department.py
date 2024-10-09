@@ -14,8 +14,8 @@ class Department(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     order_no = Column(Integer, nullable=True)
-    createdAt = Column(DateTime(timezone=True), server_default=func.now())
-    updatedAt = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     parent_department_id = Column(
         Integer, ForeignKey("sys_department.id", ondelete="SET NULL"), nullable=True
     )

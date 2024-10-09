@@ -16,13 +16,12 @@ class Role(Base):
     description = Column(String, nullable=True)  # 描述
     remark = Column(String, nullable=True)  # 备注
     status = Column(Integer, nullable=True)  # 状态
-    createdAt = Column(
+    created_at = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )  # 创建时间
-    updatedAt = Column(
+    updated_at = Column(
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )  # 更新时间
-
     users = relationship(
         "User", secondary=user_role_association, back_populates="roles"
     )

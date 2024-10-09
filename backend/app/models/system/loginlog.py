@@ -17,3 +17,5 @@ class Loginlog(Base):
     system = Column(String, nullable=True)  # 操作系统
     browser = Column(String, nullable=True)  # 浏览器信息
     userId = Column(Integer, nullable=False)  # 关联用户，可能需要外键根据需求
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)

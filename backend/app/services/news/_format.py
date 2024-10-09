@@ -23,8 +23,8 @@ def format_news(news):
         "content": news.content,
         "author": news.author,
         "source": news.source,
-        "viewCount": news.viewCount,
-        "publishedAt": news.publishedAt,
+        "view_count": news.view_count,
+        "published_at": news.published_at,
     }
     return item
 
@@ -39,8 +39,8 @@ def format_news_by_id(news):
         "content": news.content,
         "author": news.author,
         "source": news.source,
-        "viewCount": news.viewCount,
-        "publishedAt": news.publishedAt,
+        "view_count": news.view_count,
+        "published_at": news.published_at,
         "userId": news.user_id,
         "categoryId": news.news_id
     }
@@ -53,6 +53,6 @@ def format_news_from_old_news(current_user_id, news):
     news['content'] = clean_html(news['content'])
     news["news_id"] = older_news["categoryId"]
     news["user_id"] = current_user_id
-    news["viewCount"] = 0
+    news["view_count"] = 0
     del news["categoryId"]
     return news

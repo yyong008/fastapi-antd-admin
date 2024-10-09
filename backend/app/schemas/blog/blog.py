@@ -14,10 +14,10 @@ class BlogBase(BaseModel):
     source: Optional[str] = Field(
         None, title="Source", description="The source of the blog post"
     )
-    viewCount: int = Field(
+    view_count: int = Field(
         0, title="View Count", description="The number of views for the blog post"
     )
-    publishedAt: datetime = Field(
+    published_at: datetime = Field(
         None, title="Published At", description="The publication date of the blog post"
     )
     user_id: int = Field(

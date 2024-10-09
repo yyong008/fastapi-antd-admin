@@ -12,8 +12,8 @@ class News(Base):
     content = Column(String, nullable=False)
     author = Column(String, nullable=True)
     source = Column(String, nullable=True)
-    viewCount = Column(Integer, default=0, nullable=False)
-    publishedAt = Column(DateTime(timezone=True), nullable=False)
+    view_count = Column(Integer, default=0, nullable=False)
+    published_at = Column(DateTime(timezone=True), nullable=False)
     news_id = Column(
         Integer, ForeignKey("news_category.id"), nullable=False
     )  # 外键，指向 NewsCategory

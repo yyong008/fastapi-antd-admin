@@ -52,7 +52,7 @@ async def get_news_by_id_service(db: AsyncSession, id: int, is_client: bool = Fa
     try:
         news = await news_dals.get_news_by_id(db, id)
         if is_client:
-            news.viewCount = news.viewCount + 1
+            news.view_count = news.view_count + 1
             await db.commit()
             await db.refresh(news)
         data = f_n.format_news_by_id(news)

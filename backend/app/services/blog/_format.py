@@ -16,8 +16,8 @@ def format_blog(blog):
         "content": blog.content,
         "author": blog.author,
         "source": blog.source,
-        "viewCount": blog.viewCount,
-        "publishedAt": blog.publishedAt,
+        "view_count": blog.view_count,
+        "published_at": blog.published_at,
         "categoryId": blog.category_id,
         "tagId":blog.tag_id
     }

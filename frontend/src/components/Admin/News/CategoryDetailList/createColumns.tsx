@@ -31,7 +31,7 @@ export const createNewsCategoryColumns = ({ refetch }) => [
     title: "新闻分类",
   },
   {
-    dataIndex: "viewCount",
+    dataIndex: "view_count",
     title: "查看次数",
   },
   {

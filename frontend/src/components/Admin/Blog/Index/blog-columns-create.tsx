@@ -30,7 +30,7 @@ export const blogColumnsCreate = (info: any) => [
     title: "来源",
   },
   {
-    dataIndex: "viewCount",
+    dataIndex: "view_count",
     title: "查看数",
   },
   {

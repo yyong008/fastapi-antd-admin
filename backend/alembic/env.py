@@ -20,6 +20,8 @@ model_files = glob.glob(os.path.join(model_folder, '**/*.py'))
 for model_file in model_files:
     if model_file.endswith('__init__.py') is not True:
          __import__(f"{model_file.replace('.py', '').replace(os.sep, '.')}")
+    else:
+         __import__(f"{model_file.replace('.py', '').replace(os.sep, '.')[:-9]}")
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

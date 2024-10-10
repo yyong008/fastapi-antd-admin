@@ -11,7 +11,7 @@ class FeedBack(Base):
     userId = Column(Integer, nullable=False)  # 可能需要 ForeignKey，具体看你的需求
     content = Column(String, nullable=False)
     url = Column(String, nullable=True)  # 反馈图片地址，可选字段
-    createdAt = Column(
+    created_at = Column(
         DateTime(timezone=True), server_default=func.now()
     )  # 数据创建时间
-    updatedAt = Column(DateTime(timezone=True), onupdate=func.now())  # 数据更新时间
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())  # 数据更新时间

@@ -37,7 +37,7 @@ export const Route = createFileRoute("/admin")({
 const resetStyles = {
   padding: "0px",
   margin: "0px",
-  height: "100vh",
+  minHeight: "100vh",
 };
 
 function AdminComponent() {
@@ -57,7 +57,6 @@ function AdminComponent() {
         }}
         route={route}
         token={token}
-        // loading={isLoading}
         {...value.theme}
         logo={prolayoutConfig.logo}
         menu={prolayoutConfig.menu}
@@ -65,7 +64,6 @@ function AdminComponent() {
         title={prolayoutConfig.title}
         ErrorBoundary={false}
         pageTitleRender={false}
-        contentStyle={resetStyles}
         layout={prolayoutConfig.layout as any}
         footerRender={() => <Footer />}
         suppressSiderWhenMenuEmpty={true}

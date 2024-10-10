@@ -105,7 +105,7 @@ export function BlogEditForm(props: BlogEditFormProps) {
       />
       <ProFormDateTimePicker
         label="博客发布时间"
-        name="publishedAt"
+        name="published_at"
         width={"100%" as any}
         rules={[
           {

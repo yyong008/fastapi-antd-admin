@@ -5,7 +5,7 @@ class NewsCreate(BaseModel):
     author: str
     categoryId: int
     content: str
-    publishedAt: datetime
+    published_at: datetime
     source: str
     title: str
 
@@ -13,6 +13,6 @@ class NewsUpdate(BaseModel):
     author: str
     categoryId: int
     content: str
-    publishedAt: datetime
+    published_at: datetime
     source: str
     title: str

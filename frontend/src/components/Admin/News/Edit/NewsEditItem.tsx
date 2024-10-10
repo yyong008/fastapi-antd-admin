@@ -41,7 +41,7 @@ export function NewsEditItem(props: any) {
       />
       <ProFormDateTimePicker
         label="新闻发布时间"
-        name="publishedAt"
+        name="published_at"
         width={"100%" as any}
         rules={[
           {

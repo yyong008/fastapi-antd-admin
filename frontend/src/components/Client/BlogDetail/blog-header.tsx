@@ -5,7 +5,7 @@ type BlogHeaderProps = {
     title: string;
     author: string;
     source: string;
-    publishedAt: string;
+    published_at: string;
   };
 };
 
@@ -16,7 +16,7 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
       <div className="flex text-gray-500 text-[14px]">
         <div className="mr-[10px]">作者：{blog.author}</div>
         <div className="mr-[10px]">来源：{blog.source}</div>
-        <div>发布时间：{dayjs(blog.publishedAt).format("YYYY-MM-DD")}</div>
+        <div>发布时间：{dayjs(blog.published_at).format("YYYY-MM-DD")}</div>
       </div>
     </div>
   );

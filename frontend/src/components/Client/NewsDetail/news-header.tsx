@@ -7,7 +7,7 @@ export function NewsHeader({
     title: string;
     author: string;
     source: string;
-    publishedAt: string;
+    published_at: string;
   };
 }) {
   return (
@@ -16,7 +16,7 @@ export function NewsHeader({
       <div className="flex text-gray-500 text-[14px] mt-[10px]">
         <div className="mr-[10px]">作者：{news.author}</div>
         <div className="mr-[10px]">来源：{news.source}</div>
-        <div>发布时间：{dayjs(news.publishedAt).format("YYYY-MM-DD")}</div>
+        <div>发布时间：{dayjs(news.published_at).format("YYYY-MM-DD")}</div>
       </div>
     </div>
   );

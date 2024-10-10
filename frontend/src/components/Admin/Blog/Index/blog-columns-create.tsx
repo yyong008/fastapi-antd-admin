@@ -34,7 +34,7 @@ export const blogColumnsCreate = (info: any) => [
     title: "查看数",
   },
   {
-    dataIndex: "publishedAt",
+    dataIndex: "published_at",
     title: "发布时间",
     renderText(text: string) {
       return <FormatTime timeStr={text} />;

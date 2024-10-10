@@ -15,7 +15,7 @@ class ChangeLog(Base):
     type = Column(Integer, nullable=False)  # 1. 大版本更新，2. 功能更新 3. 修复 bug
     content = Column(String, nullable=False)
     url = Column(String, nullable=False)  # 更新地址
-    createdAt = Column(
+    created_at = Column(
         DateTime(timezone=True), server_default=func.now()
     )  # 数据创建时间
-    updatedAt = Column(DateTime(timezone=True), onupdate=func.now())  # 数据更新时间
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())  # 数据更新时间

@@ -23,16 +23,16 @@ class MenuBase(BaseModel):
     status: Optional[int] = Field(
         None, title="Status", description="The status of the menu"
     )
-    isShow: Optional[int] = Field(
+    is_show: Optional[int] = Field(
         None, title="Is Show", description="Flag indicating if the menu is visible"
     )
-    isCache: Optional[int] = Field(
+    is_cache: Optional[int] = Field(
         None, title="Is Cache", description="Flag indicating if the menu is cached"
     )
     permission: Optional[str] = Field(
         None, title="Permission", description="Permission identifier for the menu"
     )
-    isLink: Optional[int] = Field(
+    is_link: Optional[int] = Field(
         None,
         title="Is Link",
         description="Flag indicating if the menu is an external link",

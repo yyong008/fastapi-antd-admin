@@ -12,7 +12,7 @@ function createProLayoutRouteImpl(
       name: item.name,
       path: isExternalLink(item.path) ? item.path : `/admin${item.path}`,
       key: item.id + item.path, // https://github.com/ant-design/pro-components/issues/2511
-      hideInMenu: !item.isShow,
+      hideInMenu: !item.is_show,
       icon: item.icon ? <AntdIcon name={item.icon} /> : item.icon,
       children: createProLayoutRouteImpl(items, item.id), // 递归构建子树
     }))

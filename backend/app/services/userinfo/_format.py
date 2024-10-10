@@ -12,10 +12,10 @@ def format_userInfo(user):
       "remark": user.remark,
       "path_file": user.path_file,
       "status": user.status,
-      "isShow": user.isShow,
-      "isCache": user.isCache,
+      "is_show": user.is_show,
+      "is_cache": user.is_cache,
       "permission": user.permission,
-      "isLink": user.isLink,
+      "is_link": user.is_link,
       "order_no": user.order_no,
       "parent_menu_id": user.parent_menu_id,
     }

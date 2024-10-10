@@ -51,7 +51,7 @@ export const createColumns = ({ refetch, menuNotPerm }) => [
     ellipsis: true,
     width: 200,
     render: (_: any, record: any) => {
-      if (record.isLink) {
+      if (record.is_link) {
         return (
           <a href={record.path} target="_blank" rel="noreferrer">
             {record.path}
@@ -95,30 +95,30 @@ export const createColumns = ({ refetch, menuNotPerm }) => [
     },
   },
   {
-    dataIndex: "isShow",
+    dataIndex: "is_show",
     title: "显示",
     width: 80,
     tooltip: "是否在菜单中显示?",
     render(_: any, record: any) {
-      return <ShowType isShow={record?.isShow} />;
+      return <ShowType isShow={record?.is_show} />;
     },
   },
   {
-    dataIndex: "isLink",
+    dataIndex: "is_link",
     title: "外链",
     tooltip: "是否外链?",
     width: 80,
     render(_: any, record: any) {
-      return <LinkType isLink={record?.isLink} />;
+      return <LinkType isLink={record?.is_link} />;
     },
   },
   {
-    dataIndex: "isCache",
+    dataIndex: "is_cache",
     title: "缓存",
     tooltip: "是否缓存?",
     width: 80,
     render(_: any, record: any) {
-      return <CacheType isCache={record?.isCache} />;
+      return <CacheType isCache={record?.is_cache} />;
     },
   },
   {

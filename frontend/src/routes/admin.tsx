@@ -80,7 +80,7 @@ function AdminComponent() {
           },
         }}
         menuItemRender={(item, dom) => {
-          if (item.isLink) {
+          if (item.is_link) {
             return <MenuItemOutLink path={item.path!} dom={dom} />;
           }
 

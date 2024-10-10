@@ -92,7 +92,7 @@ export function TypeMenu({ menuNotPerm }: any) {
         ]}
       />
       <ProFormRadio.Group
-        name="isLink"
+        name="is_link"
         label="外链"
         tooltip="是否是外部链接"
         options={[
@@ -137,7 +137,7 @@ export function TypeMenu({ menuNotPerm }: any) {
         ]}
       />
       <ProFormRadio.Group
-        name="isShow"
+        name="is_show"
         label="显示"
         tooltip="是否在菜单栏显示"
         options={[

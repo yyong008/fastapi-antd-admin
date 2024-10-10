@@ -30,7 +30,7 @@ async def get_news_category_all(db: AsyncSession):
     Returns:
         list[NewsCategory]: 所有新闻分类
     """
-    sort_column = NewsCategory.createdAt.desc()
+    sort_column = NewsCategory.created_at.desc()
     data = await base_crud.get_all(db, NewsCategory, order_by=sort_column)
     return data
 

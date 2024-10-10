@@ -36,7 +36,7 @@ export function ProfileAccountRoute() {
         theme: res.data.theme,
         lang: res.data.lang,
         phone: res.data.phone,
-        createdAt: res.data.createdAt,
+        created_at: res.data.created_at,
         department: res.data?.department?.name,
       });
       setLoading(false);
@@ -74,7 +74,7 @@ export function ProfileAccountRoute() {
           <ProFormText label="语言" name="theme" />
           <ProFormText label="主题" name="lang" />
           <ProFormDigit label="手机号" name="phone" />
-          <ProFormText label="创建时间" name="createdAt" />
+          <ProFormText label="创建时间" name="created_at" />
           <ProFormText label="部门" name="department" />
         </ProForm>
       </ProCard>

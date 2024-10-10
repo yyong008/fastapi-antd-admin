@@ -21,7 +21,7 @@ async def get_menu_by_id(db: AsyncSession, id: int):
 async def get_menu_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
     filter = None
     options = None
-    order_by = Menu.createdAt.desc()
+    order_by = Menu.created_at.desc()
     data = await base_crud.get_list(
         db=db,
         model=Menu,

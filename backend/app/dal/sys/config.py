@@ -17,7 +17,7 @@ async def get_count(db: AsyncSession):
 
 
 async def get_config_all(db: AsyncSession):
-    order_by = Config.createdAt.desc()
+    order_by = Config.created_at.desc()
     data = await base_crud.get_all(db, Config, order_by=order_by)
     return data
 

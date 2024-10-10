@@ -28,7 +28,7 @@ async def get_count(db: AsyncSession):
 
 
 async def get_user_all(db: AsyncSession):
-    order_by = User.createdAt.desc()
+    order_by = User.created_at.desc()
     options = [
         selectinload(User.department).load_only(Department.name),
         selectinload(User.roles),

@@ -10,7 +10,7 @@ async def get_blog_count(db: AsyncSession):
 
 
 async def get_blog_all(db: AsyncSession):
-    sort_column = Blog.createdAt.desc()
+    sort_column = Blog.created_at.desc()
     data = await base_crud.get_all(db, Blog, sort_column)
     return data
 

@@ -10,7 +10,7 @@ async def get_mail_count(db: AsyncSession):
 
 
 async def get_mail_all(db: AsyncSession):
-    order_by = Mail.createdAt.desc()
+    order_by = Mail.created_at.desc()
     data = await base_crud.get_all(db=db, model=Mail, order_by=order_by)
     return data
 

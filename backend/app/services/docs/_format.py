@@ -10,8 +10,8 @@ def format_changelog(changelog):
         "type": changelog.type,
         "content": changelog.content,
         "url": changelog.url,
-        "createdAt": changelog.createdAt,
-        "updatedAt": changelog.updatedAt,
+        "created_at": changelog.created_at,
+        "updated_at": changelog.updated_at,
     }
     return item
 
@@ -22,7 +22,7 @@ def format_feedback(feedback):
         "userId": feedback.userId,
         "content": feedback.content,
         "url": feedback.url,
-        "createdAt": feedback.createdAt,
-        "updatedAt": feedback.updatedAt,
+        "created_at": feedback.created_at,
+        "updated_at": feedback.updated_at,
     }
     return item

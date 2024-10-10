@@ -9,7 +9,7 @@ async def get_blog_tag_count(db: AsyncSession):
 
 
 async def get_blog_tag_all(db: AsyncSession):
-    sort_column = BlogTag.createdAt.desc()
+    sort_column = BlogTag.created_at.desc()
     return db.query(BlogTag).order_by(sort_column).all()
 
 

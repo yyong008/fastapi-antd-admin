@@ -11,7 +11,7 @@ async def get_count(db: AsyncSession):
 
 
 async def get_roles_all(db: AsyncSession):
-    order_by = Role.createdAt.desc()
+    order_by = Role.created_at.desc()
     options = selectinload(Role.menus)
     data = await base_crud.get_all(
         db=db, model=Role, order_by=order_by, options=options
@@ -25,7 +25,7 @@ async def get_role_by_id(db: AsyncSession, role_id: int):
 
 
 async def get_role_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
-    order_by = Role.createdAt.desc()
+    order_by = Role.created_at.desc()
     options = selectinload(Role.menus)
     data = await base_crud.get_list(
         db=db,

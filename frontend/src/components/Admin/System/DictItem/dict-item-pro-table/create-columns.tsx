@@ -29,17 +29,17 @@ export const createColumns = ({ refetch, dictId }: any ) => [
     },
   },
   {
-    dataIndex: "createdAt",
+    dataIndex: "created_at",
     title: "创建时间",
     render(_: any, record: any) {
-      return <div>{record.createdAt ? formatDate(record.createdAt) : "-"}</div>;
+      return <div>{record.created_at ? formatDate(record.created_at) : "-"}</div>;
     },
   },
   {
-    dataIndex: "updatedAt",
+    dataIndex: "updated_at",
     title: "更新时间",
     render(_: any, record: any) {
-      return <div>{record.updatedAt ? formatDate(record.updatedAt) : "-"}</div>;
+      return <div>{record.updated_at ? formatDate(record.updated_at) : "-"}</div>;
     },
   },
   {

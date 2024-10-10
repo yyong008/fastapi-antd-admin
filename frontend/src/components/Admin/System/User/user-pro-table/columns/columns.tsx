@@ -95,21 +95,21 @@ export const createUserTableColumns = ({
     },
   },
   {
-    dataIndex: "createdAt",
+    dataIndex: "created_at",
     title: "创建时间",
     ellipsis: true,
     align: "center",
     render(_: any, record: any) {
-      return <>{record.createdAt ? formatDate(record.createdAt) : "-"}</>;
+      return <>{record.created_at ? formatDate(record.created_at) : "-"}</>;
     },
   },
   {
-    dataIndex: "updatedAt",
+    dataIndex: "updated_at",
     title: "更新时间",
     ellipsis: true,
     align: "center",
     render(_: any, record: any) {
-      return <FormatTime timeStr={record.updatedAt} />;
+      return <FormatTime timeStr={record.updated_at} />;
     },
   },
   {

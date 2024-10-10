@@ -63,7 +63,7 @@ async def update_change_log_service(db: AsyncSession, id, changelog, current_use
             raise HTTPException(status_code=404, detail="Blog not found")
 
         for key, value in changelog.items():
-            if key == "createdAt":
+            if key == "created_at":
                 continue
             setattr(changelog_in_db, key, value)
         changelog_in_db.userId = current_user_id

@@ -10,7 +10,7 @@ async def get_feedback_count(db: AsyncSession):
 
 
 async def get_feedback_all(db: AsyncSession):
-    sort_column = FeedBack.createdAt.desc()
+    sort_column = FeedBack.created_at.desc()
     return db.query(FeedBack).order_by(sort_column).all()
 
 

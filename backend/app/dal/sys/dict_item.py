@@ -11,7 +11,7 @@ async def get_dictionary_entry_count(id, db: AsyncSession):
 
 
 async def get_dictionary_entry_all(db: AsyncSession):
-    order_by = DictionaryEntry.createdAt.desc()
+    order_by = DictionaryEntry.created_at.desc()
     data = await base_crud.get_all(db, DictionaryEntry, order_by)
     return data
 
@@ -19,7 +19,7 @@ async def get_dictionary_entry_all(db: AsyncSession):
 async def get_dictionary_entry_list(
     db: AsyncSession, id, page: int = 1, pageSize: int = 10
 ):
-    order_by = DictionaryEntry.createdAt.desc()
+    order_by = DictionaryEntry.created_at.desc()
     filter = DictionaryEntry.dictionary_id == id
     data = await base_crud.get_list(
         db, DictionaryEntry, order_by, filter, page, pageSize

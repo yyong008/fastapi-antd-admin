@@ -38,8 +38,8 @@ class Dept(BaseModel):
 
 class UserResponse(UserBase):
     id: int
-    createdAt: datetime
-    updatedAt: Optional[datetime] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
     department: Optional[Dept] = (
         None  # Adjust based on how you want to represent the department in the response
     )

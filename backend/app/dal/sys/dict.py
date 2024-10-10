@@ -19,7 +19,7 @@ async def get_dictionary_by_id(db: AsyncSession, id: int):
     return data
 
 async def get_dictionary_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
-    order_by = Dictionary.createdAt.desc()
+    order_by = Dictionary.created_at.desc()
     filter = None
     data = await base_crud.get_list(
         db=db,

@@ -20,11 +20,11 @@ export const createConfigTableColumns = () => [
     title: "备注",
   },
   {
-    dataIndex: "createdAt",
+    dataIndex: "created_at",
     title: "创建时间",
   },
   {
-    dataIndex: "updateAt",
+    dataIndex: "update_at",
     title: "创建时间",
   },
   {

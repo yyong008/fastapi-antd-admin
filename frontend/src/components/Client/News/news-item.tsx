@@ -14,7 +14,7 @@ export function NewsItem(props: any) {
             {data.title}
           </h1>
           <span className="flex items-center m-[10px] left-[10px] text-[14px] text-gray-400">
-            {formatDate(data.createdAt)}
+            {formatDate(data.created_at)}
           </span>
         </div>
       </Link>

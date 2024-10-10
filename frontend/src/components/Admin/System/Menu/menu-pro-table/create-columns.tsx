@@ -123,19 +123,19 @@ export const createColumns = ({ refetch, menuNotPerm }) => [
   },
   {
     title: "创建时间",
-    dataIndex: "createdAt",
+    dataIndex: "created_at",
     ellipsis: true,
     align: "center",
     width: 200,
-    render: (_: any, record: any) => <FormatTime timeStr={record.createdAt} />,
+    render: (_: any, record: any) => <FormatTime timeStr={record.created_at} />,
   },
   {
     title: "更新时间",
-    dataIndex: "updatedAt",
+    dataIndex: "updated_at",
     ellipsis: true,
     align: "center",
     width: 200,
-    render: (_: any, record: any) => <FormatTime timeStr={record.updatedAt} />,
+    render: (_: any, record: any) => <FormatTime timeStr={record.updated_at} />,
   },
   {
     title: "操作",

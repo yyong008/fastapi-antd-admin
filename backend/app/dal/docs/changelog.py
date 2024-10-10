@@ -10,7 +10,7 @@ async def get_changelog_count(db: AsyncSession):
 
 
 async def get_changelog_all(db: AsyncSession):
-    sort_column = ChangeLog.createdAt.desc()
+    sort_column = ChangeLog.created_at.desc()
     return db.query(ChangeLog).order_by(sort_column).all()
 
 

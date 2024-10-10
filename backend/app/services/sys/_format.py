@@ -67,8 +67,8 @@ def format_dept(item):
         "parent_department_id": item.parent_department_id,
         "order_no": item.order_no,
         "description": item.description,
-        "createdAt": item.createdAt,
-        "updatedAt": item.updatedAt,
+        "created_at": item.created_at,
+        "updated_at": item.updated_at,
     }
 
 
@@ -83,8 +83,8 @@ def format_dict_item(dict_item):
         "orderNo": dict_item.order_no,
         "status": dict_item.status,
         "remark": dict_item.remark,
-        "createdAt": dict_item.createdAt,
-        "updatedAt": dict_item.updatedAt,
+        "created_at": dict_item.created_at,
+        "updated_at": dict_item.updated_at,
     }
     return item
 
@@ -101,8 +101,8 @@ def format_dict(dict):
         "status": dict.status,
         "remark": dict.remark,
         "description": dict.description,
-        "createdAt": dict.createdAt,
-        "updatedAt": dict.updatedAt,
+        "created_at": dict.created_at,
+        "updated_at": dict.updated_at,
     }
     return item
 
@@ -144,8 +144,8 @@ def format_menu(m):
         "isLink": m.isLink,
         "order_no": m.order_no,
         "parent_menu_id": m.parent_menu_id,
-        "created_at": m.createdAt,
-        "updated_at": m.updatedAt,
+        "created_at": m.created_at,
+        "updated_at": m.updated_at,
     }
 
 
@@ -160,8 +160,8 @@ def format_menu_tree(menu):
         "hideInMenu": menu["isShow"],
         "file_path": menu["path_file"],
         "orderNo": menu["order_no"],
-        "createdAt": menu["created_at"],
-        "updatedAt": menu["updated_at"],
+        "created_at": menu["created_at"],
+        "updated_at": menu["updated_at"],
     }
 
 def format_role(role):
@@ -174,8 +174,8 @@ def format_role(role):
         "value": role.value,
         "description": role.description,
         "status": role.status,
-        "createdAt": role.createdAt,
-        "updatedAt": role.updatedAt,
+        "created_at": role.created_at,
+        "updated_at": role.updated_at,
     }
     if hasattr(role, "menus"):
         item["menus"] = [{"id": menu.id, "name": menu.name} for menu in role.menus]
@@ -197,8 +197,8 @@ def format_user(user):
         "status": user.status,
         "remark": user.remark,
         "nickname": user.nickname,
-        "createdAt": user.createdAt,
-        "updatedAt": user.updatedAt,
+        "created_at": user.created_at,
+        "updated_at": user.updated_at,
         "department_id": user.department_id,
     }
 

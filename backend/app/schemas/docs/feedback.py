@@ -15,10 +15,10 @@ class FeedBackBase(BaseModel):
     url: Optional[str] = Field(
         None, title="URL", description="The URL of the feedback image"
     )
-    createdAt: Optional[datetime] = Field(
+    created_at: Optional[datetime] = Field(
         None, title="Created At", description="The time when the feedback was created"
     )
-    updatedAt: Optional[datetime] = Field(
+    updated_at: Optional[datetime] = Field(
         None,
         title="Updated At",
         description="The time when the feedback was last updated",

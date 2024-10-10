@@ -25,10 +25,10 @@ class ChangeLogBase(BaseModel):
     url: str = Field(
         ..., title="URL", description="The URL for more information about the update"
     )
-    createdAt: Optional[datetime] = Field(
+    created_at: Optional[datetime] = Field(
         None, title="Created At", description="The time when this record was created"
     )
-    updatedAt: Optional[datetime] = Field(
+    updated_at: Optional[datetime] = Field(
         None,
         title="Updated At",
         description="The time when this record was last updated",

@@ -11,13 +11,13 @@ async def get_count(db: AsyncSession):
 
 
 async def get_user_signlog_all(db: AsyncSession):
-    sort_column = UserSignLog.createdAt.desc()
+    sort_column = UserSignLog.created_at.desc()
     data = await base_crud.get_all(db, UserSignLog, sort_column)
     return data
 
 
 async def get_user_signlog_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
-    order_by = UserSignLog.createdAt.desc()
+    order_by = UserSignLog.created_at.desc()
     data = await base_crud.get_list(db, UserSignLog, order_by, page, pageSize)
     return data
 

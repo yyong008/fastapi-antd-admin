@@ -58,17 +58,17 @@ export const createChangeLogColumns = ({ refresh }) =>  [
       },
     },
     {
-      dataIndex: "createdAt",
+      dataIndex: "created_at",
       title: "创建时间",
       render(_: any, record: any) {
-        return <FormatTime timeStr={record.createdAt} />;
+        return <FormatTime timeStr={record.created_at} />;
       },
     },
     {
-      dataIndex: "updatedAt",
+      dataIndex: "updated_at",
       title: "更新时间",
       render(_: any, record: any) {
-        return <FormatTime timeStr={record.updatedAt} />;
+        return <FormatTime timeStr={record.updated_at} />;
       },
     },
     {

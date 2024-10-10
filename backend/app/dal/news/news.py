@@ -66,7 +66,7 @@ async def get_news_all(db: AsyncSession):
     Returns:
         list: 新闻列表
     """
-    sort_column = News.createdAt.desc()
+    sort_column = News.created_at.desc()
     data = await base_crud.get_all(db, News, order_by=sort_column)
     return data
 

@@ -22,10 +22,10 @@ export const createFeedbackColumns = ({ refetch }: any) => [
       },
     },
     {
-      dataIndex: "createdAt",
+      dataIndex: "created_at",
       title: "反馈时间",
       render(_: any, record: any) {
-        return <FormatTime timeStr={record.createdAt} />;
+        return <FormatTime timeStr={record.created_at} />;
       },
     },
   ];

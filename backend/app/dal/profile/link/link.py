@@ -29,7 +29,7 @@ async def get_link_count_by_category_id(db: AsyncSession, category_id):
 
 
 async def get_link_all(db: AsyncSession):
-    sort_column = Link.createdAt.desc()
+    sort_column = Link.created_at.desc()
     return db.query(Link).order_by(sort_column).all()
 
 

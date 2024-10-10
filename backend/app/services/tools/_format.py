@@ -4,8 +4,8 @@ def format_tools_storage(storage):
     """
     item = {
         "id": storage.id,
-        "createdAt": storage.createdAt,
-        "updatedAt": storage.updatedAt,
+        "created_at": storage.created_at,
+        "updated_at": storage.updated_at,
         "name": storage.name,
         "user_id": storage.user_id,
         "file_name": storage.file_name,

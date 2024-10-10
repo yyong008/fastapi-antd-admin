@@ -18,8 +18,8 @@ export type TableListItem = {
   path: string;
   creator: string;
   status: Status;
-  createdAt: number;
-  updatedAt: number;
+  created_at: number;
+  updated_at: number;
   isLink: 0 | 1;
 };
 

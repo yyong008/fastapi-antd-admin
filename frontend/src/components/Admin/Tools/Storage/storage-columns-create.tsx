@@ -44,7 +44,7 @@ export const storageColumnsCreate = () => {
       ellipsis: true,
     },
     {
-      dataIndex: "createdAt",
+      dataIndex: "created_at",
       title: "创建时间",
       ellipsis: true,
       renderText(text: string) {

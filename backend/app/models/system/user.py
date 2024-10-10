@@ -60,8 +60,8 @@ class UserSignLog(Base):
     userId = Column(Integer, nullable=False)  # 外键关系需要定义 ForeignKey
     sign_type = Column(Integer, nullable=False)
     sign_time = Column(DateTime(timezone=True), default=func.now(), server_default=func.now(), nullable=False)
-    createdAt = Column(DateTime(timezone=True), server_default=func.now())
-    updatedAt = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
 
 class UserSign(Base):

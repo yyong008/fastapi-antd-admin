@@ -1,9 +1,10 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { createFileRoute } from "@tanstack/react-router";
 import { createNewsCategoryColumns } from "@/components/Admin/News/CategoryDetailList/createColumns";
 import { createToolBarRender } from "@/components/Admin/News/CategoryDetailList/createToolBarRender";
+import { getNewsCategory } from "@/apis/admin/news/category";
 import { getNewsListByCategoryId } from "@/apis/admin/news/news";
 import { useParams } from "@tanstack/react-router";
 
@@ -23,12 +24,22 @@ export function NewsRoute() {
     total: 0,
   });
 
+  const [newsCategoryData, setNewsCategoryData] = useState({
+    list: [],
+    total: 0,
+  });
+
   const getData = async () => {
     const res: any = await getNewsListByCategoryId({ ...page, category_id });
-
+    const newsRes: any = await getNewsCategory({ page: 1, pageSize: 10000 })
+    setLoading(false);
     if (res && res.code === 0) {
       setData(res.data);
-      setLoading(false);
+
+    }
+
+    if (newsRes && newsRes.code === 0) {
+      setNewsCategoryData(newsRes.data);
     }
   };
 
@@ -36,11 +47,16 @@ export function NewsRoute() {
     setLoading(true);
     getData();
   }, [page]);
+
+  const name = useMemo(() => {
+  const name = newsCategoryData?.list?.filter((item: any) => item.id === Number(category_id))[0]?.name;
+    return name
+  }, [newsCategoryData]);
   return (
     <PageContainer>
       <ProTable
         rowKey="id"
-        headerTitle="新闻"
+        headerTitle={<div className="flex items-center gap-2"><div className="text-xl font-bold">{name}</div>新闻</div>}
         size="small"
         search={false}
         loading={loading}
@@ -49,7 +65,7 @@ export function NewsRoute() {
         }}
         dataSource={data?.list}
         toolBarRender={createToolBarRender()}
-        columns={createNewsCategoryColumns({ refetch: getData })}
+        columns={createNewsCategoryColumns({ refetch: getData, newsCategoryData })}
       />
     </PageContainer>
   );

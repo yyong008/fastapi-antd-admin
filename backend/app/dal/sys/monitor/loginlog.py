@@ -15,7 +15,7 @@ async def get_Loginlog_by_id(db: AsyncSession, id: int):
 
 
 async def get_Loginlog_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
-    order_by = Loginlog.login_at.asc()
+    order_by = Loginlog.login_at.desc()
     data = await base_crud.get_list(
         db, Loginlog, order_by=order_by, page=page, pageSize=pageSize
     )

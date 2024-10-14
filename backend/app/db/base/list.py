@@ -66,12 +66,14 @@ async def get_list(
     query: Select = select(model)
 
     if order_by is not None:
-        query = query.order_by(order_by)
+       if isinstance(order_by, (list, tuple)): 
+         query = query.order_by(*order_by)
+       else:
+         query = query.order_by(order_by)
 
     if options is not None:
         if isinstance(options, (list, tuple)):
             query = query.options(*options)
-            pass
         else:
             query = query.options(options)
 

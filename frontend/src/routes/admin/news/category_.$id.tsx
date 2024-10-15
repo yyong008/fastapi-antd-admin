@@ -48,10 +48,10 @@ export function NewsRoute() {
   }, [page]);
 
   const name = useMemo(() => {
-    const news = newsCategoryData?.list?.filter(
+    const nc = newsCategoryData?.list?.filter(
       (item: any) => item.id === Number(category_id)
     )[0] as any;
-    return news?.name || "";
+    return nc?.name || "";
   }, [newsCategoryData]);
   return (
     <PageContainer>

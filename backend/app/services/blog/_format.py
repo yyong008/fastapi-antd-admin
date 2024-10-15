@@ -4,6 +4,8 @@ def format_blog_category(blog_category):
         "id": blog_category.id,
         "name": blog_category.name,
         "description": blog_category.description,
+        "created_at": blog_category.created_at,
+        "updated_at": blog_category.updated_at,
     }
     return item
 
@@ -30,5 +32,7 @@ def format_blog_tag(blog_tag):
         "id": blog_tag.id,
         "name": blog_tag.name,
         "description": blog_tag.description,
+        "created_at": blog_tag.created_at,
+        "updated_at": blog_tag.updated_at,
     }
     return item

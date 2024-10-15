@@ -4,23 +4,28 @@ import { ButtonLink } from "@/components/common/button-link";
 import { DeleteIt } from "@/components/common/delete-it";
 import { FormatTime } from "@/components/common/format-time";
 import { Link } from "@tanstack/react-router";
-import { removeHtmlTag } from "@/utils/utils";
+
+// import { removeHtmlTag } from "@/utils/utils";
 
 export const blogColumnsCreate = (info: any) => [
   {
     dataIndex: "title",
-    title: "文章名字",
+    title: "文章标题",
     renderText(text: string, record: any) {
       return <Link to={`/blog/${record.id}`}>{text}</Link>;
     },
   },
   {
-    dataIndex: "content",
-    title: "文章",
-    renderText(text: string) {
-      return <div>{removeHtmlTag(text ?? "").slice(0, 50)}</div>;
-    },
+    dataIndex: "description",
+    title: "文章描述",
   },
+  // {
+  //   dataIndex: "content",
+  //   title: "文章",
+  //   renderText(text: string) {
+  //     return <div>{removeHtmlTag(text ?? "").slice(0, 50)}</div>;
+  //   },
+  // },
   {
     dataIndex: "author",
     title: "作者",

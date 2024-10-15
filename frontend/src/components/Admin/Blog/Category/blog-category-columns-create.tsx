@@ -27,6 +27,22 @@ export const blogCategoryColumnsCreate = (refetch: any) => [
     title: "标签内容",
   },
   {
+    dataIndex: "created_at",
+    title: "创建时间",
+    ellipsis: true,
+    // render(_, record) {
+    //   return <div><FormatTime timeStr={record.created_at} /></div>
+    // },
+  },
+  {
+    dataIndex: "updated_at",
+    title: "创建时间",
+    ellipsis: true,
+    // render(_, record) {
+    //   return <FormatTime timeStr={record.updated_at} />;
+    // },
+  },
+  {
     dataIndex: "op",
     title: "操作",
     render(_: any, record: any) {

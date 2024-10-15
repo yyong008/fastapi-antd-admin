@@ -33,8 +33,10 @@ request.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === UN_AUTH_CODE) {
       eventCenter.emit(eventTypes.USER_AUTHORIZED, error.response?.data?.message)
-    } else if (error.response.data.code === 1) {
+    } else if (error.response?.data?.code === 1) {
       eventCenter.emit(eventTypes.DATA_ERROR, error.response?.data?.message)
+    } else if( error.response?.data && typeof error.response?.data === 'string') {
+       eventCenter.emit(eventTypes.DATA_ERROR, error.response?.data.slice(0, 100))
     }
 
     return Promise.reject(error);

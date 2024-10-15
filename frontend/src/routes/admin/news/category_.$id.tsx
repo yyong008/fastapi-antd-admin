@@ -31,11 +31,10 @@ export function NewsRoute() {
 
   const getData = async () => {
     const res: any = await getNewsListByCategoryId({ ...page, category_id });
-    const newsRes: any = await getNewsCategory({ page: 1, pageSize: 10000 })
+    const newsRes: any = await getNewsCategory({ page: 1, pageSize: 10000 });
     setLoading(false);
     if (res && res.code === 0) {
       setData(res.data);
-
     }
 
     if (newsRes && newsRes.code === 0) {
@@ -49,14 +48,20 @@ export function NewsRoute() {
   }, [page]);
 
   const name = useMemo(() => {
-  const name = newsCategoryData?.list?.filter((item: any) => item.id === Number(category_id))[0]?.name;
-    return name
+    const { name = "" } = newsCategoryData?.list?.filter(
+      (item: any) => item.id === Number(category_id)
+    )[0] as any;
+    return name;
   }, [newsCategoryData]);
   return (
     <PageContainer>
       <ProTable
         rowKey="id"
-        headerTitle={<div className="flex items-center gap-2"><div className="text-xl font-bold">{name}</div>新闻</div>}
+        headerTitle={
+          <div className="flex items-center gap-2">
+            <div className="text-xl font-bold">{name}</div>新闻
+          </div>
+        }
         size="small"
         search={false}
         loading={loading}
@@ -65,7 +70,10 @@ export function NewsRoute() {
         }}
         dataSource={data?.list}
         toolBarRender={createToolBarRender()}
-        columns={createNewsCategoryColumns({ refetch: getData, newsCategoryData })}
+        columns={createNewsCategoryColumns({
+          refetch: getData,
+          newsCategoryData,
+        })}
       />
     </PageContainer>
   );

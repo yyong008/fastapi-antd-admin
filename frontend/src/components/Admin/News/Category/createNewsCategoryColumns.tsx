@@ -1,5 +1,6 @@
 import { Space, Tag } from "antd";
 
+import { FormatTime } from "@/components/common/format-time";
 import { Link } from "@tanstack/react-router";
 import { NewsCategoryModalUpdate } from "./NewsCategoryModalUpdate";
 import { NewsCategoryPopconfirmDelete } from "./NewsCategoryPopconfirmDelete";
@@ -19,6 +20,20 @@ export const createNewsCategoryColumns = ({ refetch }) => [
   {
     dataIndex: "description",
     title: "描述",
+  },
+   {
+    dataIndex: "created_at",
+    title: "创建时间",
+    render(_, record: any) {
+      return <FormatTime timeStr={record.created_at} />;
+    }
+  },
+   {
+    dataIndex: "updatd_at",
+    title: "更新时间",
+    render(_, record: any) {
+      return <FormatTime timeStr={record.updated_at} />;
+    }
   },
   {
     dataIndex: "op",

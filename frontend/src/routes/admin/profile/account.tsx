@@ -54,7 +54,7 @@ export function ProfileAccountRoute() {
           form={form}
           readonly={true}
           layout="horizontal"
-          labelCol={{ span: 1.7 }}
+          labelCol={{ span: 2 }}
           submitter={false}
         >
           {/* <ProFormUploadButton

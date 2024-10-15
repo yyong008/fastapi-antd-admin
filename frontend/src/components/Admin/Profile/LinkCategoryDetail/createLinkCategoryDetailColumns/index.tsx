@@ -4,11 +4,14 @@ import { DeleteIt } from "../delete-it";
 import { Link } from "@tanstack/react-router";
 import { LinkModalUpdate } from "../link-modal-update";
 import LinkSvg from "../link-svg";
+import { ProColumnType } from "@ant-design/pro-components"
 
 export const createLinkCategoryDetailColumns = ({ refetch }) => [
   {
     dataIndex: "name",
     title: "链接名",
+    width: 100,
+    ellipsis: true
   },
   {
     dataIndex: "url",
@@ -27,10 +30,25 @@ export const createLinkCategoryDetailColumns = ({ refetch }) => [
   {
     dataIndex: "description",
     title: "描述",
+    width: 100,
+    ellipsis: true
+  },
+  {
+    dataIndex: "created_at",
+    title: "创建时间",
+    ellipsis: true,
+     width: 100,
+  },
+  {
+    dataIndex: "updated_at",
+    title: "更新时间",
+    ellepsis: true,
+     width: 100,
   },
   {
     dataIndex: "op",
     title: "操作",
+
     render(_, record) {
       return (
         <Space>
@@ -44,4 +62,4 @@ export const createLinkCategoryDetailColumns = ({ refetch }) => [
       );
     },
   },
-];
+] as ProColumnType;

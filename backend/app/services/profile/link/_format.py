@@ -19,5 +19,7 @@ def format_link(link):
         "name": link.name,
         "url": link.url,
         "description": link.description,
+        "created_at": link.created_at,
+        "updated_at": link.updated_at,
     }
     return item

@@ -169,3 +169,5 @@ TODO.md
 backend/static/upload
 
 docs/.vitepress/cache
+
+sql/

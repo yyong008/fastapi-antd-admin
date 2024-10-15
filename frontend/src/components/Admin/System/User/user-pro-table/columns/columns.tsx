@@ -17,13 +17,13 @@ export const createUserTableColumns = ({
     width: 50,
     align: "center",
     render(_: any, record: any) {
-      return <UserAvatar avatar={record.avatar} />;
+      return <UserAvatar avatar={record.avatar} name={record.name} />;
     },
   },
   {
     dataIndex: "name",
     title: "用户名",
-    align: "center",
+    // align: "center",
     ellipsis: true,
     render(_: any, record: any) {
       return <h1 style={{ color: colorPrimary }}>{record.name}</h1>;

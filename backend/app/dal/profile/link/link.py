@@ -22,8 +22,12 @@ async def get_count(db: AsyncSession):
     return count
 
 
-async def get_link_count_by_category_id(db: AsyncSession, category_id):
-    filter = Link.category_id == category_id
+async def get_link_count_by_category_id(db: AsyncSession, category_id, current_user_id):
+    filter = []
+    if category_id:
+        filter.append(Link.category_id == category_id)
+    # if current_user_id:
+    #     filter.append(Link.user_id == current_user_id)
     count = await base_crud.get_count(db=db, model=Link, filter=filter)
     return count
 
@@ -41,8 +45,14 @@ async def get_links_by_ids(db: AsyncSession, ids, ):
     return db.query(Link).filter(Link.id.in_(ids)).all()
 
 
-async def get_links_by_category_id(db: AsyncSession,category_id, page, pageSize, ):
-    filter = Link.category_id == category_id
+async def get_links_by_category_id(db: AsyncSession,category_id, current_user_id, page, pageSize, ):
+    filter = []
+    if category_id:
+        filter.append(Link.category_id == category_id)
+
+    if current_user_id:
+        # filter.append(Link.user_id == current_user_id)
+        pass
     data = await base_crud.get_list(
         db=db,
         model=Link,

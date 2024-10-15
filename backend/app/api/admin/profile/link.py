@@ -17,10 +17,11 @@ async def get_link_by_id(
     id: int,
     page: int,
     pageSize: int,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_LIST)),
 ):
-    data = await lk_services.get_link_list_by_id_service(db, id, page, pageSize)
+    data = await lk_services.get_link_list_by_id_service(db, id, current_user.id, page, pageSize)
     return RMS(data=data)
 
 

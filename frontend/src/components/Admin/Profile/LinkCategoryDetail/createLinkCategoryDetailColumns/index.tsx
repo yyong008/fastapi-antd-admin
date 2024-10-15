@@ -62,4 +62,4 @@ export const createLinkCategoryDetailColumns = ({ refetch }) => [
       );
     },
   },
-] as ProColumnType;
+] as ProColumnType[] as any;

@@ -16,10 +16,11 @@ router = APIRouter(prefix="/link/category", tags=["Link Category"])
 async def get_link_category(
     page: int = 1,
     pageSize: int = 10,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.PROFILE_LINK_CATEGORY_READ)),
 ):
-    data = await lc_services.get_link_category_list_service(db, page, pageSize)
+    data = await lc_services.get_link_category_list_service(db, current_user.id, page, pageSize)
     return RMS(data=data)
 
 

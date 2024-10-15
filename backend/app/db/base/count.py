@@ -24,7 +24,10 @@ async def get_count(
     # 查询模型记录的数量
     query = select(func.count(primary_key_column))
     if filter:
-        query = query.filter(filter)
+        if isinstance(filter, list):
+            query = query.where(*filter)
+        else:
+            query = query.where(filter)
     result = await db.execute(query)
     
     # 获取计数结果

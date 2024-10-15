@@ -10,12 +10,14 @@ async def get_link_category_by_name(name: str, db: AsyncSession):
     return data
 
 
-async def get_link_category_list(db: AsyncSession, page: int = 0, pageSize: int = 10):
+async def get_link_category_list(db: AsyncSession, current_user_id, page: int = 0, pageSize: int = 10):
+    if current_user_id:
+        filter = LinkCategory.user_id == current_user_id
     data = await base_crud.get_list(
         db=db,
         model=LinkCategory,
         order_by=None,
-        filter=None,
+        filter=filter,
         options=None,
         page=page,
         pageSize=pageSize,
@@ -23,8 +25,11 @@ async def get_link_category_list(db: AsyncSession, page: int = 0, pageSize: int 
     return data
 
 
-async def get_link_category_count(db: AsyncSession):
-    count = await base_crud.get_count(db, LinkCategory)
+async def get_link_category_count(db: AsyncSession, current_user_id):
+    filter = []
+    if current_user_id:
+        filter.append(LinkCategory.user_id == current_user_id)
+    count = await base_crud.get_count(db, LinkCategory, filter=filter)
     return count
 
 

@@ -7,13 +7,13 @@ from app.services.profile.link._format import format_link
 from app.models.profile.link import Link
 
 
-async def get_link_list_by_id_service(db: AsyncSession, category_id: int, page: int, pageSize: int):
+async def get_link_list_by_id_service(db: AsyncSession, category_id: int, current_user_id: int, page: int, pageSize: int):
     """
     根据 category_id 获取链接列表
     """
     try:
-        count = await lk_dals.get_link_count_by_category_id(db, category_id)
-        links = await lk_dals.get_links_by_category_id(db, category_id, page, pageSize)
+        count = await lk_dals.get_link_count_by_category_id(db, category_id, current_user_id)
+        links = await lk_dals.get_links_by_category_id(db, category_id, current_user_id,page, pageSize)
 
         link_list = [format_link(link) for link in links]
 

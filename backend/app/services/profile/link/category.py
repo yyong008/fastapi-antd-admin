@@ -7,13 +7,13 @@ from app.services.profile.link._format import format_category
 from app.models.profile.link import LinkCategory
 
 
-async def get_link_category_list_service(db: AsyncSession, page, pageSize):
+async def get_link_category_list_service(db: AsyncSession, current_user_id, page, pageSize):
     """
     获取所有分类
     """
     try:
-        count = await lc_dals.get_link_category_count(db)
-        categories = await lc_dals.get_link_category_list(db, page, pageSize)
+        count = await lc_dals.get_link_category_count(db, current_user_id)
+        categories = await lc_dals.get_link_category_list(db, current_user_id, page, pageSize)
 
         category_list = []
         for c in categories:

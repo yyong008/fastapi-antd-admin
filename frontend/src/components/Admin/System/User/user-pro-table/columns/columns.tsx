@@ -136,8 +136,9 @@ function UserRoleList({ list, roles }: any) {
   }
   return (
     <div>
-      {list.map((_role: any, index: number) => {
-        return <Tag key={index}>{roles[_role]?.name}</Tag>;
+      {list.map((_role_id: any, index: number) => {
+        const role = roles.filter((_role: any) => _role.id === _role_id)[0];
+        return <Tag key={index}>{role?.name}</Tag>;
       })}
     </div>
   );

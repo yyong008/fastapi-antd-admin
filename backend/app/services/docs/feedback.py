@@ -13,7 +13,10 @@ async def get_feedback_list_service(db: AsyncSession, page, pageSize):
     """
     try:
         count = await fb_dals.get_feedback_count(db)
-        feedbacks = await fb_dals.get_feedback_list(db, page, pageSize)
+        order_by = FeedBack.created_at.desc()
+        filter = None
+        options = None
+        feedbacks = await fb_dals.get_feedback_list(db, order_by, filter, options, page, pageSize)
 
         feedback_list = [format_feedback(fb) for fb in feedbacks]
         data = {"total": count, "list": feedback_list}

@@ -23,6 +23,9 @@ export const createChangeLogColumns = ({ refresh }) =>  [
     {
       dataIndex: "publish_version",
       title: "版本",
+      render(_: any, record: any) {
+        return <Tag color="green">{record.publish_version}</Tag>;
+      }
     },
     {
       dataIndex: "publish_name",

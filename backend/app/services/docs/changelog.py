@@ -13,7 +13,12 @@ async def get_changelog_list_service(db: AsyncSession, page: int, pageSize: int)
     """
     try:
         count = await cl_dals.get_changelog_count(db)
-        changelogs = await cl_dals.get_changelog_list(db, page, pageSize)
+        order_by = ChangeLog.created_at.desc()
+        filter = None
+        options = None
+        changelogs = await cl_dals.get_changelog_list(
+            db, order_by, filter, options, page, pageSize
+        )
 
         changelog_list = [format_changelog(cl) for cl in changelogs]
 

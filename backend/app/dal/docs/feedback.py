@@ -14,13 +14,13 @@ async def get_feedback_all(db: AsyncSession):
     return db.query(FeedBack).order_by(sort_column).all()
 
 
-async def get_feedback_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
+async def get_feedback_list(db: AsyncSession, order_by = None, filter = None, options = None, page: int = 1, pageSize: int = 10):
     data = await base_crud.get_list(
         db=db,
         model=FeedBack,
-        order_by=None,
-        filter=None,
-        options=None,
+        order_by=order_by,
+        filter=filter,
+        options=options,
         page=page,
         pageSize=pageSize,
     )

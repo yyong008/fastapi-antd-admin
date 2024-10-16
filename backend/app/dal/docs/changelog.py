@@ -18,13 +18,20 @@ async def get_changelog_by_id(id: int, db: AsyncSession):
     return db.query(ChangeLog).filter(ChangeLog.id == id).first()
 
 
-async def get_changelog_list(db: AsyncSession, page: int = 1, pageSize: int = 10):
+async def get_changelog_list(
+    db: AsyncSession,
+    order_by=None,
+    filter=None,
+    options=None,
+    page: int = 1,
+    pageSize: int = 10,
+):
     data = await base_crud.get_list(
         db=db,
         model=ChangeLog,
-        order_by=None,
-        filter=None,
-        options=None,
+        order_by=order_by,
+        filter=filter,
+        options=options,
         page=page,
         pageSize=pageSize,
     )

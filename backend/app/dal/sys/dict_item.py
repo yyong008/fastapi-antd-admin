@@ -4,7 +4,7 @@ import app.db.base as base_crud
 
 
 # =====================================GET===================================================
-async def get_dictionary_entry_count(id, db: AsyncSession):
+async def get_dictionary_entry_count(db: AsyncSession, id: int):
     filter = DictionaryEntry.dictionary_id == id
     count = await base_crud.get_count(db, DictionaryEntry, filter=filter)
     return count
@@ -21,8 +21,9 @@ async def get_dictionary_entry_list(
 ):
     order_by = DictionaryEntry.created_at.desc()
     filter = DictionaryEntry.dictionary_id == id
+    options = None
     data = await base_crud.get_list(
-        db, DictionaryEntry, order_by, filter, page, pageSize
+        db, DictionaryEntry, order_by, filter, options, page, pageSize
     )
     return data
 

@@ -2,7 +2,7 @@ import { FormatTime } from "@/components/common/format-time";
 import { Image } from "antd";
 import { fallback_base_64_url } from "@/constants/fallback";
 
-export const createFeedbackColumns = () => [
+export const createFeedbackColumns = ({ refetch }: any) => [
   {
       dataIndex: "url",
       title: "反馈图片",

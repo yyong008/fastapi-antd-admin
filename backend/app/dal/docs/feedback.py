@@ -14,7 +14,14 @@ async def get_feedback_all(db: AsyncSession):
     return db.query(FeedBack).order_by(sort_column).all()
 
 
-async def get_feedback_list(db: AsyncSession, order_by = None, filter = None, options = None, page: int = 1, pageSize: int = 10):
+async def get_feedback_list(
+    db: AsyncSession,
+    order_by=None,
+    filter=None,
+    options=None,
+    page: int = 1,
+    pageSize: int = 10,
+):
     data = await base_crud.get_list(
         db=db,
         model=FeedBack,
@@ -31,8 +38,13 @@ async def get_feedback_by_id(db: AsyncSession, id: int):
     return db.query(FeedBack).filter(FeedBack.id == id).first()
 
 
-async def create_feedback(db: AsyncSession, feedback):
-    data = await base_crud.create(db=db, model=FeedBack, data=feedback)
+async def create_feedback(db: AsyncSession,current_user_id: int, feedback):
+    obj_in = {
+        "userId": current_user_id,
+        "content": feedback.content,
+        "url": feedback.url,
+    }
+    data = await base_crud.create(db=db, model=FeedBack, obj_in=obj_in)
     return data
 
 

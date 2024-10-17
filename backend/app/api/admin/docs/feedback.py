@@ -35,7 +35,7 @@ async def post_docs_feedback(
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_UPDATE)),
 ):
     feedback = feedback.model_dump()
-    data = await create_feedback_service(db, feedback, current_user.id)
+    data = await create_feedback_service(db, current_user.id, feedback)
     return RMS(data=data)
 
 

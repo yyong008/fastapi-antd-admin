@@ -26,7 +26,7 @@ async def get_feedback_list_service(db: AsyncSession, page, pageSize):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def create_feedback_service(db: AsyncSession, feedback, current_user_id):
+async def create_feedback_service(db: AsyncSession, current_user_id, feedback,):
     """
     创建反馈
     """
@@ -34,7 +34,7 @@ async def create_feedback_service(db: AsyncSession, feedback, current_user_id):
         del feedback['user_id']
         feedback['userId'] = current_user_id
         fb = FeedBack(**feedback)
-        data = await fb_dals.create_feedback(db, fb)
+        data = await fb_dals.create_feedback(db,current_user_id, fb)
         return format_feedback(data)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

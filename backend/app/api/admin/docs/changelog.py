@@ -47,7 +47,7 @@ async def update_docs_change_log(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_UPDATE)),
 ):
-    changelog = changelog.model_dump()
+    changelog = changelog.model_dump(exclude_none=True)
     data = await update_change_log_service(db, id, changelog, current_user.id)
     return RMS(data=data)
 

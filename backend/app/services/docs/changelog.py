@@ -41,14 +41,12 @@ async def change_log_by_id_service(db: AsyncSession, id: int):
         raise HTTPException(status_code=400, detail=f"{e}")
 
 
-async def create_change_log_service(db: AsyncSession, changelog, current_user_id):
+async def create_change_log_service(db: AsyncSession, changelog, current_user_id: int):
     """
     创建更新
     """
     try:
-        del changelog["user_id"]
-        changelog["userId"] = current_user_id
-        changelog = ChangeLog(**changelog)
+        changelog["user_id"] = current_user_id
         changelog = await cl_dals.create_changelog(db, changelog)
         return format_changelog(changelog)
     except SQLAlchemyError as e:
@@ -61,19 +59,8 @@ async def update_change_log_service(db: AsyncSession, id, changelog, current_use
     更新更新
     """
     try:
-        changelog_in_db = await cl_dals.get_changelog_by_id(db, id)
-
-        changelog_in_db.userId = current_user_id
-        if changelog_in_db is None:
-            raise HTTPException(status_code=404, detail="Blog not found")
-
-        for key, value in changelog.items():
-            if key == "created_at":
-                continue
-            setattr(changelog_in_db, key, value)
-        changelog_in_db.userId = current_user_id
-
-        changelog = await cl_dals.update_changelog_by_id(db, id, changelog_in_db)
+        changelog["user_id"] = current_user_id
+        changelog = await cl_dals.update_changelog_by_id(db, id, changelog=changelog)
         return format_changelog(changelog)
     except SQLAlchemyError as e:
         print(f"Oops, we encountered an error: {e}")

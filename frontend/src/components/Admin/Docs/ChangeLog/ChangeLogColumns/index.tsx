@@ -56,6 +56,7 @@ export const createChangeLogColumns = ({ refresh }) =>  [
     {
       dataIndex: "publish_time",
       title: "发布时间",
+      ellipsis: true,
       render(_: any, record: any) {
         return <FormatTime timeStr={record.publish_time} />;
       },
@@ -63,6 +64,7 @@ export const createChangeLogColumns = ({ refresh }) =>  [
     {
       dataIndex: "created_at",
       title: "创建时间",
+       ellipsis: true,
       render(_: any, record: any) {
         return <FormatTime timeStr={record.created_at} />;
       },

@@ -14,8 +14,9 @@ async def get_changelog_all(db: AsyncSession):
     return db.query(ChangeLog).order_by(sort_column).all()
 
 
-async def get_changelog_by_id(id: int, db: AsyncSession):
-    return db.query(ChangeLog).filter(ChangeLog.id == id).first()
+async def get_changelog_by_id(db: AsyncSession,id: int):
+    data = await base_crud.get_by_id(db=db, model=ChangeLog, id=id)
+    return data
 
 
 async def get_changelog_list(
@@ -38,8 +39,8 @@ async def get_changelog_list(
     return data
 
 
-async def create_changelog(db: AsyncSession, changelog):
-    data = await base_crud.create(db=db, obj_in=changelog)
+async def create_changelog(db: AsyncSession, changelog: dict):
+    data = await base_crud.create(db=db, model=ChangeLog, obj_in=changelog)
     return data
 
 

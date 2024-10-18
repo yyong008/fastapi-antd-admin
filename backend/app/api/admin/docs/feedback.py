@@ -23,6 +23,9 @@ async def docs_feedback(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_LIST)),
 ):
+    """
+    获取feedback分页列表
+    """
     data = await get_feedback_list_service(db, page, pageSize)
     return RMS(data=data)
 
@@ -34,6 +37,9 @@ async def post_docs_feedback(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_UPDATE)),
 ):
+    """
+    创建feedback
+    """
     feedback = feedback.model_dump()
     data = await create_feedback_service(db, current_user.id, feedback)
     return RMS(data=data)
@@ -46,6 +52,9 @@ async def update_docs_feedback(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_UPDATE)),
 ):
+    """
+    更新feedback
+    """
     feedback = feedback.model_dump()
     data = await update_feedback_service(db, id, feedback)
     return RMS(data=data)
@@ -57,5 +66,8 @@ async def delete_by_ids_docs_feedback(
     db: Session = Depends(get_db),
     _: bool = Depends(get_user_permissions(permissions.DOCS_CHANGELOG_DELETE)),
 ):
+    """
+    批量删除feedback
+    """
     data = await delete_feedback_by_ids_service(db, ids)
     return RMS(data=data)

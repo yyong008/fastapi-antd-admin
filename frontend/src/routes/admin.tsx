@@ -2,6 +2,7 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { ProLayout, WaterMark } from "@ant-design/pro-components";
 import { memo, useContext, useMemo, useState } from "react";
 
+import { AdminChat } from "@/components/chat";
 import { AvatarDropDown } from "@/components/Layout/Admin/avatar-dropdown";
 import { Footer } from "@/components/common/footer";
 import { MenuFooterRender } from "@/components/Layout/Admin/menu-footer-render";
@@ -92,6 +93,7 @@ function AdminComponent() {
         }}
       >
         <Outlet />
+        <AdminChat />
         <SettingDrawerWrap theme={value.theme} setTheme={value.setTheme} />
       </ProLayout>
     </WaterMark>

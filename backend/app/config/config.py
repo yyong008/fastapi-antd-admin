@@ -31,6 +31,8 @@ class Settings(BaseSettings):
         list[AnyUrl] | str, BeforeValidator(parse_cors)
     ] = []
 
+    api_key: str
+
     model_config = SettingsConfigDict(env_file=".env")
 
 

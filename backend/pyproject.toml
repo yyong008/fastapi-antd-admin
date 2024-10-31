@@ -24,6 +24,8 @@ bleach = "^6.1.0"
 fastapi-mail = "^1.4.1"
 asyncpg = "^0.29.0"
 alembic = "^1.13.3"
+langchain = "^0.3.6"
+langchain-openai = "^0.2.4"
 
 
 [tool.poetry.group.dev.dependencies]

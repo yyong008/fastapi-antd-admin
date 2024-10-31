@@ -52,8 +52,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.add_middleware(CountRequeset)
 app.add_middleware(DemoModeMiddleware)
 
-if app.debug: 
-    app.add_middleware(DebugMiddleware)
+# if app.debug: 
+#     app.add_middleware(DebugMiddleware)
 
 
 app.add_exception_handler(HTTPException, http_exception_handler)

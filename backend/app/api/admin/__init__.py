@@ -9,6 +9,7 @@ from .system import router as system_router
 from .userinfo.userinfo import router as userinfo_router
 from .dashboard.main import router as dashboard_router
 from .signin_log import router as signin_log_router
+from .chat.langchain_chat import router as langchain_router
 
 router = APIRouter(prefix="/admin")
 
@@ -21,3 +22,4 @@ router.include_router(tools_router)
 router.include_router(system_router)
 router.include_router(userinfo_router)
 router.include_router(signin_log_router)
+router.include_router(langchain_router)

@@ -7,30 +7,30 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.114.2"
-uvicorn = "^0.30.6"
-sqlalchemy = {extras = ["asyncio"], version = "^2.0.35"}
-psycopg2 = "^2.9.9"
-prometheus-client = "^0.20.0"
-python-multipart = "^0.0.9"
-pyjwt = "^2.9.0"
-pydantic = {extras = ["email"], version = "^2.9.1"}
-pydantic-settings = "^2.4.0"
+fastapi = "^0.115.0"
+uvicorn = {extras = ["standard"], version = "^0.32.0"}
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.36"}
+psycopg2 = "^2.9.10"
+prometheus-client = "^0.21.0"
+python-multipart = "^0.0.12"
+pyjwt = "^2.10.0"
+pydantic = {extras = ["email"], version = "^2.10.0"}
+pydantic-settings = "^2.6.0"
 user-agents = "^2.2.0"
 requests = "^2.32.3"
 chardet = "^5.2.0"
-psutil = "^6.0.0"
-bleach = "^6.1.0"
-fastapi-mail = "^1.4.1"
-asyncpg = "^0.29.0"
-alembic = "^1.13.3"
-langchain = "^0.3.6"
-langchain-openai = "^0.2.4"
+psutil = "^6.1.0"
+bleach = "^6.2.0"
+fastapi-mail = "^1.4.2"
+asyncpg = "^0.30.0"
+alembic = "^1.14.0"
+langchain = "^0.3.17"
+langchain-openai = "^0.3.14"
 
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.6.4"
-black = "^24.8.0"
+ruff = "^0.8.0"
+black = "^24.10.0"
 
 [build-system]
 requires = ["poetry-core"]

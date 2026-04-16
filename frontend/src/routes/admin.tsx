@@ -20,7 +20,7 @@ import { prolayoutConfig } from "@/config/prolayout";
 export const Route = createFileRoute("/admin")({
   beforeLoad() {
     if (!getLocalStorageToken()) {
-      throw redirect({ to: "/admin/login" });
+      throw redirect({ to: "/login" });
     }
   },
   async loader() {
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/admin")({
     if (res && res.code === 0) {
       localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
     } else {
-      throw redirect({ to: "/admin/login" });
+      throw redirect({ to: "/login" });
     }
     return res?.data;
   },
@@ -83,13 +83,7 @@ function AdminComponent() {
             return <MenuItemOutLink path={item.path!} dom={dom} />;
           }
 
-          return (
-            <MenuItemLink
-              path={item.path!}
-              dom={dom}
-              setPathname={setPathname}
-            />
-          );
+          return <MenuItemLink path={item.path!} dom={dom} setPathname={setPathname} />;
         }}
       >
         <Outlet />

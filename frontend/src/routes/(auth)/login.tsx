@@ -1,13 +1,13 @@
 import { ConfigProvider, Tabs } from "antd";
 import { ProConfigProvider, ProFormCheckbox } from "@ant-design/pro-components";
+import { Link } from "@tanstack/react-router";
 import { memo, useMemo, useState } from "react";
 
 import { AccountLogin } from "@/components/Login/account-login";
 import { LoginFormWrap } from "@/components/Login/login-form";
-// import { MobileLogin } from "@/components/Login/mobile-login";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(auth)/admin/login")({
+export const Route = createFileRoute("/(auth)/login")({
   component: LoginComponent,
 });
 
@@ -19,11 +19,6 @@ function LoginComponent() {
         key: "account",
         label: "账户登录",
       },
-      // {
-      //   key: "mobile",
-      //   disabled: true,
-      //   label: "手机号登录",
-      // },
     ];
   }, []);
   const RemeberMe = memo(function Re() {
@@ -33,12 +28,17 @@ function LoginComponent() {
       </div>
     );
   });
+  const actions = (
+    <div className="text-center text-gray-600">
+      还没有账号？<Link to="/signup" className="text-blue-500 hover:text-blue-600">立即注册</Link>
+    </div>
+  );
+
   return (
-    <div>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
       <ProConfigProvider>
         <ConfigProvider>
-          <div className="flex flex-col h-[100vh]  ">
-            <LoginFormWrap>
+          <LoginFormWrap actions={actions}>
               <Tabs
                 activeKey={type}
                 onChange={setType}
@@ -46,10 +46,8 @@ function LoginComponent() {
                 items={items}
               />
               {type === "account" && <AccountLogin />}
-              {/* {type === "mobile" && <MobileLogin />} */}
               <RemeberMe />
             </LoginFormWrap>
-          </div>
         </ConfigProvider>
       </ProConfigProvider>
     </div>

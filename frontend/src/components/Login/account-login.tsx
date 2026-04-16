@@ -17,11 +17,11 @@ export function AccountLogin(props: AccountLoginProps) {
           size: "large",
           prefix: <UserOutlined />,
         }}
-        placeholder={"login-register.placeholder.username"}
+        placeholder={"请输入用户名"}
         rules={[
           {
             required: true,
-            message: "login-register.message.username-message"!,
+            message: "请输入用户名",
           },
         ]}
       />
@@ -35,7 +35,7 @@ export function AccountLogin(props: AccountLoginProps) {
         rules={[
           {
             required: true,
-            message: "login-register.message.password-message",
+            message: "请输入密码",
           },
         ]}
       />
@@ -46,11 +46,11 @@ export function AccountLogin(props: AccountLoginProps) {
             size: "large",
             prefix: <LockOutlined />,
           }}
-          placeholder={"login-register.placeholder.password-re"}
+          placeholder={"请再次输入密码"}
           rules={[
             {
               required: true,
-              message: "login-register.message.password-message-re",
+              message: "请再次输入密码",
             },
           ]}
         />

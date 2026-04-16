@@ -14,7 +14,7 @@ export function Nav() {
         <HeaderLink to={`/about`}>About</HeaderLink>
       </div>
       <div>
-        <HeaderLink to={`/admin/login`}>Login</HeaderLink>
+        <HeaderLink to={`/login`}>Login</HeaderLink>
       </div>
     </div>
   );

@@ -9,9 +9,19 @@ import { genHashedPassword } from "@/utils/crypto-js";
 import { login } from "@/apis/login";
 import { useNavigate } from "@tanstack/react-router";
 
-export function LoginFormWrap({ children }: any) {
+interface LoginFormWrapProps {
+  children?: React.ReactNode;
+  isSignup?: boolean;
+  onSignup?: (values: any) => Promise<boolean>;
+  actions?: React.ReactNode;
+}
+
+export function LoginFormWrap({ children, isSignup, onSignup, actions }: LoginFormWrapProps) {
   const navigate = useNavigate();
   const handleSubmit = async (values: any) => {
+    if (isSignup && onSignup) {
+      return await onSignup(values);
+    }
     const data = {
       username: values.username,
       password: genHashedPassword(values.password),
@@ -31,8 +41,7 @@ export function LoginFormWrap({ children }: any) {
   return (
     <ProConfigProvider>
       <ConfigProvider theme={{}}>
-        <div className="flex flex-col h-[100vh]  ">
-          <LoginForm
+        <LoginForm
             className="flex-1 text-slate-950"
             logo={
               <img
@@ -41,34 +50,25 @@ export function LoginFormWrap({ children }: any) {
                 style={{ borderRadius: "10px" }}
               />
             }
-            title={"FastAPI Antd Admin"}
-            subTitle={"一个基于 FastAPI React Antd 的全栈管理系统"}
-            initialValues={{
+            title={isSignup ? "用户注册" : "FastAPI Antd Admin"}
+            subTitle={isSignup ? "请填写注册信息" : "一个基于 FastAPI React Antd 的全栈管理系统"}
+            initialValues={isSignup ? {} : {
               autoLogin: true,
               username: "super admin",
               password: "123456",
             }}
-            // actions={[
-            //   <div
-            //     className="flex items-centermt-[20px] text-black"
-            //     key="login-other"
-            //   >
-            //     <div>{"login-register.other-login"}</div>
-            //     {/* <ActionIcons key="icons" /> */}
-            //   </div>,
-            // ]}
             onFinish={async (values: string) => {
               await handleSubmit(values);
             }}
             submitter={{
               searchConfig: {
-                submitText: "登录",
+                submitText: isSignup ? "注册" : "登录",
               },
             }}
+            actions={actions}
           >
             {children}
           </LoginForm>
-        </div>
       </ConfigProvider>
     </ProConfigProvider>
   );

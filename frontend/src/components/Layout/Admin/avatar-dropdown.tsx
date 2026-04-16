@@ -1,10 +1,7 @@
 import * as ic from "@ant-design/icons";
 
 import { Dropdown, Form } from "antd";
-import {
-  removeLocalStorageRefreshToken,
-  removeLocalStorageToken,
-} from "@/utils/localstorage";
+import { removeLocalStorageRefreshToken, removeLocalStorageToken } from "@/utils/localstorage";
 
 import React from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -44,7 +41,7 @@ export const AvatarDropDown: React.FC<AvatarDropDownProps> = ({ dom }) => {
             onClick() {
               removeLocalStorageToken();
               removeLocalStorageRefreshToken();
-              navigate({ to: `/admin/login` });
+              navigate({ to: `/login` });
             },
           },
         ],

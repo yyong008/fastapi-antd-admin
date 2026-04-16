@@ -15,6 +15,8 @@ import { Route as ClientIndexRouteImport } from './routes/_client/index'
 import { Route as ClientNewsRouteImport } from './routes/_client/news'
 import { Route as ClientBlogRouteImport } from './routes/_client/blog'
 import { Route as ClientAboutRouteImport } from './routes/_client/about'
+import { Route as authSignupRouteImport } from './routes/(auth)/signup'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as AdminDashboardIndexRouteImport } from './routes/admin/dashboard/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as AdminAboutIndexRouteImport } from './routes/admin/about/index'
@@ -38,7 +40,6 @@ import { Route as AdminBlogEditRouteImport } from './routes/admin/blog/edit'
 import { Route as AdminBlogCategoryRouteImport } from './routes/admin/blog/category'
 import { Route as ClientNewsIdRouteImport } from './routes/_client/news_.$id'
 import { Route as ClientBlogIdRouteImport } from './routes/_client/blog_.$id'
-import { Route as authAdminLoginRouteImport } from './routes/(auth)/admin.login'
 import { Route as AdminToolsMailListRouteImport } from './routes/admin/tools/mail_.list'
 import { Route as AdminToolsMailIdRouteImport } from './routes/admin/tools/mail_.$id'
 import { Route as AdminSystemMonitorServeRouteImport } from './routes/admin/system/monitor/serve'
@@ -78,6 +79,16 @@ const ClientAboutRoute = ClientAboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => ClientRoute,
+} as any)
+const authSignupRoute = authSignupRouteImport.update({
+  id: '/(auth)/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authLoginRoute = authLoginRouteImport.update({
+  id: '/(auth)/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardIndexRoute = AdminDashboardIndexRouteImport.update({
   id: '/dashboard/',
@@ -194,11 +205,6 @@ const ClientBlogIdRoute = ClientBlogIdRouteImport.update({
   path: '/blog/$id',
   getParentRoute: () => ClientRoute,
 } as any)
-const authAdminLoginRoute = authAdminLoginRouteImport.update({
-  id: '/(auth)/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminToolsMailListRoute = AdminToolsMailListRouteImport.update({
   id: '/tools/mail_/list',
   path: '/tools/mail/list',
@@ -256,10 +262,11 @@ const AdminProfileLinkCategoryIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof ClientIndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/login': typeof authLoginRoute
+  '/signup': typeof authSignupRoute
   '/about': typeof ClientAboutRoute
   '/blog': typeof ClientBlogRoute
   '/news': typeof ClientNewsRoute
-  '/admin/login': typeof authAdminLoginRoute
   '/blog/$id': typeof ClientBlogIdRoute
   '/news/$id': typeof ClientNewsIdRoute
   '/admin/blog/category': typeof AdminBlogCategoryRoute
@@ -296,11 +303,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/admin': typeof AdminRouteWithChildren
+  '/login': typeof authLoginRoute
+  '/signup': typeof authSignupRoute
   '/about': typeof ClientAboutRoute
   '/blog': typeof ClientBlogRoute
   '/news': typeof ClientNewsRoute
   '/': typeof ClientIndexRoute
-  '/admin/login': typeof authAdminLoginRoute
   '/blog/$id': typeof ClientBlogIdRoute
   '/news/$id': typeof ClientNewsIdRoute
   '/admin/blog/category': typeof AdminBlogCategoryRoute
@@ -339,11 +347,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_client': typeof ClientRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
+  '/(auth)/login': typeof authLoginRoute
+  '/(auth)/signup': typeof authSignupRoute
   '/_client/about': typeof ClientAboutRoute
   '/_client/blog': typeof ClientBlogRoute
   '/_client/news': typeof ClientNewsRoute
   '/_client/': typeof ClientIndexRoute
-  '/(auth)/admin/login': typeof authAdminLoginRoute
   '/_client/blog_/$id': typeof ClientBlogIdRoute
   '/_client/news_/$id': typeof ClientNewsIdRoute
   '/admin/blog/category': typeof AdminBlogCategoryRoute
@@ -383,10 +392,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/login'
+    | '/signup'
     | '/about'
     | '/blog'
     | '/news'
-    | '/admin/login'
     | '/blog/$id'
     | '/news/$id'
     | '/admin/blog/category'
@@ -423,11 +433,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
+    | '/login'
+    | '/signup'
     | '/about'
     | '/blog'
     | '/news'
     | '/'
-    | '/admin/login'
     | '/blog/$id'
     | '/news/$id'
     | '/admin/blog/category'
@@ -465,11 +476,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_client'
     | '/admin'
+    | '/(auth)/login'
+    | '/(auth)/signup'
     | '/_client/about'
     | '/_client/blog'
     | '/_client/news'
     | '/_client/'
-    | '/(auth)/admin/login'
     | '/_client/blog_/$id'
     | '/_client/news_/$id'
     | '/admin/blog/category'
@@ -508,7 +520,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   ClientRoute: typeof ClientRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
-  authAdminLoginRoute: typeof authAdminLoginRoute
+  authLoginRoute: typeof authLoginRoute
+  authSignupRoute: typeof authSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -554,6 +567,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/about'
       preLoaderRoute: typeof ClientAboutRouteImport
       parentRoute: typeof ClientRoute
+    }
+    '/(auth)/signup': {
+      id: '/(auth)/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof authSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/login': {
+      id: '/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authLoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/dashboard/': {
       id: '/admin/dashboard/'
@@ -715,13 +742,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$id'
       preLoaderRoute: typeof ClientBlogIdRouteImport
       parentRoute: typeof ClientRoute
-    }
-    '/(auth)/admin/login': {
-      id: '/(auth)/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof authAdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/admin/tools/mail_/list': {
       id: '/admin/tools/mail_/list'
@@ -890,7 +910,8 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   ClientRoute: ClientRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
-  authAdminLoginRoute: authAdminLoginRoute,
+  authLoginRoute: authLoginRoute,
+  authSignupRoute: authSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

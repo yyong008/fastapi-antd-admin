@@ -16,11 +16,11 @@ export const Route = createFileRoute("/_client/news_/$id")({
 export function NewsDetailRoute() {
   const news = Route.useLoaderData();
   return (
-    <div className="flex flex-col pt-[140px] w-[70vw] min-h-[80vh] pb-[40px]">
-      <div className="bg-white p-[20px] font-sans rounded-sm text-base/loose pb-[60px]">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="font-sans text-base/loose">
         <NewsHeader news={news} />
         <NewsContent content={news.content} />
       </div>
-    </div>
+    </section>
   );
 }

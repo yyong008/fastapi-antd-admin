@@ -12,15 +12,19 @@ export const Route = createFileRoute("/_client/about")({
 
 export function AboutComponent() {
   return (
-    <div className="flex flex-col py-[140px] w-[60vw] min-h-[80vh]">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-slate-900">About</h1>
+        <p className="mt-2 text-sm text-slate-500">Project overview and dependency details.</p>
+      </div>
       <ProConfigProvider>
-        <Space direction="vertical">
+        <Space className="w-full" direction="vertical" size="middle">
           <ProjectAbout />
           <ProjectInfo />
           <ProjectProductionDep />
           <ProjectDevelopmentDep />
         </Space>
       </ProConfigProvider>
-    </div>
+    </section>
   );
 }

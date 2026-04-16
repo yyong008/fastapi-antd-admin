@@ -22,14 +22,18 @@ export const Route = createFileRoute("/_client/news")({
 export function NewsRoute() {
   const data = Route.useLoaderData();
   const { list: news = [] } = data;
+
   return (
-    <div className="flex flex-col pt-[140px] px-[20px] w-[70vw] min-h-[80vh]">
-      <div>
+    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-slate-900">News</h1>
+        <p className="mt-2 text-sm text-slate-500">Latest updates and announcements.</p>
+      </div>
+      <div className="space-y-2">
         {news?.map((n: any) => {
           return <NewsItem data={n} key={n.id} />;
         })}
       </div>
-      {/* <div>页数：{total}</div> */}
-    </div>
+    </section>
   );
 }

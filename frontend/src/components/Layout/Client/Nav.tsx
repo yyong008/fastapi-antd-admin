@@ -1,21 +1,43 @@
+import { Link } from "@tanstack/react-router";
+
 import { HeaderLink } from "./HeaderLink";
+
+const mainNavItems = [
+  { to: "/", label: "Home" },
+  { to: "/news", label: "News" },
+  { to: "/blog", label: "Blog" },
+  { to: "/about", label: "About" },
+] as const;
+
+const actionNavItems = [{ to: "/login", label: "Login" }] as const;
 
 export function Nav() {
   return (
-    <div
-      className="absolute flex justify-between items-center mt-[20px] mx-0 my-auto w-[70vw] px-[100px] h-[60px] bg-indigo-300 rounded-[20px] shadow-indigo-500 shadow-lg
-          bg-[url(https://images.pexels.com/photos/20574181/pexels-photo-20574181.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)]
-        "
-    >
-      <div className="flex gap-2">
-        <HeaderLink to={`/`}>Home</HeaderLink>
-        <HeaderLink to={`/news`}>News</HeaderLink>
-        <HeaderLink to={`/blog`}>Blog</HeaderLink>
-        <HeaderLink to={`/about`}>About</HeaderLink>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6 lg:px-10">
+        <div className="flex items-center gap-8">
+          <Link
+            className="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-100"
+            to="/"
+          >
+            FastAPI Admin
+          </Link>
+          <nav className="flex items-center gap-1">
+            {mainNavItems.map((item) => (
+              <HeaderLink key={item.to} to={item.to}>
+                {item.label}
+              </HeaderLink>
+            ))}
+          </nav>
+        </div>
+        <div className="flex items-center gap-2">
+          {actionNavItems.map((item) => (
+            <HeaderLink key={item.to} to={item.to} variant="button">
+              {item.label}
+            </HeaderLink>
+          ))}
+        </div>
       </div>
-      <div>
-        <HeaderLink to={`/login`}>Login</HeaderLink>
-      </div>
-    </div>
+    </header>
   );
 }

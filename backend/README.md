@@ -16,17 +16,12 @@ poetry install
 ### 3. 启动服务
 
 ```bash
-poetry run uvicorn main:app --reload
-```
-
-或使用 `main_app.py`：
-
-```bash
 poetry run uvicorn main_app:app --reload
 ```
 
 ### 4. 访问 API 文档
 
 启动后访问：
+
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc

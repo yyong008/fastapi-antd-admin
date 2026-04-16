@@ -1,4 +1,4 @@
-/// <reference types="vite/client" />
+/// <reference types="vite-plus/client" />
 import type packageJSON from "../package.json";
 
 declare global {

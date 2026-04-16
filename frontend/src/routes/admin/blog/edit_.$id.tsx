@@ -10,7 +10,7 @@ import { getBlogCategory } from "@/apis/admin/blog/category";
 import { getBlogTag } from "@/apis/admin/blog/tag";
 import { useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/admin/blog/edit/$id")({
+export const Route = createFileRoute("/admin/blog/edit_/$id")({
   component: BlogEditDetailRoute,
 });
 

@@ -11,7 +11,7 @@ import { UnorderedListOutlined } from "@ant-design/icons";
 import { createFileRoute } from "@tanstack/react-router";
 import { getMailById } from "@/apis/admin/tools/mail"
 
-export const Route = createFileRoute("/admin/tools/mail/$id")({
+export const Route = createFileRoute("/admin/tools/mail_/$id")({
   component: MailDetailRoute,
 });
 

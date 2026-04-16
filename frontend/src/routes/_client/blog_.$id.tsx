@@ -3,7 +3,7 @@ import { BlogHeader } from "@/components/Client/BlogDetail/blog-header";
 import { createFileRoute } from "@tanstack/react-router";
 import { getBlogById } from "@/apis/client/blog";
 
-export const Route = createFileRoute("/_client/blog/$id")({
+export const Route = createFileRoute("/_client/blog_/$id")({
   component: BlogDetailRoute,
   async loader({ params }) {
     const result: any = await getBlogById(Number(params.id));

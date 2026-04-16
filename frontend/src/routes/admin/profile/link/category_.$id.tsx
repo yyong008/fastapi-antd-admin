@@ -7,7 +7,7 @@ import { createLinkCategoryDetailColumns } from "@/components/Admin/Profile/Link
 import { getProfileLinkListByCategoryId } from "@/apis/admin/profile/link/link";
 import { useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/admin/profile/link/category/$id")({
+export const Route = createFileRoute("/admin/profile/link/category_/$id")({
   component: LinkCategoryDetailRoute,
 });
 

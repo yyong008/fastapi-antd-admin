@@ -9,7 +9,7 @@ import { getNewsById } from "@/apis/admin/news/news";
 import { getNewsCategory } from "@/apis/admin/news/category";
 import { useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/admin/news/edit/$id")({
+export const Route = createFileRoute("/admin/news/edit_/$id")({
   component: EditDetailRoute,
 });
 

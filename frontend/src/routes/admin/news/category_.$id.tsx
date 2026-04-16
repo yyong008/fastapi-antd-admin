@@ -8,7 +8,7 @@ import { getNewsCategory } from "@/apis/admin/news/category";
 import { getNewsListByCategoryId } from "@/apis/admin/news/news";
 import { useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/admin/news/category/$id")({
+export const Route = createFileRoute("/admin/news/category_/$id")({
   component: NewsRoute,
 });
 

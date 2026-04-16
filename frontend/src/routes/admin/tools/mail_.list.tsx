@@ -6,7 +6,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createMaiListColumns } from "@/components/Admin/Tools/MailList/mail-list-columns-create";
 import { getToolsMail } from "@/apis/admin/tools/mail"
 
-export const Route = createFileRoute("/admin/tools/mail/list")({
+export const Route = createFileRoute("/admin/tools/mail_/list")({
   component: MailListRoute,
 });
 

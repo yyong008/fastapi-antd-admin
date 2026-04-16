@@ -3,7 +3,7 @@ import { NewsHeader } from "@/components/Client/NewsDetail/news-header";
 import { createFileRoute } from "@tanstack/react-router";
 import { getNewsById } from "@/apis/client/news";
 
-export const Route = createFileRoute("/_client/news/$id")({
+export const Route = createFileRoute("/_client/news_/$id")({
   component: NewsDetailRoute,
   async loader({ params }) {
     const result: any = await getNewsById(Number(params.id));
